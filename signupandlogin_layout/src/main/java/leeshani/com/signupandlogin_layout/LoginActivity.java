@@ -45,7 +45,6 @@ public class LoginActivity extends AppCompatActivity {
         getSupportActionBar().setTitle("");
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_back);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
     }
     private void anhXa(){
         tilEmail = (TextInputLayout) findViewById(R.id.tilEmailLogin);
@@ -69,10 +68,10 @@ public class LoginActivity extends AppCompatActivity {
             @SuppressLint("ResourceType")
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                if(!charSequence.toString().contains("@") && !charSequence.toString().isEmpty()){
-                    errorText(tilEmail,txtErrorEmail,"Not a valid email address",ivEmail);
+                if(!MainActivity.isValidEmail(etEmail.getText())){
+                    MainActivity.errorText(tilEmail,txtErrorEmail,"Not a valid email address",ivEmail);
                 }else{
-                    rightText(tilEmail,txtErrorEmail,ivEmail);
+                    MainActivity.rightText(tilEmail,txtErrorEmail,ivEmail);
                 }
             }
             @Override
@@ -84,32 +83,21 @@ public class LoginActivity extends AppCompatActivity {
         etPassword.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
             }
 
             @SuppressLint("ResourceType")
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                if(charSequence.length()<8){
-                    errorText(tilPassword,txtErrorPassword,"Password do not match",ivPassword);
+                if(charSequence.length()<mainActivity.maxLengthPassword){
+                    MainActivity.errorText(tilPassword,txtErrorPassword,"Password do not match",ivPassword);
                 }else{
-                    rightText(tilPassword,txtErrorPassword,ivPassword);
+                    MainActivity.rightText(tilPassword,txtErrorPassword,ivPassword);
                 }
             }
             @Override
             public void afterTextChanged(Editable editable) {
             }
         });
-    }
-    private void errorText(TextInputLayout textInputLayout,TextView txtMessageError,String messageError,ImageView imageView){
-        textInputLayout.setBackgroundResource(R.drawable.text_input_layout);
-        txtMessageError.setText(messageError);
-        imageView.setImageResource(R.drawable.ic_clear);
-    }
-    private void rightText(TextInputLayout textInputLayout, TextView txtMessageError, ImageView imageView){
-        txtMessageError.setText(null);
-        textInputLayout.setBackgroundResource(R.drawable.edtsignup);
-        imageView.setImageResource(R.drawable.ic_right_text);
     }
 
 }

@@ -1,17 +1,16 @@
 package leeshani.com.signupandlogin_layout;
 
-import androidx.appcompat.app.ActionBar;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
-import android.content.res.ColorStateList;
-import android.graphics.Color;
 import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.util.Patterns;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -25,6 +24,7 @@ public class MainActivity extends AppCompatActivity {
     private TextInputLayout tilName, tilEmail, tilPassword;
     private EditText etName, etEmail, etPassword;
     private ImageView ivEmail, ivName, ivPassword, ivIntentLogin;
+    public final int maxLengthPassword = 8;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,7 +49,6 @@ public class MainActivity extends AppCompatActivity {
         getSupportActionBar().setTitle("");
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_back);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
     }
     private void anhXa(){
         tilEmail = (TextInputLayout) findViewById(R.id.tilEmail);
@@ -74,16 +73,12 @@ public class MainActivity extends AppCompatActivity {
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
             }
 
-            @SuppressLint("ResourceType")
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                 if(!charSequence.toString().matches("[a-zA-Z]+")){
                     errorText(tilName,txtErrorName,"Please enter your name",ivName);
-                    etName.setHintTextColor(android.R.color.holo_red_light);
-                    tilName.setHintTextAppearance(android.R.color.holo_red_light);
                 }else{
                     rightText(tilName,txtErrorName,ivName);
-                    etName.setHintTextColor(android.R.color.holo_red_light);
                 }
             }
             @Override
@@ -101,7 +96,7 @@ public class MainActivity extends AppCompatActivity {
             @SuppressLint("ResourceType")
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                if(!charSequence.toString().contains("@") && !charSequence.toString().isEmpty()){
+                if(!isValidEmail(etEmail.getText())){
                     errorText(tilEmail,txtErrorEmail,"Not a valid email address",ivEmail);
                 }else{
                     rightText(tilEmail,txtErrorEmail,ivEmail);
@@ -119,29 +114,32 @@ public class MainActivity extends AppCompatActivity {
 
             }
 
-            @SuppressLint("ResourceType")
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                if(charSequence.length()<8){
+                if(charSequence.length()<maxLengthPassword){
                     errorText(tilPassword,txtErrorPassword,"Password do not match",ivPassword);
                 }else{
                     rightText(tilPassword,txtErrorPassword,ivPassword);
                 }
             }
+
             @Override
             public void afterTextChanged(Editable editable) {
             }
         });
     }
 
-    void errorText(TextInputLayout textInputLayout,TextView txtMessageError,String messageError,ImageView imageView){
+   public static void errorText(TextInputLayout textInputLayout, TextView txtMessageError, String messageError, ImageView imageView){
         textInputLayout.setBackgroundResource(R.drawable.text_input_layout);
         txtMessageError.setText(messageError);
         imageView.setImageResource(R.drawable.ic_clear);
     }
-    void rightText(TextInputLayout textInputLayout, TextView txtMessageError, ImageView imageView){
+    public static void rightText(TextInputLayout textInputLayout, TextView txtMessageError, ImageView imageView){
         txtMessageError.setText(null);
         textInputLayout.setBackgroundResource(R.drawable.edtsignup);
         imageView.setImageResource(R.drawable.ic_right_text);
+    }
+    public static boolean isValidEmail(CharSequence target) {
+        return (!TextUtils.isEmpty(target) && Patterns.EMAIL_ADDRESS.matcher(target).matches());
     }
 }
