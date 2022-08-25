@@ -11,4 +11,8 @@
     <string name="please_enter_your_email">Please, enter your email address. You will receive a link to create a new password via email</string>
     <string name="send">Send</string>
     <string name="haved_account">Already have an account</string>
+    <string name = "error_name">Please enter your name</string>
+    <string name = "error_email">Not a valid email address</string>
+    <string name = "error_password"> Password do not match</string>
+    <string name="error_forgot">Not a valid email address.Should be your@email.com</string>
 </resources>

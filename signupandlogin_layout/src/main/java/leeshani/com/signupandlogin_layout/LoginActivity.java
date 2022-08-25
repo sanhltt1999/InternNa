@@ -1,5 +1,7 @@
 package leeshani.com.signupandlogin_layout;
 
+import static leeshani.com.signupandlogin_layout.MainActivity.MAX_LENGTH_PASSWORD;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
@@ -18,10 +20,9 @@ import com.google.android.material.textfield.TextInputLayout;
 public class LoginActivity extends AppCompatActivity {
     private Toolbar toolbar;
     private TextView txtErrorEmail, txtErrorPassword;
-    private TextInputLayout  tilEmail, tilPassword;
-    private EditText  etEmail, etPassword;
+    private TextInputLayout tilEmail, tilPassword;
+    private EditText etEmail, etPassword;
     private ImageView ivEmail, ivPassword, ivIntentForgotPassword;
-    MainActivity mainActivity ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,23 +41,25 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
     }
-    private void setToolbar(){
+
+    private void setToolbar() {
         setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle("");
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_back);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
-    private void anhXa(){
-        tilEmail = (TextInputLayout) findViewById(R.id.tilEmailLogin);
-        tilPassword = (TextInputLayout) findViewById(R.id.tilPasswordLogin);
-        etPassword = (EditText) findViewById(R.id.etPasswordLogin);
-        etEmail = (EditText) findViewById(R.id.etEmailLogin);
-        toolbar = (Toolbar) findViewById(R.id.toolbarLogin);
-        txtErrorEmail = (TextView) findViewById(R.id.txtErrorEmailLogin);
-        txtErrorPassword = (TextView) findViewById(R.id.txtErrorPasswordLogin);
-        ivEmail = (ImageView) findViewById(R.id.imageViewEmailLogin);
-        ivPassword = (ImageView) findViewById(R.id.imageViewPasswordLogin);
-        ivIntentForgotPassword = (ImageView) findViewById(R.id.right_arrow_Login);
+
+    private void anhXa() {
+        tilEmail = findViewById(R.id.tilEmailLogin);
+        tilPassword = findViewById(R.id.tilPasswordLogin);
+        etPassword = findViewById(R.id.etPasswordLogin);
+        etEmail = findViewById(R.id.etEmailLogin);
+        toolbar = findViewById(R.id.toolbarLogin);
+        txtErrorEmail = findViewById(R.id.txtErrorEmailLogin);
+        txtErrorPassword = findViewById(R.id.txtErrorPasswordLogin);
+        ivEmail = findViewById(R.id.imageViewEmailLogin);
+        ivPassword = findViewById(R.id.imageViewPasswordLogin);
+        ivIntentForgotPassword = findViewById(R.id.right_arrow_Login);
     }
 
 
@@ -65,20 +68,23 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
             }
+
             @SuppressLint("ResourceType")
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                if(!MainActivity.isValidEmail(etEmail.getText())){
-                    MainActivity.errorText(tilEmail,txtErrorEmail,"Not a valid email address",ivEmail);
-                }else{
-                    MainActivity.rightText(tilEmail,txtErrorEmail,ivEmail);
+                if (!MainActivity.isValidEmail(etEmail.getText())) {
+                    errorText(tilEmail, txtErrorEmail, R.string.error_email, ivEmail);
+                } else {
+                    rightText(tilEmail, txtErrorEmail, ivEmail);
                 }
             }
+
             @Override
             public void afterTextChanged(Editable editable) {
             }
         });
     }
+
     private void addChangerListenerPassword() {
         etPassword.addTextChangedListener(new TextWatcher() {
             @Override
@@ -88,16 +94,30 @@ public class LoginActivity extends AppCompatActivity {
             @SuppressLint("ResourceType")
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                if(charSequence.length()<mainActivity.maxLengthPassword){
-                    MainActivity.errorText(tilPassword,txtErrorPassword,"Password do not match",ivPassword);
-                }else{
-                    MainActivity.rightText(tilPassword,txtErrorPassword,ivPassword);
+                if (charSequence.length() < MAX_LENGTH_PASSWORD) {
+                    errorText(tilPassword, txtErrorPassword, R.string.error_password, ivPassword);
+                } else {
+                    rightText(tilPassword, txtErrorPassword, ivPassword);
                 }
             }
+
             @Override
             public void afterTextChanged(Editable editable) {
             }
         });
     }
+
+    private void errorText(TextInputLayout textInputLayout, TextView txtMessageError, int messageError, ImageView imageView) {
+        textInputLayout.setBackgroundResource(R.drawable.text_input_layout);
+        txtMessageError.setText(messageError);
+        imageView.setImageResource(R.drawable.ic_clear);
+    }
+
+    private void rightText(TextInputLayout textInputLayout, TextView txtMessageError, ImageView imageView) {
+        txtMessageError.setText(null);
+        textInputLayout.setBackgroundResource(R.drawable.edtsignup);
+        imageView.setImageResource(R.drawable.ic_right_text);
+    }
+
 
 }

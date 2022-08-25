@@ -1,22 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <array name="preloaded_fonts" translatable="false">
-        <item>@font/alata</item>
-        <item>@font/alatsi</item>
-        <item>@font/anonymous_pro</item>
-        <item>@font/armata</item>
-        <item>@font/arya</item>
-        <item>@font/b612_mono</item>
-        <item>@font/bai_jamjuree_extralight</item>
-        <item>@font/baloo</item>
-        <item>@font/baloo_bhai_2</item>
-        <item>@font/baloo_thambi</item>
-        <item>@font/be_vietnam_thin</item>
-        <item>@font/bowlby_one</item>
-        <item>@font/cousine</item>
-        <item>@font/gudea</item>
-        <item>@font/mandali</item>
+
+
+
         <item>@font/nanum_gothic</item>
-        <item>@font/numans</item>
+
     </array>
 </resources>
