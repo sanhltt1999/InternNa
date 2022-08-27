@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">AppChat</string>
+    <string name="hint_input">Input your message </string>
+</resources>

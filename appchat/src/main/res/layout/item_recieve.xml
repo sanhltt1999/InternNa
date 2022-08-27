@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:padding="5dp">
+    <ImageView
+        android:contentDescription="@null"
+        android:id="@+id/ivAvt"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/tvReceiveMess"
+        app:layout_constraintBottom_toBottomOf="@+id/tvReceiveMess"
+        android:scaleType="centerCrop"
+        android:background="@drawable/bg_avt"
+         />
+
+    <TextView
+        android:id="@+id/tvReceiveMess"
+        android:layout_margin="10dp"
+        android:background="@drawable/bg_message_left"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toEndOf="@+id/ivAvt"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintWidth_percent="0.8"
+        android:textSize="13sp"
+    />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
