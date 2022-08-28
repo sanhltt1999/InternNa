@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
+import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 
@@ -36,6 +37,27 @@ public class MainActivity extends AppCompatActivity {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.setAdapter(messageSendAdapter);
+        setSendMessage();
+
+
+    }
+
+    private void setSendMessage() {
+        ivSend.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String inputMessage = etInputChat.getText().toString().trim();
+                if(inputMessage.isEmpty()) return;
+                messages.add(new Message(inputMessage,true));
+                recyclerView.scrollToPosition(messages.size()-1);
+                etInputChat.setText(null);
+                String receiveMessages = "hihi";
+                messages.add(new Message(receiveMessages,false));
+                messageSendAdapter.notifyDataSetChanged();
+                recyclerView.scrollToPosition(messages.size()-1);
+
+            }
+        });
 
     }
 

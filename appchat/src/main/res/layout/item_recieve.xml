@@ -20,12 +20,12 @@
         android:id="@+id/tvReceiveMess"
         android:layout_margin="10dp"
         android:background="@drawable/bg_message_left"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintStart_toEndOf="@+id/ivAvt"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintWidth_percent="0.8"
         android:textSize="13sp"
+        android:layout_marginEnd="150dp"
     />
 
 
