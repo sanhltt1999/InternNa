@@ -3,6 +3,10 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/study android/InternNa/appchat/src/main/res/drawable/background_input_mess.xml" value="0.124" />
+        <entry key="..\:/study android/InternNa/appchat/src/main/res/drawable/bg_avt.xml" value="0.124" />
+        <entry key="..\:/study android/InternNa/appchat/src/main/res/drawable/bg_send_mess.xml" value="0.124" />
+        <entry key="..\:/study android/InternNa/appchat/src/main/res/drawable/ic_send.xml" value="0.124" />
         <entry key="..\:/study android/InternNa/appchat/src/main/res/drawable/recieve_message.xml" value="0.1525" />
         <entry key="..\:/study android/InternNa/appchat/src/main/res/layout/activity_main.xml" value="0.22826086956521738" />
         <entry key="..\:/study android/InternNa/appchat/src/main/res/layout/item_recieve.xml" value="0.22826086956521738" />

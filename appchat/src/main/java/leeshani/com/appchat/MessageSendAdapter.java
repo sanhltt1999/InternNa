@@ -13,8 +13,8 @@ import java.util.List;
 
 public class MessageSendAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     List<Message> messages = new ArrayList<>();
-    private static int TYPE_MESSAGE_SEND = 0;
-    private static int TYPE_MESSAGE_RECEIVE = 1;
+    final private static int TYPE_MESSAGE_SEND = 0;
+    final private static int TYPE_MESSAGE_RECEIVE = 1;
 
     public void setData(List<Message> messages) {
         this.messages = messages;
@@ -24,29 +24,32 @@ public class MessageSendAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        if (TYPE_MESSAGE_SEND == viewType) {
-            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_send, parent, false);
-            return new MessageSendViewHolder(view);
-        } else if (TYPE_MESSAGE_RECEIVE == viewType) {
-            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_recieve, parent, false);
-            return new MessageReceiveViewHolder(view);
+        switch (viewType){
+            case TYPE_MESSAGE_SEND:
+                View viewSend = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_send, parent, false);
+                return new MessageSendViewHolder(viewSend);
+            case TYPE_MESSAGE_RECEIVE:
+                View viewReceive  = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_recieve, parent, false);
+                return new MessageReceiveViewHolder(viewReceive);
+            default:
+                View viewDefault  = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_recieve, parent, false);
+                return new MessageReceiveViewHolder(viewDefault);
         }
-        return null;
     }
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         Message message = messages.get(position);
-
-        if (TYPE_MESSAGE_SEND == holder.getItemViewType()) {
-            MessageSendViewHolder messageSendViewHolder = (MessageSendViewHolder) holder;
-            messageSendViewHolder.tvMessageSend.setText(message.getMessage());
-
-        } else if (TYPE_MESSAGE_RECEIVE == holder.getItemViewType()) {
-            MessageReceiveViewHolder messageReceiveViewHolder = (MessageReceiveViewHolder) holder;
-            messageReceiveViewHolder.tvMessageReceive.setText(message.getMessage());
+        switch (holder.getItemViewType()){
+            case TYPE_MESSAGE_SEND:
+                MessageSendViewHolder messageSendViewHolder = (MessageSendViewHolder) holder;
+                messageSendViewHolder.tvMessageSend.setText(message.getMessage());
+                break;
+            case TYPE_MESSAGE_RECEIVE:
+                MessageReceiveViewHolder messageReceiveViewHolder = (MessageReceiveViewHolder) holder;
+                messageReceiveViewHolder.tvMessageReceive.setText(message.getMessage());
+                break;
         }
-
     }
 
     @Override

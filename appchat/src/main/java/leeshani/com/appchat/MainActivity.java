@@ -28,7 +28,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        AnhXa();
+        InitUI();
 
         setToolbar();
 
@@ -40,13 +40,11 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.setAdapter(messageSendAdapter);
         setSendMessage();
-
-
     }
 
     @Override
     public boolean onCreateOptionsMenu(@NonNull Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_setting,menu);
+        getMenuInflater().inflate(R.menu.menu_setting, menu);
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -55,33 +53,30 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 String inputMessage = etInputChat.getText().toString().trim();
-                if(inputMessage.isEmpty()) return;
-                messages.add(new Message(inputMessage,true));
-                recyclerView.scrollToPosition(messages.size()-1);
+                if (inputMessage.isEmpty()) return;
+                messages.add(new Message(inputMessage, true));
                 etInputChat.setText(null);
                 String receiveMessages = "hihi";
-                messages.add(new Message(receiveMessages,false));
+                messages.add(new Message(receiveMessages, false));
                 messageSendAdapter.notifyDataSetChanged();
-                recyclerView.scrollToPosition(messages.size()-1);
-
+                recyclerView.scrollToPosition(messages.size() - 1);
             }
         });
 
     }
 
-    private void AnhXa() {
-        toolbar =  findViewById(R.id.toolbar);
+    private void InitUI() {
+        toolbar = findViewById(R.id.toolbar);
         recyclerView = findViewById(R.id.rvChat);
         ivSend = findViewById(R.id.send);
         etInputChat = findViewById(R.id.inputMessage);
     }
 
-    private void setToolbar(){
+    private void setToolbar() {
         setSupportActionBar(toolbar);
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_back);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
-    
 
 }

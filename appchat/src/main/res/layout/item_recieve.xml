@@ -27,8 +27,7 @@
         app:layout_constraintTop_toTopOf="parent"
         android:textSize="13sp"
         app:layout_constraintWidth_percent="0.8"
-        android:maxWidth="300dp"
-    />
+        android:maxWidth="300dp" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
