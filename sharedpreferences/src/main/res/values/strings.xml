@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">Shared Preferences</string>
+    <string name="edit_profile">Edit Profile</string>
+    <string name="save">SAVE</string>
+    <string name="username">Username</string>
+    <string name="email">Email</string>
+    <string name="phone">Phone</string>
+    <string name="gender">Gender</string>
+    <string name="date_of_birth">Date of birth</string>
+    <string name="choose_file_from"> Choose picture from</string>
+    <string name="take_photo">Take photo</string>
+    <string name="my_images_gallery">My images gallery</string>
+</resources>

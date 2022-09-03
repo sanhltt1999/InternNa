@@ -6,12 +6,26 @@
         <entry key="..\:/study android/InternNa/appchat/src/main/res/drawable/background_input_mess.xml" value="0.124" />
         <entry key="..\:/study android/InternNa/appchat/src/main/res/drawable/bg_avt.xml" value="0.124" />
         <entry key="..\:/study android/InternNa/appchat/src/main/res/drawable/bg_send_mess.xml" value="0.124" />
+        <entry key="..\:/study android/InternNa/appchat/src/main/res/drawable/ic_back.xml" value="0.124" />
+        <entry key="..\:/study android/InternNa/appchat/src/main/res/drawable/ic_back_icon.xml" value="0.197" />
+        <entry key="..\:/study android/InternNa/appchat/src/main/res/drawable/ic_launcher_background.xml" value="0.124" />
         <entry key="..\:/study android/InternNa/appchat/src/main/res/drawable/ic_send.xml" value="0.124" />
         <entry key="..\:/study android/InternNa/appchat/src/main/res/drawable/recieve_message.xml" value="0.1525" />
         <entry key="..\:/study android/InternNa/appchat/src/main/res/layout/activity_main.xml" value="0.22826086956521738" />
         <entry key="..\:/study android/InternNa/appchat/src/main/res/layout/item_recieve.xml" value="0.22826086956521738" />
         <entry key="..\:/study android/InternNa/appchat/src/main/res/layout/item_send.xml" value="0.22826086956521738" />
         <entry key="..\:/study android/InternNa/appchat/src/main/res/menu/menu_setting.xml" value="0.1" />
+        <entry key="..\:/study android/InternNa/sharedpreferences/src/main/res/drawable/bg_button_dialog.xml" value="0.124" />
+        <entry key="..\:/study android/InternNa/sharedpreferences/src/main/res/drawable/bg_edt.xml" value="0.1665" />
+        <entry key="..\:/study android/InternNa/sharedpreferences/src/main/res/drawable/bg_image.xml" value="0.1665" />
+        <entry key="..\:/study android/InternNa/sharedpreferences/src/main/res/drawable/bg_image_take_photo.xml" value="0.1665" />
+        <entry key="..\:/study android/InternNa/sharedpreferences/src/main/res/drawable/ic_back_icon.xml" value="0.197" />
+        <entry key="..\:/study android/InternNa/sharedpreferences/src/main/res/drawable/ic_camera.xml" value="0.1665" />
+        <entry key="..\:/study android/InternNa/sharedpreferences/src/main/res/drawable/save_button.xml" value="0.123" />
+        <entry key="..\:/study android/InternNa/sharedpreferences/src/main/res/layout/activity_main.xml" value="0.25416666666666665" />
+        <entry key="..\:/study android/InternNa/sharedpreferences/src/main/res/layout/dialog_choose_file.xml" value="0.2" />
+        <entry key="..\:/study android/InternNa/sharedpreferences/src/main/res/layout/edit_profile.xml" value="0.2" />
+        <entry key="..\:/study android/InternNa/sharedpreferences/src/main/res/layout/item_input_infor.xml" value="0.11197916666666667" />
       </map>
     </option>
   </component>
