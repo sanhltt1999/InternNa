@@ -169,7 +169,7 @@ public class EdtProfile extends AppCompatActivity {
 
     private void setToolbar() {
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        Objects.requireNonNull(getSupportActionBar()).setDisplayShowTitleEnabled(false);
     }
 
     private void InitUI() {
