@@ -25,6 +25,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.appcompat.widget.Toolbar;
+
 import com.bumptech.glide.Glide;
 
 import java.io.ByteArrayOutputStream;
@@ -33,7 +34,7 @@ import java.util.Calendar;
 import java.util.Objects;
 
 
-public class EdtProfile extends AppCompatActivity {
+public class EdtProfileActivity extends AppCompatActivity {
     private Toolbar toolbar;
     private TextView tvSave;
     private ImageButton ibTakePhoto;
@@ -67,20 +68,21 @@ public class EdtProfile extends AppCompatActivity {
         tvSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                SharedPreferences.Editor editor = sharedPreferences.edit();
                 String username = etUsername.getText().toString().trim();
                 String email = etEmail.getText().toString().trim();
                 String gender = etGender.getText().toString().trim();
                 String phone = etPhone.getText().toString().trim();
                 String date = etDateOfBirth.getText().toString();
-                String uriImage = ImageURI.toString();
-
-                SharedPreferences.Editor editor = sharedPreferences.edit();
+                if (ImageURI!= null) {
+                    String uriImage = ImageURI.toString();
+                    editor.putString("image", uriImage);
+                }
                 editor.putString("username", username);
                 editor.putString("email", email);
                 editor.putString("gender", gender);
                 editor.putString("phone", phone);
                 editor.putString("date of birth", date);
-                editor.putString("image", uriImage);
                 editor.apply();
             }
         });
@@ -90,7 +92,7 @@ public class EdtProfile extends AppCompatActivity {
         ibTakePhoto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                final Dialog dialog = new Dialog(EdtProfile.this);
+                final Dialog dialog = new Dialog(EdtProfileActivity.this);
                 dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
                 dialog.setContentView(R.layout.dialog_choose_file);
 
@@ -154,7 +156,7 @@ public class EdtProfile extends AppCompatActivity {
                 int date = calendar.get(Calendar.DATE);
                 int month = calendar.get(Calendar.MONTH);
                 int year = calendar.get(Calendar.YEAR);
-                DatePickerDialog datePickerDialog = new DatePickerDialog(EdtProfile.this, new DatePickerDialog.OnDateSetListener() {
+                DatePickerDialog datePickerDialog = new DatePickerDialog(EdtProfileActivity.this, new DatePickerDialog.OnDateSetListener() {
                     @Override
                     public void onDateSet(DatePicker datePicker, int i, int i1, int i2) {
                         calendar.set(i, i1, i2);

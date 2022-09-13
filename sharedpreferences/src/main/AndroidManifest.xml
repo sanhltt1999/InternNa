@@ -10,7 +10,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.InternNa">
         <activity
-            android:name=".EdtProfile"
+            android:name=".EdtProfileActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
