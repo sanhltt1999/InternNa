@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="10dp"
+    android:layout_marginEnd="10dp"
+    android:layout_marginBottom="10dp"
+    android:background="@drawable/background_edittext"
+    android:padding="10dp">
+
+    <TextView
+        android:id="@+id/tvStudentName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:textColor="@color/black"
+        android:textSize="15sp" />
+
+    <TextView
+        android:id="@+id/tvBirthday"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tvStudentName"
+        android:layout_marginTop="10dp"
+        android:text="@string/birthday_student_item"
+        android:textColor="#B6B3B3"
+        android:textSize="13sp" />
+
+    <TextView
+        android:id="@+id/tvDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tvStudentName"
+        android:layout_marginTop="10dp"
+        android:layout_toEndOf="@+id/tvBirthday"
+        android:textColor="#B6B3B3"
+        android:textSize="13sp" />
+
+    <TextView
+        android:id="@+id/tvClassName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:textColor="@color/black"
+        android:textSize="13sp" />
+
+    <TextView
+        android:id="@+id/tvClassStudentItem"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toStartOf="@+id/tvClassName"
+        android:text="@string/class_name_student_item"
+        android:textColor="@color/black"
+        android:layout_marginEnd="2dp"
+        android:textSize="13sp" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btDelete"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tvClassName"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="10dp"
+        android:text="@string/delete"
+        android:textAllCaps="false"
+        android:textColor="@color/black"
+        android:textSize="11sp" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btEdit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tvClassName"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_toStartOf="@+id/btDelete"
+        android:text="@string/edit"
+        android:textAllCaps="false"
+        android:textColor="@color/black"
+        android:textSize="11sp" />
+</RelativeLayout>
