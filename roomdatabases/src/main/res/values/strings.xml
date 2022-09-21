@@ -20,4 +20,8 @@
     <string name="apply">Apply</string>
     <string name="choose_tha_date">Choose tha date</string>
     <string name="edit_student">Edit student</string>
+    <string name="confirm_delete">Confirm delete</string>
+    <string name="are_you_sure">Are you sure?</string>
+    <string name="no">No</string>
+    <string name="yes">Yes</string>
 </resources>

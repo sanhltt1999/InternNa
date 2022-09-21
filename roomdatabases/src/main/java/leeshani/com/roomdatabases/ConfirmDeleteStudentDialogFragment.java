@@ -1,15 +1,21 @@
 package leeshani.com.roomdatabases;
 
-import android.app.AlertDialog;
-import android.app.Dialog;
-import android.content.DialogInterface;
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 
 public class ConfirmDeleteStudentDialogFragment extends DialogFragment {
+    TextView tvTitle;
+    TextView tvMessage;
+    TextView tvAgree;
+    TextView tvNotAgree;
+    View view;
     OnListener listener;
 
     public ConfirmDeleteStudentDialogFragment() {
@@ -18,26 +24,34 @@ public class ConfirmDeleteStudentDialogFragment extends DialogFragment {
         this.listener = listener;
     }
 
-    @NonNull
+    @Nullable
     @Override
-    public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
-        AlertDialog.Builder confirmDeleteStudent = new AlertDialog.Builder(getActivity());
-        confirmDeleteStudent.setTitle("Delete Student");
-        confirmDeleteStudent.setMessage("Are you sure");
-        confirmDeleteStudent.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        view = inflater.inflate(R.layout.confirm_delete_student_dialog,null);
+        initUi(view);
+        tvAgree.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
+            public void onClick(View view) {
                 listener.ConfirmDelete();
             }
         });
-        confirmDeleteStudent.setNegativeButton("No", new DialogInterface.OnClickListener() {
+        tvNotAgree.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                dialogInterface.dismiss();
+            public void onClick(View view) {
+                dismiss();
             }
         });
-        return confirmDeleteStudent.create();
+
+        return view;
     }
+
+    private void initUi(View view){
+        tvTitle = view.findViewById(R.id.tv_title_confirm_delete);
+        tvMessage = view.findViewById(R.id.tv_message_dialog);
+        tvAgree = view.findViewById(R.id.tv_agree);
+        tvNotAgree = view.findViewById(R.id.tv_not_agree);
+    }
+
     public static String TAG = "ConfirmDelete";
     public interface OnListener{
         void ConfirmDelete();

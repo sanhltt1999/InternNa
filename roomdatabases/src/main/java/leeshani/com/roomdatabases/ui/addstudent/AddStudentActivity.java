@@ -14,7 +14,6 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Toast;
-
 import androidx.appcompat.widget.Toolbar;
 
 import java.text.SimpleDateFormat;
@@ -71,8 +70,6 @@ public class AddStudentActivity extends AppCompatActivity {
                 addStudent();
             }
         });
-
-
     }
 
     private void InitUI() {
@@ -102,7 +99,6 @@ public class AddStudentActivity extends AppCompatActivity {
                 int month = birthday.get(Calendar.MONTH);
                 int year = birthday.get(Calendar.YEAR);
                 DatePickerDialog datePickerDialog = new DatePickerDialog(AddStudentActivity.this, new DatePickerDialog.OnDateSetListener() {
-
                     @Override
                     public void onDateSet(DatePicker datePicker, int i, int i1, int i2) {
                         birthday.set(i, i1, i2);

@@ -3,8 +3,6 @@ package leeshani.com.roomdatabases.data.model;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
-import java.util.Date;
-
 @Entity(tableName = "class")
 public class ClassStudent {
 

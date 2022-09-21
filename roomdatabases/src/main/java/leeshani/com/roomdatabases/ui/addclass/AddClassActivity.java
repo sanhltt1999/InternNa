@@ -11,7 +11,6 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
-
 import androidx.appcompat.widget.Toolbar;
 
 import java.text.SimpleDateFormat;
@@ -22,9 +21,10 @@ import leeshani.com.roomdatabases.R;
 import leeshani.com.roomdatabases.data.db.StudentAndClassDatabase;
 import leeshani.com.roomdatabases.data.model.ClassStudent;
 
-
 public class AddClassActivity extends AppCompatActivity {
-    private EditText etClassName, etDateCreate, etTeacher;
+    private EditText etClassName;
+    private EditText etDateCreate;
+    private EditText etTeacher;
     private ImageView ivCalendar;
     private Button btAddClass;
     private Calendar dateCreate;
@@ -54,7 +54,6 @@ public class AddClassActivity extends AppCompatActivity {
                 addClass();
             }
         });
-
     }
 
     private void InitUI() {
@@ -117,7 +116,8 @@ public class AddClassActivity extends AppCompatActivity {
 
     private boolean checkExit(ClassStudent classStudent) {
 
-        List<ClassStudent> list = StudentAndClassDatabase.getInstance(AddClassActivity.this).classDAO().checkClass(classStudent.getName());
+        List<ClassStudent> list = StudentAndClassDatabase
+                .getInstance(AddClassActivity.this).classDAO().checkClass(classStudent.getName());
 
         return list != null && !list.isEmpty();
     }

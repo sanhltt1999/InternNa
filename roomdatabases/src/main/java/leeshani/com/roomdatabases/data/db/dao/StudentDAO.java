@@ -12,13 +12,14 @@ import leeshani.com.roomdatabases.data.model.Student;
 
 @Dao
 public interface StudentDAO {
+
     @Insert
     void insertUser(Student students);
 
     @Query("SELECT * FROM student")
     List<Student> getListStudent();
 
-    @Query("SELECT *FROM student where studentName= :studentName and date= :dateOfBirth")
+    @Query("SELECT *FROM student where studentName = :studentName and date = :dateOfBirth")
     List<Student> checkStudent(String studentName, String dateOfBirth);
 
     @Update

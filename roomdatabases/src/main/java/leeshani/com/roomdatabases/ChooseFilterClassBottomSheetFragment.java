@@ -1,19 +1,18 @@
 package leeshani.com.roomdatabases;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.NumberPicker;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
-
 
 public class ChooseFilterClassBottomSheetFragment extends BottomSheetDialogFragment {
 
@@ -47,9 +46,11 @@ public class ChooseFilterClassBottomSheetFragment extends BottomSheetDialogFragm
                 dismiss();
             }
         });
-
+        if(classStudents.length == 0){
+            Toast.makeText(getActivity(), "Add classes and students to show ", Toast.LENGTH_SHORT).show();
+        }else {
         npClass.setMinValue(0);
-        npClass.setMaxValue(classStudents.length - 1);
+        npClass.setMaxValue(classStudents.length-1);
         npClass.setDisplayedValues(classStudents);
 
         btnApply.setOnClickListener(new View.OnClickListener() {
@@ -57,9 +58,7 @@ public class ChooseFilterClassBottomSheetFragment extends BottomSheetDialogFragm
             public void onClick(View view) {
                 listener.ChooseClass(classStudents[npClass.getValue()]);
             }
-        });
-
-
+        });}
         return rootView;
     }
 

@@ -8,9 +8,9 @@ import java.util.List;
 
 import leeshani.com.roomdatabases.data.model.ClassStudent;
 
-
 @Dao
 public interface ClassDAO {
+
     @Insert
     void insertUser(ClassStudent classes);
 
@@ -19,6 +19,5 @@ public interface ClassDAO {
 
     @Query("SELECT * FROM class where name = :classname")
     List<ClassStudent> checkClass(String classname);
-
 
 }
