@@ -1,4 +1,4 @@
-package leeshani.com.roomdatabases.data.model;
+package leeshani.com.content_provider_sqllite.data.model;
 
 import java.io.Serializable;
 

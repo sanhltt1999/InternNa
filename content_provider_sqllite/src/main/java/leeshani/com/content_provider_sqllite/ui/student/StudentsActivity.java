@@ -1,4 +1,4 @@
-package leeshani.com.roomdatabases.ui.student;
+package leeshani.com.content_provider_sqllite.ui.student;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -18,16 +18,16 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
 
-import leeshani.com.roomdatabases.ChooseFilterClassBottomSheetFragment;
-import leeshani.com.roomdatabases.ConfirmDeleteStudentDialogFragment;
-import leeshani.com.roomdatabases.data.SchoolDatabase;
-import leeshani.com.roomdatabases.data.model.StudentData;
-import leeshani.com.roomdatabases.ui.addstudent.AddStudentActivity;
-import leeshani.com.roomdatabases.data.model.ClassStudent;
-import leeshani.com.roomdatabases.ui.editstudent.EditStudentActivity;
-import leeshani.com.roomdatabases.R;
-import leeshani.com.roomdatabases.data.model.Student;
-import leeshani.com.roomdatabases.ui.student.adapter.StudentAdapter;
+import leeshani.com.content_provider_sqllite.ChooseFilterClassBottomSheetFragment;
+import leeshani.com.content_provider_sqllite.ConfirmDeleteStudentDialogFragment;
+import leeshani.com.content_provider_sqllite.R;
+import leeshani.com.content_provider_sqllite.data.SchoolDatabase;
+import leeshani.com.content_provider_sqllite.data.model.StudentData;
+import leeshani.com.content_provider_sqllite.ui.addstudent.AddStudentActivity;
+import leeshani.com.content_provider_sqllite.data.model.ClassStudent;
+import leeshani.com.content_provider_sqllite.ui.editstudent.EditStudentActivity;
+import leeshani.com.content_provider_sqllite.data.model.Student;
+import leeshani.com.content_provider_sqllite.ui.student.adapter.StudentAdapter;
 
 public class StudentsActivity extends AppCompatActivity {
     private static final int REQUEST_CODE_STUDENT = 83;
@@ -113,8 +113,7 @@ public class StudentsActivity extends AppCompatActivity {
             @Override
             public void ChooseClass(String className) {
                 List<Student> studentInClass = new ArrayList<>();
-                students = StudentAndClassDatabase.getInstance(StudentsActivity.this)
-                        .studentDAO().getListStudent();
+                students = getListStudent();
 
                 if (students.size() == 0) {
                     Toast.makeText(StudentsActivity.this, "Please add student in chosen class", Toast.LENGTH_SHORT).show();
@@ -157,8 +156,7 @@ public class StudentsActivity extends AppCompatActivity {
         if (requestCode == REQUEST_CODE_STUDENT && resultCode == RESULT_OK) {
             List<Student> studentInClass = new ArrayList<>();
             String currentClass = btnChooseClass.getText().toString();
-            students = StudentAndClassDatabase.getInstance(StudentsActivity.this)
-                    .studentDAO().getListStudent();
+            students = getListStudent();
             for (int i = 0; i < students.size(); i++) {
                 String nameClass = students.get(i).getClasses();
                 if (nameClass.equals(currentClass)) {
@@ -176,11 +174,9 @@ public class StudentsActivity extends AppCompatActivity {
         confirmDeleteDialog.setOnListener(new ConfirmDeleteStudentDialogFragment.OnListener() {
             @Override
             public void ConfirmDelete() {
-                StudentAndClassDatabase.getInstance(StudentsActivity.this).studentDAO().deleteStudent(student);
                 List<Student> studentInClass = new ArrayList<>();
                 String currentClass = btnChooseClass.getText().toString();
-                students = StudentAndClassDatabase.getInstance(StudentsActivity.this)
-                        .studentDAO().getListStudent();
+                students = getListStudent();
                 for (int j = 0; j < students.size(); j++) {
                     String nameClass = students.get(j).getClasses();
                     if (nameClass.equals(currentClass)) {
@@ -199,13 +195,27 @@ public class StudentsActivity extends AppCompatActivity {
         database = new SchoolDatabase(this);
         Cursor cursor = database.readAllTable();
         if (cursor.getCount() == 0){
-            Toast.makeText(this, "Please add new class", Toast.LENGTH_SHORT).show();
+            return getNameClass;
         }else {
             while (cursor.moveToNext()){
                 getNameClass.add(cursor.getString(StudentData.STUDENT_NAME.getValue()));
             }
+            return getNameClass;
         }
-        return getNameClass;
+    }
+    private List<Student> getListStudent(){
+        List<Student> list = new ArrayList<>();
+        database =  new SchoolDatabase(this);
+        Cursor cursor =  database.readAllTable();
+        if (cursor.getCount()==0){
+            Toast.makeText(this, "Please add students", Toast.LENGTH_SHORT).show();
+        }else{
+            while (cursor.moveToNext()){
+                Student student = new Student(cursor.getString(1), cursor.getString(2), cursor.getString(3));
+                list.add(student);
+            }
+        }
+        return list;
     }
 
 }

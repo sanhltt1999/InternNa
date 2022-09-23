@@ -1,4 +1,4 @@
-package leeshani.com.roomdatabases.ui.student.adapter;
+package leeshani.com.content_provider_sqllite.ui.student.adapter;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,8 +11,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
 
-import leeshani.com.roomdatabases.R;
-import leeshani.com.roomdatabases.data.model.Student;
+import leeshani.com.content_provider_sqllite.R;
+import leeshani.com.content_provider_sqllite.data.model.Student;
 
 public class StudentAdapter extends RecyclerView.Adapter<StudentAdapter.StudentViewHolder> {
     private List<Student> students;

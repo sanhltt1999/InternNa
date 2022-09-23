@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="leeshani.com.roomdatabases">
+    package="leeshani.com.content_provider_sqllite">
 
     <application
         android:allowBackup="true"
@@ -10,16 +10,16 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.InternNa">
         <activity
-            android:name=".ui.editstudent.EditStudentActivity"
+            android:name="leeshani.com.content_provider_sqllite.ui.editstudent.EditStudentActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.addstudent.AddStudentActivity"
+            android:name="leeshani.com.content_provider_sqllite.ui.addstudent.AddStudentActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.addclass.AddClassActivity"
+            android:name="leeshani.com.content_provider_sqllite.ui.addclass.AddClassActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.student.StudentsActivity"
+            android:name="leeshani.com.content_provider_sqllite.ui.student.StudentsActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

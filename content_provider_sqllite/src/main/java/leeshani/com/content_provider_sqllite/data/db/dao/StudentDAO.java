@@ -1,4 +1,4 @@
-package leeshani.com.roomdatabases.data.db.dao;
+package leeshani.com.content_provider_sqllite.data.db.dao;
 
 import androidx.room.Dao;
 import androidx.room.Delete;
@@ -8,7 +8,7 @@ import androidx.room.Update;
 
 import java.util.List;
 
-import leeshani.com.roomdatabases.data.model.Student;
+import leeshani.com.content_provider_sqllite.data.model.Student;
 
 @Dao
 public interface StudentDAO {

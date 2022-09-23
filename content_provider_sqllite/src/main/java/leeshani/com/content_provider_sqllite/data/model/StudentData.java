@@ -1,4 +1,4 @@
-package leeshani.com.roomdatabases.data.model;
+package leeshani.com.content_provider_sqllite.data.model;
 
 public enum StudentData {
     ID(0), STUDENT_NAME(1), DATE(2), CLASSES(3);

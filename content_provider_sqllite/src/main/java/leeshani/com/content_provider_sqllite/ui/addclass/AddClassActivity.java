@@ -1,4 +1,4 @@
-package leeshani.com.roomdatabases.ui.addclass;
+package leeshani.com.content_provider_sqllite.ui.addclass;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -17,9 +17,9 @@ import androidx.appcompat.widget.Toolbar;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
-import leeshani.com.roomdatabases.R;
-import leeshani.com.roomdatabases.data.SchoolDatabase;
-import leeshani.com.roomdatabases.data.model.ClassStudent;
+import leeshani.com.content_provider_sqllite.R;
+import leeshani.com.content_provider_sqllite.data.SchoolDatabase;
+import leeshani.com.content_provider_sqllite.data.model.ClassStudent;
 
 
 public class AddClassActivity extends AppCompatActivity {
@@ -105,10 +105,7 @@ public class AddClassActivity extends AppCompatActivity {
             return;
         }
         ClassStudent classStudent = new ClassStudent(nameClass, dateCreate, teacher);
-//        if (checkExit(classStudent)) {
-//            Toast.makeText(this, "Class exited", Toast.LENGTH_SHORT).show();
-//            return;
-//        }
+
         database = new SchoolDatabase(this);
         database.addClass(classStudent);
         etTeacher.setText(null);

@@ -1,4 +1,4 @@
-package leeshani.com.roomdatabases.ui.addstudent;
+package leeshani.com.content_provider_sqllite.ui.addstudent;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -21,13 +21,11 @@ import androidx.appcompat.widget.Toolbar;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.List;
 
-import leeshani.com.roomdatabases.R;
-import leeshani.com.roomdatabases.data.SchoolDatabase;
-import leeshani.com.roomdatabases.data.model.Student;
-import leeshani.com.roomdatabases.data.model.StudentData;
-import leeshani.com.roomdatabases.ui.addclass.AddClassActivity;
+import leeshani.com.content_provider_sqllite.R;
+import leeshani.com.content_provider_sqllite.data.SchoolDatabase;
+import leeshani.com.content_provider_sqllite.data.model.Student;
+import leeshani.com.content_provider_sqllite.ui.addclass.AddClassActivity;
 
 public class AddStudentActivity extends AppCompatActivity {
     private Toolbar toolbar;
@@ -44,6 +42,8 @@ public class AddStudentActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_student);
 
+        database = new SchoolDatabase(AddStudentActivity.this);
+
         InitUI();
 
         setToolbar();
@@ -56,6 +56,7 @@ public class AddStudentActivity extends AppCompatActivity {
         });
 
         setBirthday();
+
 
         setSpinner();
 
@@ -116,8 +117,8 @@ public class AddStudentActivity extends AppCompatActivity {
     }
 
     private void setSpinner() {
-        ArrayList<String> arClasses = getClassName();
-
+        ArrayList<String> arClasses = new ArrayList<>();
+        arClasses = getClassName();
         arrayAdapter = new ArrayAdapter(this, android.R.layout.simple_spinner_item, arClasses);
         arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spClass.setAdapter(arrayAdapter);
@@ -136,7 +137,6 @@ public class AddStudentActivity extends AppCompatActivity {
         if (TextUtils.isEmpty(strStudentName) || TextUtils.isEmpty(strBirthday) || TextUtils.isEmpty(strClass)) {
             Toast.makeText(AddStudentActivity.this, "Please enter information", Toast.LENGTH_LONG).show();
         } else {
-
             Student student = new Student(strStudentName, strBirthday, strClass);
 
            database = new SchoolDatabase(this);
@@ -148,13 +148,12 @@ public class AddStudentActivity extends AppCompatActivity {
 
     private ArrayList<String> getClassName(){
         ArrayList<String> getNameClass =  new ArrayList<>();
-        database = new SchoolDatabase(this);
         Cursor cursor = database.readAllTable();
         if (cursor.getCount() == 0){
             Toast.makeText(this, "Please add new class", Toast.LENGTH_SHORT).show();
         }else {
             while (cursor.moveToNext()){
-                getNameClass.add(cursor.getString(StudentData.STUDENT_NAME.getValue()));
+                getNameClass.add(cursor.getString(1));
             }
         }
         return getNameClass;

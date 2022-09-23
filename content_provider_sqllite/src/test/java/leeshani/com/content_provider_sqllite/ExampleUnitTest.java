@@ -1,4 +1,4 @@
-package leeshani.com.roomdatabases;
+package leeshani.com.content_provider_sqllite;
 
 import org.junit.Test;
 
