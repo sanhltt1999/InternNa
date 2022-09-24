@@ -24,4 +24,7 @@
     <string name="are_you_sure">Are you sure?</string>
     <string name="no">No</string>
     <string name="yes">Yes</string>
+    <string name="take_photo">Take photo</string>
+    <string name="choose_file">Choose file</string>
+    <string name="choose_the_date">Choose the date</string>
 </resources>

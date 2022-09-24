@@ -32,7 +32,7 @@ public class ConfirmDeleteStudentDialogFragment extends DialogFragment {
         tvAgree.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                listener.ConfirmDelete();
+                listener.confirmDelete();
             }
         });
         tvNotAgree.setOnClickListener(new View.OnClickListener() {
@@ -52,8 +52,8 @@ public class ConfirmDeleteStudentDialogFragment extends DialogFragment {
         tvNotAgree = view.findViewById(R.id.tv_not_agree);
     }
 
-    public static String TAG = "ConfirmDelete";
+    public static final String TAG = "ConfirmDelete";
     public interface OnListener{
-        void ConfirmDelete();
+        void confirmDelete();
     }
 }

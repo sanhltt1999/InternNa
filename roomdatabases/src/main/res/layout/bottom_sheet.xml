@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:background="@drawable/bottom_sheet_bg">
+    android:background="@android:color/transparent">
 
     <TextView
         android:id="@+id/tvBsName"
@@ -20,12 +20,12 @@
         android:id="@+id/ivCloseBs"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
         android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
         android:layout_marginTop="10dp"
         android:layout_marginEnd="15dp"
-        android:src="@drawable/ic_close_black"
-        android:contentDescription="@null" />
+        android:contentDescription="@null"
+        android:src="@drawable/ic_close_black" />
 
     <NumberPicker
         android:id="@+id/npClass"

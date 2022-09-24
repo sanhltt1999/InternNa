@@ -49,13 +49,13 @@ public class StudentAdapter extends RecyclerView.Adapter<StudentAdapter.StudentV
         holder.tvStudentName.setText(student.getStudentName());
         holder.tvClassName.setText(student.getClasses());
         holder.tvDate.setText(student.getDate());
-        holder.btEdit.setOnClickListener(new View.OnClickListener() {
+        holder.tvEdit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 iClickStudent.editStudent(student);
             }
         });
-        holder.btDelete.setOnClickListener(new View.OnClickListener() {
+        holder.tvDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 iClickStudent.deleteStudent(student);
@@ -70,15 +70,18 @@ public class StudentAdapter extends RecyclerView.Adapter<StudentAdapter.StudentV
 
     public class StudentViewHolder extends RecyclerView.ViewHolder {
 
-        private TextView tvStudentName, tvDate, tvClassName;
-        private Button btDelete, btEdit;
+        private TextView tvStudentName;
+        private TextView tvDate;
+        private TextView tvClassName;
+        private TextView tvDelete;
+        private TextView tvEdit;
 
         public StudentViewHolder(@NonNull View itemView) {
             super(itemView);
             tvClassName = itemView.findViewById(R.id.tvClassName);
             tvDate = itemView.findViewById(R.id.tvDate);
-            btDelete = itemView.findViewById(R.id.btDelete);
-            btEdit = itemView.findViewById(R.id.btEdit);
+            tvDelete = itemView.findViewById(R.id.tvDelete);
+            tvEdit = itemView.findViewById(R.id.tvEdit);
             tvStudentName = itemView.findViewById(R.id.tvStudentName);
         }
     }

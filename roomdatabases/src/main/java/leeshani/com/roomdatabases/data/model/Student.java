@@ -1,5 +1,7 @@
 package leeshani.com.roomdatabases.data.model;
 
+import android.net.Uri;
+
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
@@ -13,11 +15,13 @@ public class Student implements Serializable {
     private String studentName;
     private String date;
     private String classes;
+    private String imageURI;
 
-    public Student(String studentName, String date, String classes) {
+    public Student(String studentName, String date, String classes, String imageURI) {
         this.studentName = studentName;
         this.date = date;
         this.classes = classes;
+        this.imageURI = imageURI;
     }
 
     public int getId() {
@@ -50,5 +54,13 @@ public class Student implements Serializable {
 
     public void setClasses(String classes) {
         this.classes = classes;
+    }
+
+    public String getImageURI() {
+        return imageURI;
+    }
+
+    public void setImageURI(String imageURI) {
+        this.imageURI = imageURI;
     }
 }

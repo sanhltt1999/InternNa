@@ -21,7 +21,7 @@
     </androidx.appcompat.widget.Toolbar>
 
     <com.google.android.material.imageview.ShapeableImageView
-        android:id="@+id/imStudent"
+        android:id="@+id/ivStudent"
         android:layout_width="120dp"
         android:layout_height="120dp"
         android:layout_below="@+id/AddStudentToolbar"
@@ -34,7 +34,7 @@
         android:id="@+id/name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/imStudent"
+        android:layout_below="@+id/ivStudent"
         android:layout_alignParentStart="true"
         android:layout_marginStart="20dp"
         android:layout_marginTop="20dp"
@@ -88,9 +88,11 @@
             android:layout_alignParentStart="true"
             android:layout_alignParentEnd="true"
             android:background="@drawable/background_edittext"
-            android:inputType="date"
+            android:focusable="false"
+            android:inputType="none"
             android:padding="10dp"
-            android:textSize="18sp" />
+            android:textSize="18sp"
+            android:hint="@string/choose_the_date"/>
 
         <ImageView
             android:id="@+id/ivCalendar"

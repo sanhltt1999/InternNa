@@ -2,10 +2,13 @@ package leeshani.com.roomdatabases.ui.addclass;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Activity;
 import android.app.DatePickerDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -20,6 +23,7 @@ import java.util.List;
 import leeshani.com.roomdatabases.R;
 import leeshani.com.roomdatabases.data.db.StudentAndClassDatabase;
 import leeshani.com.roomdatabases.data.model.ClassStudent;
+import leeshani.com.roomdatabases.ui.addstudent.AddStudentActivity;
 
 public class AddClassActivity extends AppCompatActivity {
     private EditText etClassName;
@@ -29,6 +33,7 @@ public class AddClassActivity extends AppCompatActivity {
     private Button btAddClass;
     private Calendar dateCreate;
     private Toolbar toolbar;
+    private static final int UPDATE_SPINNER = 113;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,7 +47,7 @@ public class AddClassActivity extends AppCompatActivity {
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                onBackPressed();
+                onBack();
             }
         });
 
@@ -54,6 +59,7 @@ public class AddClassActivity extends AppCompatActivity {
                 addClass();
             }
         });
+        hideSoftKeyboard(this);
     }
 
     private void InitUI() {
@@ -132,4 +138,19 @@ public class AddClassActivity extends AppCompatActivity {
         thread.start();
     }
 
+    public void onBack() {
+        Intent intent = new Intent();
+        startActivityIfNeeded(intent, UPDATE_SPINNER);
+    }
+    public static void hideSoftKeyboard(Activity activity) {
+        InputMethodManager inputMethodManager =
+                (InputMethodManager) activity.getSystemService(
+                        Activity.INPUT_METHOD_SERVICE);
+        if(inputMethodManager.isAcceptingText()){
+            inputMethodManager.hideSoftInputFromWindow(
+                    activity.getCurrentFocus().getWindowToken(),
+                    0
+            );
+        }
+    }
 }

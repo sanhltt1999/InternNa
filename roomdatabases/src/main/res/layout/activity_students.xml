@@ -14,7 +14,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="horizontal"
-            android:weightSum="10">
+            android:weightSum="10"
+            android:padding="5dp">
 
             <TextView
                 android:id="@+id/tvTitleTbStudent"
@@ -22,8 +23,8 @@
                 android:layout_height="match_parent"
                 android:layout_weight="9"
                 android:text="@string/student"
-                android:textSize="18sp"
                 android:textColor="@color/black"
+                android:textSize="18sp"
                 android:textStyle="bold" />
 
             <ImageView
@@ -34,7 +35,7 @@
                 android:layout_marginEnd="10dp"
                 android:layout_weight="1"
                 android:contentDescription="@null"
-                android:src="@drawable/ic_add" />
+                android:src="@drawable/ic_plus" />
         </LinearLayout>
     </androidx.appcompat.widget.Toolbar>
 
@@ -44,17 +45,20 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/TbStudent"
         android:orientation="horizontal"
-        android:background="@drawable/background_button"
+        android:background="#F3F3F3"
         android:weightSum="10"
         android:layout_marginTop="20dp">
 
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/btChooseClass"
+        <TextView
+            android:padding="10dp"
+            android:id="@+id/tvChooseClass"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
+            android:layout_gravity="center"
             android:layout_weight="9.5"
+            android:textColor="@color/black"
             android:text="@string/all"
-            android:textAllCaps="false" />
+            android:textSize="18sp" />
 
         <TextView
             android:layout_gravity="center"

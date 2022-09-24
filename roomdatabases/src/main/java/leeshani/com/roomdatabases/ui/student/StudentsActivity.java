@@ -29,10 +29,11 @@ import leeshani.com.roomdatabases.ui.student.adapter.StudentAdapter;
 
 public class StudentsActivity extends AppCompatActivity {
     private static final int REQUEST_CODE_STUDENT = 83;
+    private static final int UPDATE_STUDENT_LIST = 111;
     private Toolbar tbStudent;
     private ImageView imAddStudent;
     private RecyclerView rvStudent;
-    private Button btnChooseClass;
+    private TextView tvChooseClass;
     private TextView tvStudentTotal;
 
     private StudentAdapter studentAdapter;
@@ -59,14 +60,17 @@ public class StudentsActivity extends AppCompatActivity {
                 clickDeleteStudent(student);
             }
         });
-        students = new ArrayList<>();
+
+        students = StudentAndClassDatabase.getInstance(StudentsActivity.this)
+                .studentDAO().getListStudent();
+        tvStudentTotal.setText("" +students.size());
         studentAdapter.setData(students);
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         rvStudent.setLayoutManager(linearLayoutManager);
         rvStudent.setAdapter(studentAdapter);
 
-        btnChooseClass.setOnClickListener(new View.OnClickListener() {
+        tvChooseClass.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 openBottomSheetDialog();
@@ -92,7 +96,7 @@ public class StudentsActivity extends AppCompatActivity {
         tbStudent = findViewById(R.id.TbStudent);
         imAddStudent = findViewById(R.id.imAdd);
         rvStudent = findViewById(R.id.rvStudent);
-        btnChooseClass = findViewById(R.id.btChooseClass);
+        tvChooseClass = findViewById(R.id.tvChooseClass);
         tvStudentTotal = findViewById(R.id.tvStudentTotal);
     }
 
@@ -133,7 +137,7 @@ public class StudentsActivity extends AppCompatActivity {
                     chooseFilterClassBottomSheetDialog.dismiss();
                     return;
                 }
-                btnChooseClass.setText(className);
+                tvChooseClass.setText(className);
                 tvStudentTotal.setText("" + studentInClass.size());
                 studentAdapter.setData(studentInClass);
                 chooseFilterClassBottomSheetDialog.dismiss();
@@ -157,7 +161,7 @@ public class StudentsActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_CODE_STUDENT && resultCode == RESULT_OK) {
             List<Student> studentInClass = new ArrayList<>();
-            String currentClass = btnChooseClass.getText().toString();
+            String currentClass = tvChooseClass.getText().toString();
             students = StudentAndClassDatabase.getInstance(StudentsActivity.this)
                     .studentDAO().getListStudent();
             for (int i = 0; i < students.size(); i++) {
@@ -170,16 +174,23 @@ public class StudentsActivity extends AppCompatActivity {
             tvStudentTotal.setText("" + studentInClass.size());
             studentAdapter.setData(studentInClass);
         }
+        if(requestCode == UPDATE_STUDENT_LIST && resultCode == RESULT_OK){
+            students = StudentAndClassDatabase.getInstance(StudentsActivity.this)
+                    .studentDAO().getListStudent();
+
+            studentAdapter.setData(students);
+
+        }
     }
 
     private void clickDeleteStudent(Student student) {
         ConfirmDeleteStudentDialogFragment confirmDeleteDialog = new ConfirmDeleteStudentDialogFragment();
         confirmDeleteDialog.setOnListener(new ConfirmDeleteStudentDialogFragment.OnListener() {
             @Override
-            public void ConfirmDelete() {
+            public void confirmDelete() {
                 StudentAndClassDatabase.getInstance(StudentsActivity.this).studentDAO().deleteStudent(student);
                 List<Student> studentInClass = new ArrayList<>();
-                String currentClass = btnChooseClass.getText().toString();
+                String currentClass = tvChooseClass.getText().toString();
                 students = StudentAndClassDatabase.getInstance(StudentsActivity.this)
                         .studentDAO().getListStudent();
                 for (int j = 0; j < students.size(); j++) {
