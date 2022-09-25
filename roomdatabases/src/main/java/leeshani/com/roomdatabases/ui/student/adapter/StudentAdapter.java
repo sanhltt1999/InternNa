@@ -15,7 +15,7 @@ import leeshani.com.roomdatabases.data.model.Student;
 
 public class StudentAdapter extends RecyclerView.Adapter<StudentAdapter.StudentViewHolder> {
     private List<Student> students;
-    private IClickStudent iClickStudent;
+    private final IClickStudent iClickStudent;
 
     public interface IClickStudent {
         void editStudent(Student student);

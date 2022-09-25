@@ -101,7 +101,7 @@ public class EditStudentActivity extends AppCompatActivity {
                         birthday.set(i, i1, i2);
                         int distance = (int) ((birthday.getTimeInMillis() - Calendar.getInstance().getTimeInMillis())/(1000*60*60*24));
                         if (distance > 0){
-                            Toast.makeText(EditStudentActivity.this, "Please choose right the date", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(EditStudentActivity.this, R.string.choose_right_date, Toast.LENGTH_SHORT).show();
                         }else{
                             etDate.setText(simpleDateFormat.format(birthday.getTime()));}
                     }
@@ -127,13 +127,13 @@ public class EditStudentActivity extends AppCompatActivity {
         String strBirthday = etDate.getText().toString().trim();
         String strClass;
         if (spEditClass.getSelectedItem() == null) {
-            Toast.makeText(EditStudentActivity.this, "Please choose or add class", Toast.LENGTH_LONG).show();
+            Toast.makeText(EditStudentActivity.this, R.string.choose_add_class, Toast.LENGTH_LONG).show();
             return;
         } else {
             strClass = spEditClass.getSelectedItem().toString();
         }
         if (TextUtils.isEmpty(strStudentName) || TextUtils.isEmpty(strBirthday) || TextUtils.isEmpty(strClass)) {
-            Toast.makeText(EditStudentActivity.this, "Please enter information", Toast.LENGTH_LONG).show();
+            Toast.makeText(EditStudentActivity.this, R.string.add_information, Toast.LENGTH_LONG).show();
             return;
         }
         student.setStudentName(strStudentName);
@@ -142,7 +142,7 @@ public class EditStudentActivity extends AppCompatActivity {
 
         StudentAndClassDatabase.getInstance(EditStudentActivity.this).studentDAO().updateStudent(student);
 
-        Toast.makeText(this, "Update success", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, R.string.update_success, Toast.LENGTH_SHORT).show();
     }
     private void onBack(){
         Intent intentEditResult = new Intent();

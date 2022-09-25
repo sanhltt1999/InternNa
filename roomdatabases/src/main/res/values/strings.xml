@@ -27,4 +27,13 @@
     <string name="take_photo">Take photo</string>
     <string name="choose_file">Choose file</string>
     <string name="choose_the_date">Choose the date</string>
+    <string name="add_information">Please enter entire information</string>
+    <string name="add_photo">Add student photo</string>
+    <string name="choose_add_class">Please choose or add class</string>
+    <string name="student_exit">Student exited</string>
+    <string name="choose_right_date">Please choose right the date</string>
+    <string name="add_student_in_class">Please add student in chosen class</string>
+    <string name="add_class_student_to_show">\"Add classes and students to show \"</string>
+    <string name="class_exit">Class exited</string>
+    <string name="update_success">Update success</string>
 </resources>

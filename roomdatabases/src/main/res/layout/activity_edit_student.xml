@@ -6,150 +6,156 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".ui.addstudent.AddStudentActivity">
 
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/tbEditStudent"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/tbEditStudent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/edit_student"
+                android:textColor="@color/black"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+        </androidx.appcompat.widget.Toolbar>
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/imStudent"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:layout_below="@+id/tbEditStudent"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="20dp"
+            android:background="#E3DBDB"
+            app:shapeAppearanceOverlay="@style/circle" />
 
         <TextView
+            android:id="@+id/name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/edit_student"
+            android:layout_below="@+id/imStudent"
+            android:layout_alignParentStart="true"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="20dp"
+            android:text="@string/name"
             android:textColor="@color/black"
-            android:textSize="20sp"
-            android:textStyle="bold" />
-    </androidx.appcompat.widget.Toolbar>
-
-    <com.google.android.material.imageview.ShapeableImageView
-        android:id="@+id/imStudent"
-        android:layout_width="120dp"
-        android:layout_height="120dp"
-        android:layout_below="@+id/tbEditStudent"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="20dp"
-        android:background="#E3DBDB"
-        app:shapeAppearanceOverlay="@style/circle" />
-
-    <TextView
-        android:id="@+id/name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/imStudent"
-        android:layout_alignParentStart="true"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="20dp"
-        android:text="@string/name"
-        android:textColor="@color/black"
-        android:textSize="15sp" />
-
-    <EditText
-        android:id="@+id/edtEditNameStudent"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/name"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginEnd="20dp"
-        android:background="@drawable/background_edittext"
-        android:hint="@string/hint_name"
-        android:inputType="text"
-        android:padding="10dp"
-        android:textSize="18sp" />
-
-    <TextView
-        android:id="@+id/tvBirthday"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/edtEditNameStudent"
-        android:layout_alignParentStart="true"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="15dp"
-        android:text="@string/birthday"
-        android:textColor="@color/black"
-        android:textSize="15sp" />
-
-    <RelativeLayout
-        android:id="@+id/rlBirthday"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/tvBirthday"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginEnd="20dp">
+            android:textSize="15sp" />
 
         <EditText
-            android:id="@+id/edtEditBirthday"
+            android:id="@+id/edtEditNameStudent"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_below="@+id/name"
             android:layout_alignParentStart="true"
             android:layout_alignParentEnd="true"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="20dp"
             android:background="@drawable/background_edittext"
-            android:focusable="false"
-            android:hint="@string/choose_the_date"
-            android:inputType="none"
+            android:hint="@string/hint_name"
+            android:inputType="text"
             android:padding="10dp"
             android:textSize="18sp" />
 
-        <ImageView
-            android:id="@+id/ivCalendarEdit"
+        <TextView
+            android:id="@+id/tvBirthday"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignEnd="@+id/edtEditBirthday"
-            android:layout_centerVertical="true"
-            android:layout_marginEnd="10dp"
-            android:contentDescription="@null"
-            android:src="@drawable/ic_calendar" />
-    </RelativeLayout>
+            android:layout_below="@+id/edtEditNameStudent"
+            android:layout_alignParentStart="true"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="15dp"
+            android:text="@string/birthday"
+            android:textColor="@color/black"
+            android:textSize="15sp" />
 
-    <TextView
-        android:id="@+id/tvClass"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/rlBirthday"
-        android:layout_marginTop="15dp"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginStart="20dp"
-        android:layout_marginEnd="20dp"
-        android:text="@string/Class"
-        android:textSize="15sp"
-        android:textColor="@color/black" />
+        <RelativeLayout
+            android:id="@+id/rlBirthday"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tvBirthday"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="20dp">
 
-    <LinearLayout
-        android:id="@+id/lnAddClass"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/tvClass"
-        android:layout_marginTop="10dp"
-        android:orientation="horizontal">
+            <EditText
+                android:id="@+id/edtEditBirthday"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentEnd="true"
+                android:background="@drawable/background_edittext"
+                android:focusable="false"
+                android:hint="@string/choose_the_date"
+                android:inputType="none"
+                android:padding="10dp"
+                android:textSize="18sp" />
 
-        <Spinner
-            android:id="@+id/spEditClass"
+            <ImageView
+                android:id="@+id/ivCalendarEdit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignEnd="@+id/edtEditBirthday"
+                android:layout_centerVertical="true"
+                android:layout_marginEnd="10dp"
+                android:contentDescription="@null"
+                android:src="@drawable/ic_calendar" />
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/tvClass"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/rlBirthday"
+            android:layout_marginTop="15dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:text="@string/Class"
+            android:textSize="15sp"
+            android:textColor="@color/black" />
+
+        <LinearLayout
+            android:id="@+id/lnAddClass"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginStart="20dp" />
+            android:layout_below="@+id/tvClass"
+            android:layout_marginTop="10dp"
+            android:orientation="horizontal">
 
-    </LinearLayout>
+            <Spinner
+                android:id="@+id/spEditClass"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginStart="20dp" />
 
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/btnConfirmEdit"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/lnAddClass"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginStart="50dp"
-        android:layout_marginTop="22dp"
-        android:layout_marginEnd="50dp"
-        android:background="@drawable/background_button"
-        android:padding="5dp"
-        android:text="@string/edit_student"
-        android:textAllCaps="false"
-        android:textColor="@color/black" />
+        </LinearLayout>
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btnConfirmEdit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/lnAddClass"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginStart="50dp"
+            android:layout_marginTop="22dp"
+            android:layout_marginEnd="50dp"
+            android:background="@drawable/background_button"
+            android:padding="5dp"
+            android:text="@string/edit_student"
+            android:textAllCaps="false"
+            android:textColor="@color/black" />
+
+    </RelativeLayout>
 
 </RelativeLayout>

@@ -42,7 +42,7 @@ public class StudentsActivity extends AppCompatActivity {
     private List<ClassStudent> classStudents;
     ConfirmDeleteStudentDialogFragment confirmDeleteDialog;
 
-    ActivityResultLauncher<Intent> backActivity = registerForActivityResult(
+    private ActivityResultLauncher<Intent> backActivity = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
             new ActivityResultCallback<ActivityResult>() {
         @Override
@@ -58,7 +58,7 @@ public class StudentsActivity extends AppCompatActivity {
         }
     });
 
-    ActivityResultLauncher<Intent> deleteStudent = registerForActivityResult(
+    private ActivityResultLauncher<Intent> deleteStudent = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
             new ActivityResultCallback<ActivityResult>() {
         @Override
@@ -155,7 +155,7 @@ public class StudentsActivity extends AppCompatActivity {
                         .studentDAO().getListStudent();
 
                 if (students.size() == 0) {
-                    Toast.makeText(StudentsActivity.this, "Please add student in chosen class", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(StudentsActivity.this, R.string.add_student_in_class, Toast.LENGTH_SHORT).show();
                     chooseFilterClassBottomSheetDialog.dismiss();
                     return;
                 }
@@ -166,7 +166,7 @@ public class StudentsActivity extends AppCompatActivity {
                     }
                 }
                 if (studentInClass.size() == 0) {
-                    Toast.makeText(StudentsActivity.this, "Please add student in chosen class", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(StudentsActivity.this, R.string.add_student_in_class, Toast.LENGTH_SHORT).show();
                     chooseFilterClassBottomSheetDialog.dismiss();
                     return;
                 }

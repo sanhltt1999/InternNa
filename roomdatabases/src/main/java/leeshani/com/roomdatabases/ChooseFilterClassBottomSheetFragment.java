@@ -47,7 +47,7 @@ public class ChooseFilterClassBottomSheetFragment extends BottomSheetDialogFragm
             }
         });
         if(classStudents.length == 0){
-            Toast.makeText(getActivity(), "Add classes and students to show ", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getActivity(), R.string.add_class_student_to_show, Toast.LENGTH_SHORT).show();
         }else {
         npClass.setMinValue(0);
         npClass.setMaxValue(classStudents.length-1);

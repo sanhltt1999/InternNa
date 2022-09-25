@@ -54,7 +54,7 @@ public class AddStudentActivity extends AppCompatActivity {
     String path;
     TakePhotoBottomDialogFragment takePhotoBottomDialogFragment;
 
-    ActivityResultLauncher<Intent> addClass = registerForActivityResult(
+    private final ActivityResultLauncher<Intent> addClass = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
             new ActivityResultCallback<ActivityResult>() {
                 @Override
@@ -64,7 +64,7 @@ public class AddStudentActivity extends AppCompatActivity {
                     }
                 }
             });
-    ActivityResultLauncher<Intent> takePhoto = registerForActivityResult
+    private final ActivityResultLauncher<Intent> takePhoto = registerForActivityResult
             (new ActivityResultContracts.StartActivityForResult(),
                     new ActivityResultCallback<ActivityResult>() {
         @Override
@@ -84,7 +84,7 @@ public class AddStudentActivity extends AppCompatActivity {
         }
     });
 
-    ActivityResultLauncher<Intent> getImage = registerForActivityResult(
+    private final ActivityResultLauncher<Intent> getImage = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
             new ActivityResultCallback<ActivityResult>() {
         @Override
@@ -178,7 +178,7 @@ public class AddStudentActivity extends AppCompatActivity {
                          int distance = (int) ((birthday.getTimeInMillis()
                                  - Calendar.getInstance().getTimeInMillis())/(1000*60*60*24));
                         if (distance > 0){
-                            Toast.makeText(AddStudentActivity.this, "Please choose right the date",
+                            Toast.makeText(AddStudentActivity.this, R.string.choose_right_date,
                                     Toast.LENGTH_SHORT).show();
                         }else{
                         etBirthday.setText(simpleDateFormat.format(birthday.getTime()));}
@@ -213,24 +213,24 @@ public class AddStudentActivity extends AppCompatActivity {
         String strClass;
         String imageUri;
         if(  ImageURI == null){
-            Toast.makeText(AddStudentActivity.this, "Add student photo", Toast.LENGTH_SHORT).show();
+            Toast.makeText(AddStudentActivity.this, R.string.add_photo, Toast.LENGTH_SHORT).show();
             return;
         }else {
             imageUri = ImageURI.toString().trim();
         }
         if (spClass.getSelectedItem().toString() == unKnow) {
-            Toast.makeText(AddStudentActivity.this, "Please choose or add class", Toast.LENGTH_LONG).show();
+            Toast.makeText(AddStudentActivity.this,R.string.choose_add_class, Toast.LENGTH_LONG).show();
             return;
         } else {
             strClass = spClass.getSelectedItem().toString();
         }
         if (TextUtils.isEmpty(strStudentName) || TextUtils.isEmpty(strBirthday)){
-            Toast.makeText(AddStudentActivity.this, "Please enter information", Toast.LENGTH_LONG).show();
+            Toast.makeText(AddStudentActivity.this, R.string.add_information, Toast.LENGTH_LONG).show();
         } else {
 
             Student student = new Student(strStudentName, strBirthday, strClass, imageUri);
             if (checkExit(student)) {
-                Toast.makeText(this, "Student exited", Toast.LENGTH_LONG).show();
+                Toast.makeText(this, R.string.student_exit, Toast.LENGTH_LONG).show();
                 return;
             }
             StudentAndClassDatabase.getInstance(AddStudentActivity.this).studentDAO().insertUser(student);

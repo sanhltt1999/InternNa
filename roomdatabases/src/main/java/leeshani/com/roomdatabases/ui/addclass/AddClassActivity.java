@@ -101,11 +101,11 @@ public class AddClassActivity extends AppCompatActivity {
         String teacher = etTeacher.getText().toString().trim();
 
         if (TextUtils.isEmpty(nameClass) || TextUtils.isEmpty(dateCreate) || TextUtils.isEmpty(teacher)) {
-            Toast.makeText(this, "please enter entire information", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, R.string.add_information, Toast.LENGTH_SHORT).show();
         } else {
             ClassStudent classStudent = new ClassStudent(nameClass, dateCreate, teacher);
             if (checkExit(classStudent)) {
-                Toast.makeText(this, "Class exited", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, R.string.class_exit, Toast.LENGTH_SHORT).show();
                 return;
             }
             insertClass(classStudent);
