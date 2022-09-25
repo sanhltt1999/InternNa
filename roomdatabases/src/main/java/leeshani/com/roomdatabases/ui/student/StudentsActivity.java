@@ -1,6 +1,9 @@
 package leeshani.com.roomdatabases.ui.student;
 
-import androidx.annotation.Nullable;
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -9,7 +12,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -28,8 +30,7 @@ import leeshani.com.roomdatabases.data.model.Student;
 import leeshani.com.roomdatabases.ui.student.adapter.StudentAdapter;
 
 public class StudentsActivity extends AppCompatActivity {
-    private static final int REQUEST_CODE_STUDENT = 83;
-    private static final int UPDATE_STUDENT_LIST = 111;
+
     private Toolbar tbStudent;
     private ImageView imAddStudent;
     private RecyclerView rvStudent;
@@ -39,6 +40,39 @@ public class StudentsActivity extends AppCompatActivity {
     private StudentAdapter studentAdapter;
     private List<Student> students;
     private List<ClassStudent> classStudents;
+    ConfirmDeleteStudentDialogFragment confirmDeleteDialog;
+
+    ActivityResultLauncher<Intent> backActivity = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            new ActivityResultCallback<ActivityResult>() {
+        @Override
+        public void onActivityResult(ActivityResult result) {
+            if(result.getResultCode() == RESULT_OK){
+
+                students = StudentAndClassDatabase.getInstance(StudentsActivity.this)
+                        .studentDAO().getListStudent();
+                tvStudentTotal.setText(""+students.size());
+                studentAdapter.setData(students);
+            }
+
+        }
+    });
+
+    ActivityResultLauncher<Intent> deleteStudent = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            new ActivityResultCallback<ActivityResult>() {
+        @Override
+        public void onActivityResult(ActivityResult result) {
+            if(result.getResultCode() == RESULT_CANCELED){
+                students = StudentAndClassDatabase.getInstance(StudentsActivity.this)
+                        .studentDAO().getListStudent();
+
+                rvStudent.setAdapter(studentAdapter);
+                tvStudentTotal.setText("" + students.size());
+                studentAdapter.setData(students);
+            }
+        }
+    });
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,8 +114,7 @@ public class StudentsActivity extends AppCompatActivity {
         imAddStudent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(StudentsActivity.this, AddStudentActivity.class);
-                startActivity(intent);
+                backActivity.launch(new Intent(StudentsActivity.this,AddStudentActivity.class));
             }
         });
 
@@ -147,64 +180,31 @@ public class StudentsActivity extends AppCompatActivity {
         chooseFilterClassBottomSheetDialog.show(getSupportFragmentManager(), "");
     }
 
-
     private void clickEditStudent(Student student) {
         Intent itEdit = new Intent(StudentsActivity.this, EditStudentActivity.class);
         Bundle bundleStudent = new Bundle();
         bundleStudent.putSerializable("object_student", student);
         itEdit.putExtras(bundleStudent);
-        startActivityIfNeeded(itEdit, REQUEST_CODE_STUDENT);
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == REQUEST_CODE_STUDENT && resultCode == RESULT_OK) {
-            List<Student> studentInClass = new ArrayList<>();
-            String currentClass = tvChooseClass.getText().toString();
-            students = StudentAndClassDatabase.getInstance(StudentsActivity.this)
-                    .studentDAO().getListStudent();
-            for (int i = 0; i < students.size(); i++) {
-                String nameClass = students.get(i).getClasses();
-                if (nameClass.equals(currentClass)) {
-                    studentInClass.add(students.get(i));
-                }
-            }
-            rvStudent.setAdapter(studentAdapter);
-            tvStudentTotal.setText("" + studentInClass.size());
-            studentAdapter.setData(studentInClass);
-        }
-        if(requestCode == UPDATE_STUDENT_LIST && resultCode == RESULT_OK){
-            students = StudentAndClassDatabase.getInstance(StudentsActivity.this)
-                    .studentDAO().getListStudent();
-
-            studentAdapter.setData(students);
-
-        }
+        deleteStudent.launch(itEdit);
     }
 
     private void clickDeleteStudent(Student student) {
-        ConfirmDeleteStudentDialogFragment confirmDeleteDialog = new ConfirmDeleteStudentDialogFragment();
+        confirmDeleteDialog = new ConfirmDeleteStudentDialogFragment();
         confirmDeleteDialog.setOnListener(new ConfirmDeleteStudentDialogFragment.OnListener() {
             @Override
             public void confirmDelete() {
                 StudentAndClassDatabase.getInstance(StudentsActivity.this).studentDAO().deleteStudent(student);
-                List<Student> studentInClass = new ArrayList<>();
-                String currentClass = tvChooseClass.getText().toString();
                 students = StudentAndClassDatabase.getInstance(StudentsActivity.this)
                         .studentDAO().getListStudent();
-                for (int j = 0; j < students.size(); j++) {
-                    String nameClass = students.get(j).getClasses();
-                    if (nameClass.equals(currentClass)) {
-                        studentInClass.add(students.get(j));
-                    }
-                }
+
                 rvStudent.setAdapter(studentAdapter);
-                tvStudentTotal.setText("" + studentInClass.size());
-                studentAdapter.setData(studentInClass);
+                tvStudentTotal.setText("" + students.size());
+                studentAdapter.setData(students);
+                confirmDeleteDialog.dismiss();
             }
         });
         confirmDeleteDialog.show(getSupportFragmentManager(),ConfirmDeleteStudentDialogFragment.TAG);
+
     }
 
 }

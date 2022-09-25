@@ -1,6 +1,5 @@
 package leeshani.com.roomdatabases;
 
-import android.app.Notification;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -37,7 +36,6 @@ public class ChooseFilterClassBottomSheetFragment extends BottomSheetDialogFragm
 
         View rootView;
         rootView = inflater.inflate(R.layout.bottom_sheet, container, false);
-
         ivClose = rootView.findViewById(R.id.ivCloseBs);
         btnApply = rootView.findViewById(R.id.btnApplyClass);
         npClass = rootView.findViewById(R.id.npClass);

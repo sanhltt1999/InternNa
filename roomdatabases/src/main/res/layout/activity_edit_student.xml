@@ -88,7 +88,9 @@
             android:layout_alignParentStart="true"
             android:layout_alignParentEnd="true"
             android:background="@drawable/background_edittext"
-            android:inputType="date"
+            android:focusable="false"
+            android:hint="@string/choose_the_date"
+            android:inputType="none"
             android:padding="10dp"
             android:textSize="18sp" />
 

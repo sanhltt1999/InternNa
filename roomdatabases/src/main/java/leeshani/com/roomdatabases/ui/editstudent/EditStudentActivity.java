@@ -2,7 +2,6 @@ package leeshani.com.roomdatabases.ui.editstudent;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
@@ -49,7 +48,7 @@ public class EditStudentActivity extends AppCompatActivity {
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                onBackPressed();
+                onBack();
             }
         });
 
@@ -94,12 +93,17 @@ public class EditStudentActivity extends AppCompatActivity {
                 int date = birthday.get(Calendar.DATE);
                 int month = birthday.get(Calendar.MONTH);
                 int year = birthday.get(Calendar.YEAR);
+
                 DatePickerDialog datePickerDialog = new DatePickerDialog(EditStudentActivity.this, new DatePickerDialog.OnDateSetListener() {
 
                     @Override
                     public void onDateSet(DatePicker datePicker, int i, int i1, int i2) {
                         birthday.set(i, i1, i2);
-                        etDate.setText(simpleDateFormat.format(birthday.getTime()));
+                        int distance = (int) ((birthday.getTimeInMillis() - Calendar.getInstance().getTimeInMillis())/(1000*60*60*24));
+                        if (distance > 0){
+                            Toast.makeText(EditStudentActivity.this, "Please choose right the date", Toast.LENGTH_SHORT).show();
+                        }else{
+                            etDate.setText(simpleDateFormat.format(birthday.getTime()));}
                     }
                 }, year, month, date);
                 datePickerDialog.show();
@@ -138,10 +142,12 @@ public class EditStudentActivity extends AppCompatActivity {
 
         StudentAndClassDatabase.getInstance(EditStudentActivity.this).studentDAO().updateStudent(student);
 
+        Toast.makeText(this, "Update success", Toast.LENGTH_SHORT).show();
+    }
+    private void onBack(){
         Intent intentEditResult = new Intent();
-        setResult(Activity.RESULT_OK, intentEditResult);
+        setResult(RESULT_CANCELED, intentEditResult);
         finish();
     }
-
 
 }

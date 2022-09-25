@@ -1,8 +1,6 @@
 package leeshani.com.roomdatabases.ui;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,7 +33,6 @@ public class TakePhotoBottomDialogFragment extends BottomSheetDialogFragment {
 
         tvTakePhoto = view.findViewById(R.id.tvTakePhoto);
         tvChooseFile = view.findViewById(R.id.tvChooseFile);
-
         tvTakePhoto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -53,6 +50,7 @@ public class TakePhotoBottomDialogFragment extends BottomSheetDialogFragment {
         });
         return view;
     }
+
     public interface OnListener {
         void ChooseImage();
         void TakePhoto();
