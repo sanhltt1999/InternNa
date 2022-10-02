@@ -3,8 +3,15 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
-        <entry key="..\:/study android/InternNa/content_provider_sqllite/src/main/res/layout/activity_students.xml" value="0.264" />
+        <entry key="..\:/study android/InternNa/content_provider_sqllite/src/main/res/drawable/ic_add.xml" value="0.1495" />
+        <entry key="..\:/study android/InternNa/content_provider_sqllite/src/main/res/drawable/student_item_bg.xml" value="0.1" />
+        <entry key="..\:/study android/InternNa/content_provider_sqllite/src/main/res/layout/activity_add_student.xml" value="0.25416666666666665" />
+        <entry key="..\:/study android/InternNa/content_provider_sqllite/src/main/res/layout/activity_students.xml" value="0.11929824561403508" />
         <entry key="..\:/study android/InternNa/content_provider_sqllite/src/main/res/layout/bottom_sheet.xml" value="0.1" />
+        <entry key="..\:/study android/InternNa/content_provider_sqllite/src/main/res/layout/student_item.xml" value="0.25416666666666665" />
+        <entry key="..\:/study android/InternNa/contentprovider/src/main/res/drawable/background_button.xml" value="0.1" />
+        <entry key="..\:/study android/InternNa/contentprovider/src/main/res/drawable/ic_calendar.xml" value="0.1" />
+        <entry key="..\:/study android/InternNa/contentprovider/src/main/res/layout/activity_add_student_acticity.xml" value="0.25416666666666665" />
         <entry key="..\:/study android/InternNa/roomdatabases/src/main/res/drawable/button_agree_delete_bg.xml" value="0.145" />
         <entry key="..\:/study android/InternNa/roomdatabases/src/main/res/drawable/button_confirm_bg.xml" value="0.145" />
         <entry key="..\:/study android/InternNa/roomdatabases/src/main/res/layout/confirm_delete_student_dialog.xml" value="0.153125" />

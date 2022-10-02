@@ -4,6 +4,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.student.StudentsActivity">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/TbStudent"
@@ -44,18 +47,21 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/TbStudent"
         android:orientation="horizontal"
-        android:background="@drawable/background_button"
+        android:background="#F3F3F3"
         android:weightSum="10"
         android:layout_marginTop="20dp">
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btChooseClass"
-            android:backgroundTint="@android:color/transparent"
-            android:layout_width="wrap_content"
+        <TextView
+            android:id="@+id/tvChooseClass"
+            android:layout_width="383dp"
             android:layout_height="match_parent"
+            android:layout_gravity="center"
             android:layout_weight="9.5"
+            android:backgroundTint="@android:color/transparent"
+            android:padding="10dp"
             android:text="@string/all"
-            android:textAllCaps="false" />
+            android:textColor="@color/black"
+            android:textSize="18sp" />
 
         <TextView
             android:layout_gravity="center"
@@ -83,5 +89,5 @@
             android:layout_marginEnd="5dp"
             android:layout_marginBottom="10dp" />
     </LinearLayout>
-
+    </RelativeLayout>
 </RelativeLayout>

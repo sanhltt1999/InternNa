@@ -14,7 +14,6 @@ import androidx.annotation.Nullable;
 
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
-
 public class ChooseFilterClassBottomSheetFragment extends BottomSheetDialogFragment {
 
     View rootView;

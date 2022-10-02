@@ -3,21 +3,29 @@ package leeshani.com.content_provider_sqllite.ui.editstudent;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.DatePickerDialog;
+import android.content.ContentValues;
+import android.content.Intent;
+import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import androidx.appcompat.widget.Toolbar;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.List;
 
-import leeshani.com.content_provider_sqllite.data.model.ClassStudent;
+import leeshani.com.content_provider_sqllite.SchoolContentProvider;
+import leeshani.com.content_provider_sqllite.data.SchoolDatabase;
 import leeshani.com.content_provider_sqllite.R;
 import leeshani.com.content_provider_sqllite.data.model.Student;
 
@@ -28,7 +36,6 @@ public class EditStudentActivity extends AppCompatActivity {
     private ImageView ivEditCalendar;
     private Calendar birthday;
     private Spinner spEditClass;
-    private List<ClassStudent> classes;
     private Student student;
 
     @Override
@@ -42,24 +49,26 @@ public class EditStudentActivity extends AppCompatActivity {
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                onBackPressed();
+                onBack();
             }
         });
 
         setBirthday();
-//        setSpinnerClass();
+        setSpinnerClass();
 
         student = (Student) getIntent().getExtras().get("object_student");
         if (student != null) {
             etName.setText(student.getStudentName());
             etDate.setText(student.getDate());
         }
-//        btEdit.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                updateStudent();
-//            }
-//        });
+
+        btEdit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                updateStudent();
+
+            }
+        });
     }
 
     private void InitUI() {
@@ -100,41 +109,58 @@ public class EditStudentActivity extends AppCompatActivity {
         });
     }
 
-//    private void setSpinnerClass() {
-//        ArrayList<String> arClasses = new ArrayList<>();
-//        classes = StudentAndClassDatabase.getInstance(EditStudentActivity.this).classDAO().getListClass();
-//        for (int i = 0; i < classes.size(); i++) {
-//            arClasses.add(classes.get(i).getName());
-//        }
-//        ArrayAdapter arrayAdapter = new ArrayAdapter(this, android.R.layout.simple_spinner_item, arClasses);
-//        arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-//        spEditClass.setAdapter(arrayAdapter);
-//    }
-//
-//    private void updateStudent() {
-//        String strStudentName = etName.getText().toString().trim();
-//        String strBirthday = etDate.getText().toString().trim();
-//        String strClass;
-//        if (spEditClass.getSelectedItem() == null) {
-//            Toast.makeText(EditStudentActivity.this, "Please choose or add class", Toast.LENGTH_LONG).show();
-//            return;
-//        } else {
-//            strClass = spEditClass.getSelectedItem().toString();
-//        }
-//        if (TextUtils.isEmpty(strStudentName) || TextUtils.isEmpty(strBirthday) || TextUtils.isEmpty(strClass)) {
-//            Toast.makeText(EditStudentActivity.this, "Please enter information", Toast.LENGTH_LONG).show();
-//            return;
-//        }
-//        student.setStudentName(strStudentName);
-//        student.setDate(strBirthday);
-//        student.setClasses(strClass);
-//
-//        StudentAndClassDatabase.getInstance(EditStudentActivity.this).studentDAO().updateStudent(student);
-//
-//        Intent intentEditResult = new Intent();
-//        setResult(Activity.RESULT_OK, intentEditResult);
-//        finish();
-//    }
+    private void setSpinnerClass() {
+        ArrayList<String> arClasses =getClassName();
+        ArrayAdapter arrayAdapter = new ArrayAdapter(this, android.R.layout.simple_spinner_item, arClasses);
+        arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spEditClass.setAdapter(arrayAdapter);
+    }
+
+    private void updateStudent() {
+        String strStudentName = etName.getText().toString().trim();
+        String strBirthday = etDate.getText().toString().trim();
+        String strClass;
+        if (spEditClass.getSelectedItem() == null) {
+            Toast.makeText(EditStudentActivity.this, "Please choose or add class", Toast.LENGTH_LONG).show();
+            return;
+        } else {
+            strClass = spEditClass.getSelectedItem().toString();
+        }
+
+        if (TextUtils.isEmpty(strStudentName) || TextUtils.isEmpty(strBirthday) || TextUtils.isEmpty(strClass)) {
+            Toast.makeText(EditStudentActivity.this, "Please enter information", Toast.LENGTH_LONG).show();
+            return;
+        }
+
+        ContentValues values = new ContentValues();
+        values.put(SchoolDatabase.COLUMN_STUDENT_NAME, strStudentName);
+        values.put(SchoolDatabase.COLUMN_DATE_OF_BIRTH, strBirthday);
+        values.put(SchoolDatabase.COLUMN_CLASS_STUDENT, strClass);
+
+        Uri uri = Uri.parse(String.valueOf(SchoolContentProvider.CONTENT_URI_STUDENT));
+        getContentResolver().update(uri, values, SchoolDatabase.COLUMN_DATE_OF_BIRTH + " =?", new String[]{student.getDate()});
+        Toast.makeText(this, "Edit successfully", Toast.LENGTH_SHORT).show();
+    }
+
+    private ArrayList<String> getClassName(){
+        ArrayList<String> getNameClass =  new ArrayList<>();
+        Uri uri = SchoolContentProvider.CONTENT_URI_CLASS;
+        Cursor c = getContentResolver().query(uri, null, null, null, null);
+        if (c != null) {
+            while (c.moveToNext()) {
+                getNameClass.add (c.getString(c.getColumnIndexOrThrow("class_name")));
+            }
+            c.close();
+        }else{
+            Toast.makeText(this, "Please add new class", Toast.LENGTH_SHORT).show();
+        }
+        return getNameClass;
+    }
+    private void onBack(){
+        Intent intentEditResult = new Intent();
+        setResult(RESULT_CANCELED, intentEditResult);
+        finish();
+    }
 
 
 }

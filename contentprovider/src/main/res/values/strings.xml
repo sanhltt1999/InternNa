@@ -1,3 +1,23 @@
 <resources>
     <string name="app_name">ContentProvider</string>
+    <string name="Add_class">Add class</string>
+    <string name="name_class">Name class</string>
+    <string name="date_create">Date create</string>
+    <string name="teacher"> Teacher</string>
+    <string name="hint_name_class"> Please enter name class</string>
+    <string name="hint_teacher">Please enter teacher name</string>
+    <string name="add_student">Add student</string>
+    <string name="name">Name</string>
+    <string name="birthday">Birthday</string>
+    <string name="Class">Class</string>
+    <string name="hint_name">Please enter name</string>
+    <string name="student"> Students</string>
+    <string name="all">All</string>
+    <string name="birthday_student_item"> Birth day: </string>
+    <string name="class_name_student_item">Class:</string>
+    <string name="delete">Delete</string>
+    <string name="edit">Edit</string>
+    <string name="apply">Apply</string>
+    <string name="choose_tha_date">Choose tha date</string>
+    <string name="edit_student">Edit student</string>
 </resources>

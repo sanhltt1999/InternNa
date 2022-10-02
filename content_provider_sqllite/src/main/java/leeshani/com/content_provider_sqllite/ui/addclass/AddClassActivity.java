@@ -3,6 +3,7 @@ package leeshani.com.content_provider_sqllite.ui.addclass;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.DatePickerDialog;
+import android.content.ContentValues;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
@@ -18,9 +19,8 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 import leeshani.com.content_provider_sqllite.R;
+import leeshani.com.content_provider_sqllite.SchoolContentProvider;
 import leeshani.com.content_provider_sqllite.data.SchoolDatabase;
-import leeshani.com.content_provider_sqllite.data.model.ClassStudent;
-
 
 public class AddClassActivity extends AppCompatActivity {
     private EditText etClassName, etDateCreate, etTeacher;
@@ -28,7 +28,6 @@ public class AddClassActivity extends AppCompatActivity {
     private Button btAddClass;
     private Calendar dateCreate;
     private Toolbar toolbar;
-    SchoolDatabase database;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -104,18 +103,17 @@ public class AddClassActivity extends AppCompatActivity {
             Toast.makeText(this, "please enter entire information", Toast.LENGTH_SHORT).show();
             return;
         }
-        ClassStudent classStudent = new ClassStudent(nameClass, dateCreate, teacher);
+        ContentValues values = new ContentValues();
+        values.put(SchoolDatabase.COLUMN_CLASSNAME, nameClass);
+        values.put(SchoolDatabase.COLUMN_DATE_CREATE_CLASS, dateCreate);
+        values.put(SchoolDatabase.COLUMN_TEACHER, teacher);
 
-        database = new SchoolDatabase(this);
-        database.addClass(classStudent);
+        getContentResolver().insert(SchoolContentProvider.CONTENT_URI_CLASS, values);
+
         etTeacher.setText(null);
         etDateCreate.setText(null);
         etClassName.setText(null);
 
-    }
-
-    private boolean checkExit(ClassStudent classStudent) {
-        return true;
     }
 
 }

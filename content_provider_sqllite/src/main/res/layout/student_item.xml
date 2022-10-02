@@ -54,8 +54,9 @@
         android:layout_marginEnd="2dp"
         android:textSize="13sp" />
 
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/btDelete"
+    <TextView
+        android:id="@+id/tvDelete"
+        android:padding="5dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/tvClassName"
@@ -64,18 +65,21 @@
         android:text="@string/delete"
         android:textAllCaps="false"
         android:textColor="@color/black"
+        android:background="@drawable/student_item_bg"
         android:textSize="11sp" />
 
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/btEdit"
+    <TextView
+        android:id="@+id/tvEdit"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:padding="5dp"
         android:layout_below="@+id/tvClassName"
         android:layout_marginTop="10dp"
         android:layout_marginEnd="10dp"
-        android:layout_toStartOf="@+id/btDelete"
+        android:layout_toStartOf="@+id/tvDelete"
         android:text="@string/edit"
         android:textAllCaps="false"
         android:textColor="@color/black"
-        android:textSize="11sp" />
+        android:textSize="11sp"
+        android:background="@drawable/student_item_bg"/>
 </RelativeLayout>
