@@ -1,5 +1,12 @@
 package leeshani.com.roomdatabases.ui.student;
 
+import android.content.Intent;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.Toast;
+
 import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
@@ -9,24 +16,17 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.content.Intent;
-import android.os.Bundle;
-import android.view.View;
-import android.widget.ImageView;
-import android.widget.TextView;
-import android.widget.Toast;
-
 import java.util.ArrayList;
 import java.util.List;
 
 import leeshani.com.roomdatabases.ChooseFilterClassBottomSheetFragment;
 import leeshani.com.roomdatabases.ConfirmDeleteStudentDialogFragment;
-import leeshani.com.roomdatabases.ui.addstudent.AddStudentActivity;
+import leeshani.com.roomdatabases.R;
 import leeshani.com.roomdatabases.data.db.StudentAndClassDatabase;
 import leeshani.com.roomdatabases.data.model.ClassStudent;
-import leeshani.com.roomdatabases.ui.editstudent.EditStudentActivity;
-import leeshani.com.roomdatabases.R;
 import leeshani.com.roomdatabases.data.model.Student;
+import leeshani.com.roomdatabases.ui.addstudent.AddStudentActivity;
+import leeshani.com.roomdatabases.ui.editstudent.EditStudentActivity;
 import leeshani.com.roomdatabases.ui.student.adapter.StudentAdapter;
 
 public class StudentsActivity extends AppCompatActivity {
@@ -40,6 +40,7 @@ public class StudentsActivity extends AppCompatActivity {
     private StudentAdapter studentAdapter;
     private List<Student> students;
     private List<ClassStudent> classStudents;
+    public static final String KEY_TO_PUT_STUDENT = "object_student";
     ConfirmDeleteStudentDialogFragment confirmDeleteDialog;
 
     private ActivityResultLauncher<Intent> backActivity = registerForActivityResult(
@@ -51,7 +52,7 @@ public class StudentsActivity extends AppCompatActivity {
 
                 students = StudentAndClassDatabase.getInstance(StudentsActivity.this)
                         .studentDAO().getListStudent();
-                tvStudentTotal.setText(""+students.size());
+                tvStudentTotal.setText(String.valueOf(students.size()));
                 studentAdapter.setData(students);
             }
 
@@ -68,7 +69,7 @@ public class StudentsActivity extends AppCompatActivity {
                         .studentDAO().getListStudent();
 
                 rvStudent.setAdapter(studentAdapter);
-                tvStudentTotal.setText("" + students.size());
+                tvStudentTotal.setText(String.valueOf(students.size()));
                 studentAdapter.setData(students);
             }
         }
@@ -177,13 +178,13 @@ public class StudentsActivity extends AppCompatActivity {
             }
 
         });
-        chooseFilterClassBottomSheetDialog.show(getSupportFragmentManager(), "");
+        chooseFilterClassBottomSheetDialog.show(getSupportFragmentManager(), null);
     }
 
     private void clickEditStudent(Student student) {
         Intent itEdit = new Intent(StudentsActivity.this, EditStudentActivity.class);
         Bundle bundleStudent = new Bundle();
-        bundleStudent.putSerializable("object_student", student);
+        bundleStudent.putSerializable(KEY_TO_PUT_STUDENT, student);
         itEdit.putExtras(bundleStudent);
         deleteStudent.launch(itEdit);
     }
@@ -198,7 +199,7 @@ public class StudentsActivity extends AppCompatActivity {
                         .studentDAO().getListStudent();
 
                 rvStudent.setAdapter(studentAdapter);
-                tvStudentTotal.setText("" + students.size());
+                tvStudentTotal.setText(String.valueOf(students.size()));
                 studentAdapter.setData(students);
                 confirmDeleteDialog.dismiss();
             }

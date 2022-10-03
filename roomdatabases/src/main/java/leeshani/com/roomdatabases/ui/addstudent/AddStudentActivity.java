@@ -1,11 +1,5 @@
 package leeshani.com.roomdatabases.ui.addstudent;
 
-import androidx.activity.result.ActivityResult;
-import androidx.activity.result.ActivityResultCallback;
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -21,6 +15,12 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Toast;
+
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import com.bumptech.glide.Glide;
@@ -48,6 +48,9 @@ public class AddStudentActivity extends AppCompatActivity {
     private Calendar birthday;
     private Spinner spClass;
     private List<ClassStudent> classes;
+    public static final String KEY_GET_DATA = "data";
+    public static final String DATE_FORMAT = "dd/MM/yyy";
+    public int change_date_to_second = 1000*60*60*24;
 
     String unKnow;
     Uri ImageURI;
@@ -71,7 +74,10 @@ public class AddStudentActivity extends AppCompatActivity {
         public void onActivityResult(ActivityResult result) {
             if(result.getResultCode() == RESULT_OK){
                 Bundle bundle = result.getData().getExtras();
-                Bitmap bitmap = (Bitmap) bundle.get("data");
+                if(bundle == null){
+                    return;
+                }
+                Bitmap bitmap = (Bitmap) bundle.get(KEY_GET_DATA);
                 ByteArrayOutputStream bytes = new ByteArrayOutputStream();
                 bitmap.compress(Bitmap.CompressFormat.JPEG,100,bytes);
                 path = MediaStore.Images.Media.insertImage(getApplicationContext()
@@ -164,7 +170,7 @@ public class AddStudentActivity extends AppCompatActivity {
         ivCalender.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
+                SimpleDateFormat simpleDateFormat = new SimpleDateFormat(DATE_FORMAT);
                 birthday = Calendar.getInstance();
                 int date = birthday.get(Calendar.DATE);
                 int month = birthday.get(Calendar.MONTH);
@@ -176,7 +182,7 @@ public class AddStudentActivity extends AppCompatActivity {
                     public void onDateSet(DatePicker datePicker, int i, int i1, int i2) {
                         birthday.set(i, i1, i2);
                          int distance = (int) ((birthday.getTimeInMillis()
-                                 - Calendar.getInstance().getTimeInMillis())/(1000*60*60*24));
+                                 - Calendar.getInstance().getTimeInMillis())/change_date_to_second);
                         if (distance > 0){
                             Toast.makeText(AddStudentActivity.this, R.string.choose_right_date,
                                     Toast.LENGTH_SHORT).show();
@@ -218,7 +224,7 @@ public class AddStudentActivity extends AppCompatActivity {
         }else {
             imageUri = ImageURI.toString().trim();
         }
-        if (spClass.getSelectedItem().toString() == unKnow) {
+        if (spClass.getSelectedItem().toString().equals(unKnow)) {
             Toast.makeText(AddStudentActivity.this,R.string.choose_add_class, Toast.LENGTH_LONG).show();
             return;
         } else {

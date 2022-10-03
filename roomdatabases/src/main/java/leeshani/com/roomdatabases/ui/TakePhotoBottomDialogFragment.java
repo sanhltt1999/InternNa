@@ -16,7 +16,7 @@ import leeshani.com.roomdatabases.R;
 public class TakePhotoBottomDialogFragment extends BottomSheetDialogFragment {
     private TextView tvTakePhoto;
     private TextView tvChooseFile;
-    OnListener onListener;
+    private OnListener onListener;
 
     public TakePhotoBottomDialogFragment() {
     }
