@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">BroadcastReceivers</string>
+    <string name="status_wifi">Status Wifi</string>
+    <string name="nhap_a">Nhap a</string>
+    <string name="nhap_b">Nhap b</string>
+    <string name="result">Result</string>
+    <string name="put_data">Put Data</string>
+    <string name="channel_name">Channel 1</string>
+    <string name="channel_description">This is channel 1</string>
+    <string name="cong">+</string>
+    <string name="tru">-</string>
+    <string name="nhan">*</string>
+    <string name="chia">/</string>
+    <string name="enter_khac_0">Please enter b different 0</string>
+</resources>
