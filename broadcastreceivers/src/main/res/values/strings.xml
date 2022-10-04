@@ -12,4 +12,5 @@
     <string name="nhan">*</string>
     <string name="chia">/</string>
     <string name="enter_khac_0">Please enter b different 0</string>
+    <string name="title_notify">Broadcast Receiver</string>
 </resources>
