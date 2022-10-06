@@ -30,6 +30,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Locale;
 
 import leeshani.com.roomdatabases.R;
 import leeshani.com.roomdatabases.data.db.StudentAndClassDatabase;
@@ -53,7 +54,7 @@ public class AddStudentActivity extends AppCompatActivity {
     public int change_date_to_second = 1000*60*60*24;
 
     String unKnow;
-    Uri ImageURI;
+    Uri imageURI;
     String path;
     TakePhotoBottomDialogFragment takePhotoBottomDialogFragment;
 
@@ -73,19 +74,21 @@ public class AddStudentActivity extends AppCompatActivity {
         @Override
         public void onActivityResult(ActivityResult result) {
             if(result.getResultCode() == RESULT_OK){
-                Bundle bundle = result.getData().getExtras();
-                if(bundle == null){
-                    return;
+                if(result.getData() != null){
+                    Bundle bundle = result.getData().getExtras();
+                    if(bundle == null){
+                        return;
+                    }
+                    Bitmap bitmap = (Bitmap) bundle.get(KEY_GET_DATA);
+                    ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+                    bitmap.compress(Bitmap.CompressFormat.JPEG,100,bytes);
+                    path = MediaStore.Images.Media.insertImage(getApplicationContext()
+                            .getContentResolver(),bitmap, "val", null);
+                    imageURI = Uri.parse(path);
+                    Glide.with(AddStudentActivity.this)
+                            .load(imageURI)
+                            .into(ivStudentImage);
                 }
-                Bitmap bitmap = (Bitmap) bundle.get(KEY_GET_DATA);
-                ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-                bitmap.compress(Bitmap.CompressFormat.JPEG,100,bytes);
-                path = MediaStore.Images.Media.insertImage(getApplicationContext()
-                        .getContentResolver(),bitmap, "val", null);
-                ImageURI = Uri.parse(path);
-                Glide.with(AddStudentActivity.this)
-                        .load(ImageURI)
-                        .into(ivStudentImage);
             }
         }
     });
@@ -96,10 +99,13 @@ public class AddStudentActivity extends AppCompatActivity {
         @Override
         public void onActivityResult(ActivityResult result) {
             if (result.getResultCode() == RESULT_OK){
-                ImageURI = result.getData().getData();
-                Glide.with(AddStudentActivity.this)
-                        .load(ImageURI)
-                        .into(ivStudentImage);
+                if(result.getData() != null){
+                    imageURI = result.getData().getData();
+                    Glide.with(AddStudentActivity.this)
+                            .load(imageURI)
+                            .into(ivStudentImage);
+                }
+
             }
         }
     });
@@ -161,16 +167,19 @@ public class AddStudentActivity extends AppCompatActivity {
 
     private void setToolbar() {
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayShowTitleEnabled(false);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        if(getSupportActionBar() != null){
+            getSupportActionBar().setDisplayShowTitleEnabled(false);
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setDisplayShowHomeEnabled(true);
+        }
+
     }
 
     private void setBirthday() {
         ivCalender.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                SimpleDateFormat simpleDateFormat = new SimpleDateFormat(DATE_FORMAT);
+                SimpleDateFormat simpleDateFormat = new SimpleDateFormat(DATE_FORMAT, Locale.getDefault());
                 birthday = Calendar.getInstance();
                 int date = birthday.get(Calendar.DATE);
                 int month = birthday.get(Calendar.MONTH);
@@ -196,7 +205,7 @@ public class AddStudentActivity extends AppCompatActivity {
     }
 
     private void setSpinner() {
-        unKnow = "Unknown";
+        unKnow = getString(R.string.unknown);
         ArrayList<String> arClasses = new ArrayList<>();
 
         arClasses.add(unKnow);
@@ -207,7 +216,7 @@ public class AddStudentActivity extends AppCompatActivity {
             arClasses.add(classes.get(i).getName());
         }
 
-        ArrayAdapter arrayAdapter = new ArrayAdapter(this, android.R.layout.simple_spinner_item, arClasses);
+        ArrayAdapter <String> arrayAdapter = new ArrayAdapter <>(this, android.R.layout.simple_spinner_item, arClasses) ;
 
         arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spClass.setAdapter(arrayAdapter);
@@ -218,11 +227,11 @@ public class AddStudentActivity extends AppCompatActivity {
         String strBirthday = etBirthday.getText().toString().trim();
         String strClass;
         String imageUri;
-        if(  ImageURI == null){
+        if(  imageURI == null){
             Toast.makeText(AddStudentActivity.this, R.string.add_photo, Toast.LENGTH_SHORT).show();
             return;
         }else {
-            imageUri = ImageURI.toString().trim();
+            imageUri = imageURI.toString().trim();
         }
         if (spClass.getSelectedItem().toString().equals(unKnow)) {
             Toast.makeText(AddStudentActivity.this,R.string.choose_add_class, Toast.LENGTH_LONG).show();
@@ -242,9 +251,9 @@ public class AddStudentActivity extends AppCompatActivity {
             StudentAndClassDatabase.getInstance(AddStudentActivity.this).studentDAO().insertUser(student);
             etName.setText(null);
             etBirthday.setText(null);
-            ImageURI = null;
+            imageURI = null;
             Glide.with(AddStudentActivity.this)
-                    .load(ImageURI)
+                    .load(imageURI)
                     .into(ivStudentImage);
         }
     }

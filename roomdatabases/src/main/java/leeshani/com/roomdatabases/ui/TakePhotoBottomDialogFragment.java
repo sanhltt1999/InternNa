@@ -14,8 +14,6 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import leeshani.com.roomdatabases.R;
 
 public class TakePhotoBottomDialogFragment extends BottomSheetDialogFragment {
-    private TextView tvTakePhoto;
-    private TextView tvChooseFile;
     private OnListener onListener;
 
     public TakePhotoBottomDialogFragment() {
@@ -31,8 +29,8 @@ public class TakePhotoBottomDialogFragment extends BottomSheetDialogFragment {
         View view;
         view = inflater.inflate(R.layout.button_sheet_choose_photo_or_take_photo, container,false);
 
-        tvTakePhoto = view.findViewById(R.id.tvTakePhoto);
-        tvChooseFile = view.findViewById(R.id.tvChooseFile);
+        TextView tvTakePhoto = view.findViewById(R.id.tvTakePhoto);
+        TextView tvChooseFile = view.findViewById(R.id.tvChooseFile);
         tvTakePhoto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

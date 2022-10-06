@@ -39,11 +39,10 @@ public class StudentsActivity extends AppCompatActivity {
 
     private StudentAdapter studentAdapter;
     private List<Student> students;
-    private List<ClassStudent> classStudents;
     public static final String KEY_TO_PUT_STUDENT = "object_student";
     ConfirmDeleteStudentDialogFragment confirmDeleteDialog;
 
-    private ActivityResultLauncher<Intent> backActivity = registerForActivityResult(
+    private final ActivityResultLauncher<Intent> backActivity = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
             new ActivityResultCallback<ActivityResult>() {
         @Override
@@ -59,7 +58,7 @@ public class StudentsActivity extends AppCompatActivity {
         }
     });
 
-    private ActivityResultLauncher<Intent> deleteStudent = registerForActivityResult(
+    private final ActivityResultLauncher<Intent> deleteStudent = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
             new ActivityResultCallback<ActivityResult>() {
         @Override
@@ -98,7 +97,7 @@ public class StudentsActivity extends AppCompatActivity {
 
         students = StudentAndClassDatabase.getInstance(StudentsActivity.this)
                 .studentDAO().getListStudent();
-        tvStudentTotal.setText("" +students.size());
+        tvStudentTotal.setText(String.valueOf(students.size()));
         studentAdapter.setData(students);
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
@@ -123,7 +122,10 @@ public class StudentsActivity extends AppCompatActivity {
 
     private void setToolbar() {
         setSupportActionBar(tbStudent);
-        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        if(getSupportActionBar() != null){
+            getSupportActionBar().setDisplayShowTitleEnabled(false);
+        }
+
     }
 
     private void InitUI() {
@@ -138,7 +140,7 @@ public class StudentsActivity extends AppCompatActivity {
 
         List<String> nameClasses = new ArrayList<>();
 
-        classStudents = StudentAndClassDatabase.getInstance(StudentsActivity.this).classDAO().getListClass();
+        List<ClassStudent> classStudents = StudentAndClassDatabase.getInstance(StudentsActivity.this).classDAO().getListClass();
 
         for (int i = 0; i < classStudents.size(); i++) {
             nameClasses.add(classStudents.get(i).getName());
@@ -172,7 +174,7 @@ public class StudentsActivity extends AppCompatActivity {
                     return;
                 }
                 tvChooseClass.setText(className);
-                tvStudentTotal.setText("" + studentInClass.size());
+                tvStudentTotal.setText(String.valueOf(studentInClass.size()));
                 studentAdapter.setData(studentInClass);
                 chooseFilterClassBottomSheetDialog.dismiss();
             }

@@ -36,4 +36,5 @@
     <string name="add_class_student_to_show">\"Add classes and students to show \"</string>
     <string name="class_exit">Class exited</string>
     <string name="update_success">Update success</string>
+    <string name="unknown">Unknown</string>
 </resources>

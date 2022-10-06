@@ -15,7 +15,6 @@ public class ConfirmDeleteStudentDialogFragment extends DialogFragment {
     TextView tvMessage;
     TextView tvAgree;
     TextView tvNotAgree;
-    View view;
     OnListener listener;
 
     public ConfirmDeleteStudentDialogFragment() {
@@ -27,7 +26,7 @@ public class ConfirmDeleteStudentDialogFragment extends DialogFragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.confirm_delete_student_dialog,null);
+        View  view = inflater.inflate(R.layout.confirm_delete_student_dialog,null);
         initUi(view);
         tvAgree.setOnClickListener(new View.OnClickListener() {
             @Override

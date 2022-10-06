@@ -1,7 +1,5 @@
 package leeshani.com.roomdatabases.ui.editstudent;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
@@ -15,16 +13,18 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Locale;
 
+import leeshani.com.roomdatabases.R;
 import leeshani.com.roomdatabases.data.db.StudentAndClassDatabase;
 import leeshani.com.roomdatabases.data.model.ClassStudent;
-import leeshani.com.roomdatabases.R;
 import leeshani.com.roomdatabases.data.model.Student;
 
 public class EditStudentActivity extends AppCompatActivity {
@@ -36,6 +36,9 @@ public class EditStudentActivity extends AppCompatActivity {
     private Spinner spEditClass;
     private List<ClassStudent> classes;
     private Student student;
+    public static final String KEY_TO_PUT_STUDENT = "object_student";
+
+    public static final String DATE_FORMAT = "dd/MM/yyy";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,7 +58,7 @@ public class EditStudentActivity extends AppCompatActivity {
         setBirthday();
         setSpinnerClass();
 
-        student = (Student) getIntent().getExtras().get("object_student");
+        student = (Student) getIntent().getExtras().get(KEY_TO_PUT_STUDENT);
         if (student != null) {
             etName.setText(student.getStudentName());
             etDate.setText(student.getDate());
@@ -79,16 +82,19 @@ public class EditStudentActivity extends AppCompatActivity {
 
     private void setToolbar() {
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayShowTitleEnabled(false);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        if(getSupportActionBar() != null){
+            getSupportActionBar().setDisplayShowTitleEnabled(false);
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setDisplayShowHomeEnabled(true);
+        }
+
     }
 
     private void setBirthday() {
         ivEditCalendar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
+                SimpleDateFormat simpleDateFormat = new SimpleDateFormat(DATE_FORMAT, Locale.getDefault());
                 birthday = Calendar.getInstance();
                 int date = birthday.get(Calendar.DATE);
                 int month = birthday.get(Calendar.MONTH);
@@ -117,7 +123,7 @@ public class EditStudentActivity extends AppCompatActivity {
         for (int i = 0; i < classes.size(); i++) {
             arClasses.add(classes.get(i).getName());
         }
-        ArrayAdapter arrayAdapter = new ArrayAdapter(this, android.R.layout.simple_spinner_item, arClasses);
+        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, arClasses);
         arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spEditClass.setAdapter(arrayAdapter);
     }

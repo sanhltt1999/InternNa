@@ -4,9 +4,7 @@ import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.view.View;
 import android.widget.Button;
-import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -17,6 +15,7 @@ import androidx.appcompat.widget.Toolbar;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Locale;
 
 import leeshani.com.roomdatabases.R;
 import leeshani.com.roomdatabases.data.db.StudentAndClassDatabase;
@@ -30,6 +29,7 @@ public class AddClassActivity extends AppCompatActivity {
     private Button btAddClass;
     private Calendar dateCreate;
     private Toolbar toolbar;
+    public static final String DATE_FORMAT = "dd/MM/yyy";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,21 +40,11 @@ public class AddClassActivity extends AppCompatActivity {
 
         setToolbar();
 
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                onBack();
-            }
-        });
+        toolbar.setNavigationOnClickListener(view -> onBack());
 
         setDateCeate();
 
-        btAddClass.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                addClass();
-            }
-        });
+        btAddClass.setOnClickListener(view -> addClass());
     }
 
     private void InitUI() {
@@ -76,24 +66,21 @@ public class AddClassActivity extends AppCompatActivity {
     }
 
     private void setDateCeate() {
-        ivCalendar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
-                dateCreate = Calendar.getInstance();
-                int date = dateCreate.get(Calendar.DATE);
-                int month = dateCreate.get(Calendar.MONTH);
-                int year = dateCreate.get(Calendar.YEAR);
-                DatePickerDialog datePickerDialog = new DatePickerDialog(AddClassActivity.this, new DatePickerDialog.OnDateSetListener() {
-
-                    @Override
-                    public void onDateSet(DatePicker datePicker, int i, int i1, int i2) {
+        ivCalendar.setOnClickListener(view -> {
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat(DATE_FORMAT, Locale.getDefault());
+            dateCreate = Calendar.getInstance();
+            int date = dateCreate.get(Calendar.DATE);
+            int month = dateCreate.get(Calendar.MONTH);
+            int year = dateCreate.get(Calendar.YEAR);
+            DatePickerDialog datePickerDialog = new DatePickerDialog(AddClassActivity.this,
+                    (datePicker, i, i1, i2) -> {
                         dateCreate.set(i, i1, i2);
                         etDateCreate.setText(simpleDateFormat.format(dateCreate.getTime()));
-                    }
-                }, year, month, date);
-                datePickerDialog.show();
-            }
+                    },
+                    year,
+                    month,
+                    date);
+            datePickerDialog.show();
         });
     }
 
