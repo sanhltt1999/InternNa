@@ -83,7 +83,7 @@ public class AddStudentActivity extends AppCompatActivity {
                     ByteArrayOutputStream bytes = new ByteArrayOutputStream();
                     bitmap.compress(Bitmap.CompressFormat.JPEG,100,bytes);
                     path = MediaStore.Images.Media.insertImage(getApplicationContext()
-                            .getContentResolver(),bitmap, "val", null);
+                            .getContentResolver(),bitmap, getString(R.string.val), null);
                     imageURI = Uri.parse(path);
                     Glide.with(AddStudentActivity.this)
                             .load(imageURI)
@@ -281,7 +281,7 @@ public class AddStudentActivity extends AppCompatActivity {
                 takePhoto.launch(takePictureIntent);
             }
         });
-        takePhotoBottomDialogFragment.show(getSupportFragmentManager(),"");
+        takePhotoBottomDialogFragment.show(getSupportFragmentManager(),null);
     }
 
     private void onBack(){

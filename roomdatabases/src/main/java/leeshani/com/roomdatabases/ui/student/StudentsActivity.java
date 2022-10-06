@@ -140,7 +140,8 @@ public class StudentsActivity extends AppCompatActivity {
 
         List<String> nameClasses = new ArrayList<>();
 
-        List<ClassStudent> classStudents = StudentAndClassDatabase.getInstance(StudentsActivity.this).classDAO().getListClass();
+        List<ClassStudent> classStudents;
+        classStudents = StudentAndClassDatabase.getInstance(StudentsActivity.this).classDAO().getListClass();
 
         for (int i = 0; i < classStudents.size(); i++) {
             nameClasses.add(classStudents.get(i).getName());
@@ -149,7 +150,8 @@ public class StudentsActivity extends AppCompatActivity {
         String[] classes = new String[nameClasses.size()];
         nameClasses.toArray(classes);
 
-        ChooseFilterClassBottomSheetFragment chooseFilterClassBottomSheetDialog = new ChooseFilterClassBottomSheetFragment(classes);
+        ChooseFilterClassBottomSheetFragment chooseFilterClassBottomSheetDialog;
+        chooseFilterClassBottomSheetDialog = new ChooseFilterClassBottomSheetFragment(classes);
         chooseFilterClassBottomSheetDialog.setOnListener(new ChooseFilterClassBottomSheetFragment.OnListener() {
             @Override
             public void ChooseClass(String className) {
@@ -158,7 +160,8 @@ public class StudentsActivity extends AppCompatActivity {
                         .studentDAO().getListStudent();
 
                 if (students.size() == 0) {
-                    Toast.makeText(StudentsActivity.this, R.string.add_student_in_class, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(StudentsActivity.this, R.string.add_student_in_class,
+                            Toast.LENGTH_SHORT).show();
                     chooseFilterClassBottomSheetDialog.dismiss();
                     return;
                 }
@@ -169,7 +172,8 @@ public class StudentsActivity extends AppCompatActivity {
                     }
                 }
                 if (studentInClass.size() == 0) {
-                    Toast.makeText(StudentsActivity.this, R.string.add_student_in_class, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(StudentsActivity.this, R.string.add_student_in_class,
+                            Toast.LENGTH_SHORT).show();
                     chooseFilterClassBottomSheetDialog.dismiss();
                     return;
                 }
