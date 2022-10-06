@@ -29,7 +29,7 @@ public class StudentAdapter extends RecyclerView.Adapter<StudentAdapter.StudentV
 
     public void setData(List<Student> students) {
         this.students = students;
-        notifyItemChanged(students.size() - 1);
+        notifyDataSetChanged();
     }
 
     @NonNull
