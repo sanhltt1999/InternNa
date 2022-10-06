@@ -48,14 +48,12 @@ public class AddStudentActivity extends AppCompatActivity {
     private ImageView ivStudentImage;
     private Calendar birthday;
     private Spinner spClass;
-    private List<ClassStudent> classes;
     public static final String KEY_GET_DATA = "data";
     public static final String DATE_FORMAT = "dd/MM/yyy";
     public int change_date_to_second = 1000*60*60*24;
 
-    String unKnow;
-    Uri imageURI;
-    String path;
+    private String unKnow;
+    private Uri imageURI;
     TakePhotoBottomDialogFragment takePhotoBottomDialogFragment;
 
     private final ActivityResultLauncher<Intent> addClass = registerForActivityResult(
@@ -79,15 +77,7 @@ public class AddStudentActivity extends AppCompatActivity {
                     if(bundle == null){
                         return;
                     }
-                    Bitmap bitmap = (Bitmap) bundle.get(KEY_GET_DATA);
-                    ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-                    bitmap.compress(Bitmap.CompressFormat.JPEG,100,bytes);
-                    path = MediaStore.Images.Media.insertImage(getApplicationContext()
-                            .getContentResolver(),bitmap, getString(R.string.val), null);
-                    imageURI = Uri.parse(path);
-                    Glide.with(AddStudentActivity.this)
-                            .load(imageURI)
-                            .into(ivStudentImage);
+                    insertImageFromGallery(bundle);
                 }
             }
         }
@@ -190,9 +180,9 @@ public class AddStudentActivity extends AppCompatActivity {
                     @Override
                     public void onDateSet(DatePicker datePicker, int i, int i1, int i2) {
                         birthday.set(i, i1, i2);
-                         int distance = (int) ((birthday.getTimeInMillis()
+                         int timeDistance = (int) ((birthday.getTimeInMillis()
                                  - Calendar.getInstance().getTimeInMillis())/change_date_to_second);
-                        if (distance > 0){
+                        if (timeDistance > 0){
                             Toast.makeText(AddStudentActivity.this, R.string.choose_right_date,
                                     Toast.LENGTH_SHORT).show();
                         }else{
@@ -210,7 +200,7 @@ public class AddStudentActivity extends AppCompatActivity {
 
         arClasses.add(unKnow);
 
-        classes = StudentAndClassDatabase.getInstance(AddStudentActivity.this).classDAO().getListClass();
+        List<ClassStudent> classes = StudentAndClassDatabase.getInstance(AddStudentActivity.this).classDAO().getListClass();
 
         for (int i = 0; i < classes.size(); i++) {
             arClasses.add(classes.get(i).getName());
@@ -264,6 +254,19 @@ public class AddStudentActivity extends AppCompatActivity {
                 student.getDate());
         return list != null && !list.isEmpty();
     }
+
+    private void insertImageFromGallery(Bundle bundle){
+        Bitmap bitmap = (Bitmap) bundle.get(KEY_GET_DATA);
+        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG,100,bytes);
+        String path = MediaStore.Images.Media.insertImage(getApplicationContext()
+                .getContentResolver(), bitmap, getString(R.string.val), null);
+        imageURI = Uri.parse(path);
+        Glide.with(AddStudentActivity.this)
+                .load(imageURI)
+                .into(ivStudentImage);
+    }
+
     private void openButtonSheetTakeOrChoosePhoto(){
 
         takePhotoBottomDialogFragment = new TakePhotoBottomDialogFragment();

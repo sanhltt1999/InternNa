@@ -34,7 +34,6 @@ public class EditStudentActivity extends AppCompatActivity {
     private ImageView ivEditCalendar;
     private Calendar birthday;
     private Spinner spEditClass;
-    private List<ClassStudent> classes;
     private Student student;
     public static final String KEY_TO_PUT_STUDENT = "object_student";
 
@@ -105,8 +104,8 @@ public class EditStudentActivity extends AppCompatActivity {
                     @Override
                     public void onDateSet(DatePicker datePicker, int i, int i1, int i2) {
                         birthday.set(i, i1, i2);
-                        int distance = (int) ((birthday.getTimeInMillis() - Calendar.getInstance().getTimeInMillis())/(1000*60*60*24));
-                        if (distance > 0){
+                        int timeDistance = (int) ((birthday.getTimeInMillis() - Calendar.getInstance().getTimeInMillis())/(1000*60*60*24));
+                        if (timeDistance > 0){
                             Toast.makeText(EditStudentActivity.this, R.string.choose_right_date, Toast.LENGTH_SHORT).show();
                         }else{
                             etDate.setText(simpleDateFormat.format(birthday.getTime()));}
@@ -119,7 +118,7 @@ public class EditStudentActivity extends AppCompatActivity {
 
     private void setSpinnerClass() {
         ArrayList<String> arClasses = new ArrayList<>();
-        classes = StudentAndClassDatabase.getInstance(EditStudentActivity.this).classDAO().getListClass();
+        List<ClassStudent> classes = StudentAndClassDatabase.getInstance(EditStudentActivity.this).classDAO().getListClass();
         for (int i = 0; i < classes.size(); i++) {
             arClasses.add(classes.get(i).getName());
         }
