@@ -1,5 +1,6 @@
 package leeshani.com.content_provider_sqllite.ui.student;
 
+import static leeshani.com.content_provider_sqllite.data.SchoolDatabase.COLUMN_CLASSNAME;
 import static leeshani.com.content_provider_sqllite.data.SchoolDatabase.COLUMN_CLASS_STUDENT;
 import static leeshani.com.content_provider_sqllite.data.SchoolDatabase.COLUMN_DATE_OF_BIRTH;
 
@@ -173,7 +174,7 @@ public class StudentsActivity extends AppCompatActivity {
             }
 
         });
-        chooseFilterClassBottomSheetDialog.show(getSupportFragmentManager(), "");
+        chooseFilterClassBottomSheetDialog.show(getSupportFragmentManager(), null);
     }
 
     private void clickEditStudent(Student student) {
@@ -212,7 +213,7 @@ public class StudentsActivity extends AppCompatActivity {
         Cursor c = getContentResolver().query(uri, null, null, null, null);
         if (c != null) {
             while (c.moveToNext()) {
-                getNameClass.add(c.getString(c.getColumnIndexOrThrow(COLUMN_CLASS_STUDENT)));
+                getNameClass.add(c.getString(c.getColumnIndexOrThrow(COLUMN_CLASSNAME)));
             }
             c.close();
         } else {

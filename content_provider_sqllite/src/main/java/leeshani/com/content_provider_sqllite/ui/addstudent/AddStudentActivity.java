@@ -1,6 +1,6 @@
 package leeshani.com.content_provider_sqllite.ui.addstudent;
 
-import static leeshani.com.content_provider_sqllite.data.SchoolDatabase.COLUMN_CLASS_STUDENT;
+import static leeshani.com.content_provider_sqllite.data.SchoolDatabase.COLUMN_CLASSNAME;
 
 import android.app.DatePickerDialog;
 import android.content.ContentValues;
@@ -163,7 +163,7 @@ public class AddStudentActivity extends AppCompatActivity {
             ContentValues values = new ContentValues();
             values.put(SchoolDatabase.COLUMN_STUDENT_NAME, strStudentName);
             values.put(SchoolDatabase.COLUMN_DATE_OF_BIRTH, strBirthday);
-            values.put(SchoolDatabase.COLUMN_CLASSNAME, strClass);
+            values.put(SchoolDatabase.COLUMN_CLASS_STUDENT, strClass);
 
             getContentResolver().insert(SchoolContentProvider.CONTENT_URI_STUDENT, values);
 
@@ -178,7 +178,7 @@ public class AddStudentActivity extends AppCompatActivity {
         Cursor c = getContentResolver().query(uri, null, null, null, null);
         if (c != null) {
             while (c.moveToNext()) {
-                getNameClass.add(c.getString(c.getColumnIndexOrThrow(COLUMN_CLASS_STUDENT)));
+                getNameClass.add(c.getString(c.getColumnIndexOrThrow(COLUMN_CLASSNAME)));
             }
             c.close();
         } else {

@@ -21,6 +21,7 @@ import androidx.appcompat.widget.Toolbar;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Locale;
 
 public class AddStudentActivity extends AppCompatActivity {
 
@@ -30,6 +31,7 @@ public class AddStudentActivity extends AppCompatActivity {
     private ImageView ivCalender;
     private Calendar birthday;
     private Spinner spClass;
+    private static final String DATE_FORMAT = "dd/MM/yyyy";
 
     String unknown = "Unknown";
 
@@ -82,16 +84,18 @@ public class AddStudentActivity extends AppCompatActivity {
 
     private void setToolbar() {
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayShowTitleEnabled(false);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        if(getSupportActionBar() != null){
+            getSupportActionBar().setDisplayShowTitleEnabled(false);
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setDisplayShowHomeEnabled(true);
+        }
     }
 
     private void setBirthday() {
         ivCalender.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
+                SimpleDateFormat simpleDateFormat = new SimpleDateFormat(DATE_FORMAT, Locale.getDefault());
                 birthday = Calendar.getInstance();
                 int date = birthday.get(Calendar.DATE);
                 int month = birthday.get(Calendar.MONTH);
@@ -113,7 +117,7 @@ public class AddStudentActivity extends AppCompatActivity {
 
         ArrayList<String> arClasses  = getClassName();
         arClasses.add(unknown);
-        ArrayAdapter arrayAdapter = new ArrayAdapter(this, android.R.layout.simple_spinner_item, arClasses);
+        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, arClasses);
         arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spClass.setAdapter(arrayAdapter);
     }
@@ -124,12 +128,12 @@ public class AddStudentActivity extends AppCompatActivity {
         Cursor c = getContentResolver().query(CONTENT_URI_CLASS, null, null, null, null);
         if (c != null) {
             while (c.moveToNext()) {
-                getNameClass.add (c.getString(c.getColumnIndexOrThrow("class_name")));
+                getNameClass.add (c.getString(c.getColumnIndexOrThrow(COLUMN_CLASSNAME)));
             }
             c.close();
         }else{
 
-            Toast.makeText(this, "Please add new class", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this,R.string.pls_add_new_class, Toast.LENGTH_SHORT).show();
         }
         return getNameClass;
     }
@@ -140,7 +144,7 @@ public class AddStudentActivity extends AppCompatActivity {
         String strClass;
         if (spClass.getSelectedItem() == unknown) {
 
-            Toast.makeText(AddStudentActivity.this, "Please choose or add class", Toast.LENGTH_LONG).show();
+            Toast.makeText(AddStudentActivity.this, R.string.choose_or_add_class, Toast.LENGTH_LONG).show();
             return;
 
         } else {
@@ -148,7 +152,7 @@ public class AddStudentActivity extends AppCompatActivity {
         }
         if (TextUtils.isEmpty(strStudentName) || TextUtils.isEmpty(strBirthday) || TextUtils.isEmpty(strClass)) {
 
-            Toast.makeText(AddStudentActivity.this, "Please enter information", Toast.LENGTH_LONG).show();
+            Toast.makeText(AddStudentActivity.this,R.string.enter_information, Toast.LENGTH_LONG).show();
 
         } else {
             ContentValues values = new ContentValues();
