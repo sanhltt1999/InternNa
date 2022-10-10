@@ -41,6 +41,10 @@ import leeshani.com.roomdatabases.ui.addclass.AddClassActivity;
 
 public class AddStudentActivity extends AppCompatActivity {
 
+    public static final String KEY_GET_DATA = "data";
+    public static final String DATE_FORMAT = "dd/MM/yyy";
+    public int change_date_to_second = 1000 * 60 * 60 * 24;
+    TakePhotoBottomDialogFragment takePhotoBottomDialogFragment;
     private Toolbar toolbar;
     private EditText etName, etBirthday;
     private Button btnAddClass, btnAddStudent;
@@ -48,57 +52,53 @@ public class AddStudentActivity extends AppCompatActivity {
     private ImageView ivStudentImage;
     private Calendar birthday;
     private Spinner spClass;
-    public static final String KEY_GET_DATA = "data";
-    public static final String DATE_FORMAT = "dd/MM/yyy";
-    public int change_date_to_second = 1000*60*60*24;
-
-    private String unKnow;
     private Uri imageURI;
-    TakePhotoBottomDialogFragment takePhotoBottomDialogFragment;
+    private final String unKnow = "Unknown";
 
     private final ActivityResultLauncher<Intent> addClass = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
             new ActivityResultCallback<ActivityResult>() {
                 @Override
                 public void onActivityResult(ActivityResult result) {
-                    if (result.getResultCode() == RESULT_CANCELED){
+                    if (result.getResultCode() == RESULT_CANCELED) {
                         setSpinner();
                     }
                 }
             });
+
     private final ActivityResultLauncher<Intent> takePhoto = registerForActivityResult
             (new ActivityResultContracts.StartActivityForResult(),
                     new ActivityResultCallback<ActivityResult>() {
-        @Override
-        public void onActivityResult(ActivityResult result) {
-            if(result.getResultCode() == RESULT_OK){
-                if(result.getData() != null){
-                    Bundle bundle = result.getData().getExtras();
-                    if(bundle == null){
-                        return;
-                    }
-                    insertImageFromGallery(bundle);
-                }
-            }
-        }
-    });
+                        @Override
+                        public void onActivityResult(ActivityResult result) {
+                            if (result.getResultCode() == RESULT_OK) {
+                                if (result.getData() != null) {
+                                    Bundle bundle = result.getData().getExtras();
+                                    if (bundle == null) {
+                                        return;
+                                    }
+                                    insertImageFromGallery(bundle);
+                                }
+                            }
+                        }
+                    });
 
     private final ActivityResultLauncher<Intent> getImage = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
             new ActivityResultCallback<ActivityResult>() {
-        @Override
-        public void onActivityResult(ActivityResult result) {
-            if (result.getResultCode() == RESULT_OK){
-                if(result.getData() != null){
-                    imageURI = result.getData().getData();
-                    Glide.with(AddStudentActivity.this)
-                            .load(imageURI)
-                            .into(ivStudentImage);
-                }
+                @Override
+                public void onActivityResult(ActivityResult result) {
+                    if (result.getResultCode() == RESULT_OK) {
+                        if (result.getData() != null) {
+                            imageURI = result.getData().getData();
+                            Glide.with(AddStudentActivity.this)
+                                    .load(imageURI)
+                                    .into(ivStudentImage);
+                        }
 
-            }
-        }
-    });
+                    }
+                }
+            });
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -157,7 +157,7 @@ public class AddStudentActivity extends AppCompatActivity {
 
     private void setToolbar() {
         setSupportActionBar(toolbar);
-        if(getSupportActionBar() != null){
+        if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayShowTitleEnabled(false);
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setDisplayShowHomeEnabled(true);
@@ -177,25 +177,25 @@ public class AddStudentActivity extends AppCompatActivity {
                 DatePickerDialog datePickerDialog = new DatePickerDialog(
                         AddStudentActivity.this,
                         new DatePickerDialog.OnDateSetListener() {
-                    @Override
-                    public void onDateSet(DatePicker datePicker, int i, int i1, int i2) {
-                        birthday.set(i, i1, i2);
-                         int timeDistance = (int) ((birthday.getTimeInMillis()
-                                 - Calendar.getInstance().getTimeInMillis())/change_date_to_second);
-                        if (timeDistance > 0){
-                            Toast.makeText(AddStudentActivity.this, R.string.choose_right_date,
-                                    Toast.LENGTH_SHORT).show();
-                        }else{
-                        etBirthday.setText(simpleDateFormat.format(birthday.getTime()));}
-                    }
-                }, year, month, date);
+                            @Override
+                            public void onDateSet(DatePicker datePicker, int i, int i1, int i2) {
+                                birthday.set(i, i1, i2);
+                                int timeDistance = (int) ((birthday.getTimeInMillis()
+                                        - Calendar.getInstance().getTimeInMillis()) / change_date_to_second);
+                                if (timeDistance > 0) {
+                                    Toast.makeText(AddStudentActivity.this, R.string.choose_right_date,
+                                            Toast.LENGTH_SHORT).show();
+                                } else {
+                                    etBirthday.setText(simpleDateFormat.format(birthday.getTime()));
+                                }
+                            }
+                        }, year, month, date);
                 datePickerDialog.show();
             }
         });
     }
 
     private void setSpinner() {
-        unKnow = getString(R.string.unknown);
         ArrayList<String> arClasses = new ArrayList<>();
 
         arClasses.add(unKnow);
@@ -206,7 +206,7 @@ public class AddStudentActivity extends AppCompatActivity {
             arClasses.add(classes.get(i).getName());
         }
 
-        ArrayAdapter <String> arrayAdapter = new ArrayAdapter <>(this, android.R.layout.simple_spinner_item, arClasses) ;
+        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, arClasses);
 
         arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spClass.setAdapter(arrayAdapter);
@@ -217,19 +217,19 @@ public class AddStudentActivity extends AppCompatActivity {
         String strBirthday = etBirthday.getText().toString().trim();
         String strClass;
         String imageUri;
-        if(  imageURI == null){
+        if (imageURI == null) {
             Toast.makeText(AddStudentActivity.this, R.string.add_photo, Toast.LENGTH_SHORT).show();
             return;
-        }else {
+        } else {
             imageUri = imageURI.toString().trim();
         }
         if (spClass.getSelectedItem().toString().equals(unKnow)) {
-            Toast.makeText(AddStudentActivity.this,R.string.choose_add_class, Toast.LENGTH_LONG).show();
+            Toast.makeText(AddStudentActivity.this, R.string.choose_add_class, Toast.LENGTH_LONG).show();
             return;
         } else {
             strClass = spClass.getSelectedItem().toString();
         }
-        if (TextUtils.isEmpty(strStudentName) || TextUtils.isEmpty(strBirthday)){
+        if (TextUtils.isEmpty(strStudentName) || TextUtils.isEmpty(strBirthday)) {
             Toast.makeText(AddStudentActivity.this, R.string.add_information, Toast.LENGTH_LONG).show();
         } else {
 
@@ -251,14 +251,14 @@ public class AddStudentActivity extends AppCompatActivity {
     private boolean checkExit(Student student) {
         List<Student> list = StudentAndClassDatabase.getInstance(this).
                 studentDAO().checkStudent(student.getStudentName(),
-                student.getDate());
+                        student.getDate());
         return list != null && !list.isEmpty();
     }
 
-    private void insertImageFromGallery(Bundle bundle){
+    private void insertImageFromGallery(Bundle bundle) {
         Bitmap bitmap = (Bitmap) bundle.get(KEY_GET_DATA);
         ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.JPEG,100,bytes);
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
         String path = MediaStore.Images.Media.insertImage(getApplicationContext()
                 .getContentResolver(), bitmap, getString(R.string.val), null);
         imageURI = Uri.parse(path);
@@ -267,7 +267,7 @@ public class AddStudentActivity extends AppCompatActivity {
                 .into(ivStudentImage);
     }
 
-    private void openButtonSheetTakeOrChoosePhoto(){
+    private void openButtonSheetTakeOrChoosePhoto() {
 
         takePhotoBottomDialogFragment = new TakePhotoBottomDialogFragment();
 
@@ -284,10 +284,10 @@ public class AddStudentActivity extends AppCompatActivity {
                 takePhoto.launch(takePictureIntent);
             }
         });
-        takePhotoBottomDialogFragment.show(getSupportFragmentManager(),null);
+        takePhotoBottomDialogFragment.show(getSupportFragmentManager(), null);
     }
 
-    private void onBack(){
+    private void onBack() {
         Intent intent = new Intent();
         setResult(RESULT_OK, intent);
         finish();

@@ -48,10 +48,10 @@
         android:id="@+id/tvClassStudentItem"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="2dp"
         android:layout_toStartOf="@+id/tvClassName"
         android:text="@string/class_name_student_item"
         android:textColor="@color/black"
-        android:layout_marginEnd="2dp"
         android:textSize="13sp" />
 
     <TextView
@@ -61,13 +61,13 @@
         android:layout_below="@+id/tvClassName"
         android:layout_alignParentEnd="true"
         android:layout_marginTop="10dp"
+        android:background="#FBF7F7"
         android:gravity="center"
         android:padding="4dp"
         android:text="@string/delete"
         android:textAllCaps="false"
         android:textColor="@color/black"
-        android:textSize="11sp"
-        android:background="#FBF7F7"/>
+        android:textSize="11sp" />
 
     <TextView
         android:id="@+id/tvEdit"

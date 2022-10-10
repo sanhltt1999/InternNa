@@ -31,48 +31,47 @@ import leeshani.com.roomdatabases.ui.student.adapter.StudentAdapter;
 
 public class StudentsActivity extends AppCompatActivity {
 
+    public static final String KEY_TO_PUT_STUDENT = "object_student";
     private Toolbar tbStudent;
     private ImageView imAddStudent;
     private RecyclerView rvStudent;
     private TextView tvChooseClass;
     private TextView tvStudentTotal;
-
     private StudentAdapter studentAdapter;
     private List<Student> students;
-    public static final String KEY_TO_PUT_STUDENT = "object_student";
+
     ConfirmDeleteStudentDialogFragment confirmDeleteDialog;
 
     private final ActivityResultLauncher<Intent> backActivity = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
             new ActivityResultCallback<ActivityResult>() {
-        @Override
-        public void onActivityResult(ActivityResult result) {
-            if(result.getResultCode() == RESULT_OK){
+                @Override
+                public void onActivityResult(ActivityResult result) {
+                    if (result.getResultCode() == RESULT_OK) {
 
-                students = StudentAndClassDatabase.getInstance(StudentsActivity.this)
-                        .studentDAO().getListStudent();
-                tvStudentTotal.setText(String.valueOf(students.size()));
-                studentAdapter.setData(students);
-            }
-
-        }
-    });
+                        students = StudentAndClassDatabase.getInstance(StudentsActivity.this)
+                                .studentDAO().getListStudent();
+                        tvStudentTotal.setText(String.valueOf(students.size()));
+                        studentAdapter.setData(students);
+                    }
+                }
+            });
 
     private final ActivityResultLauncher<Intent> deleteStudent = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
             new ActivityResultCallback<ActivityResult>() {
-        @Override
-        public void onActivityResult(ActivityResult result) {
-            if(result.getResultCode() == RESULT_CANCELED){
-                students = StudentAndClassDatabase.getInstance(StudentsActivity.this)
-                        .studentDAO().getListStudent();
+                @Override
+                public void onActivityResult(ActivityResult result) {
+                    if (result.getResultCode() == RESULT_CANCELED) {
+                        students = StudentAndClassDatabase.getInstance(StudentsActivity.this)
+                                .studentDAO().getListStudent();
 
-                rvStudent.setAdapter(studentAdapter);
-                tvStudentTotal.setText(String.valueOf(students.size()));
-                studentAdapter.setData(students);
-            }
-        }
-    });
+                        rvStudent.setAdapter(studentAdapter);
+                        tvStudentTotal.setText(String.valueOf(students.size()));
+                        studentAdapter.setData(students);
+                    }
+                }
+            });
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -114,18 +113,16 @@ public class StudentsActivity extends AppCompatActivity {
         imAddStudent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                backActivity.launch(new Intent(StudentsActivity.this,AddStudentActivity.class));
+                backActivity.launch(new Intent(StudentsActivity.this, AddStudentActivity.class));
             }
         });
-
     }
 
     private void setToolbar() {
         setSupportActionBar(tbStudent);
-        if(getSupportActionBar() != null){
+        if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayShowTitleEnabled(false);
         }
-
     }
 
     private void InitUI() {
@@ -182,8 +179,8 @@ public class StudentsActivity extends AppCompatActivity {
                 studentAdapter.setData(studentInClass);
                 chooseFilterClassBottomSheetDialog.dismiss();
             }
-
         });
+
         chooseFilterClassBottomSheetDialog.show(getSupportFragmentManager(), null);
     }
 
@@ -200,6 +197,7 @@ public class StudentsActivity extends AppCompatActivity {
         confirmDeleteDialog.setOnListener(new ConfirmDeleteStudentDialogFragment.OnListener() {
             @Override
             public void confirmDelete() {
+
                 StudentAndClassDatabase.getInstance(StudentsActivity.this).studentDAO().deleteStudent(student);
                 students = StudentAndClassDatabase.getInstance(StudentsActivity.this)
                         .studentDAO().getListStudent();
@@ -210,8 +208,7 @@ public class StudentsActivity extends AppCompatActivity {
                 confirmDeleteDialog.dismiss();
             }
         });
-        confirmDeleteDialog.show(getSupportFragmentManager(),ConfirmDeleteStudentDialogFragment.TAG);
-
+        confirmDeleteDialog.show(getSupportFragmentManager(), ConfirmDeleteStudentDialogFragment.TAG);
     }
 
 }

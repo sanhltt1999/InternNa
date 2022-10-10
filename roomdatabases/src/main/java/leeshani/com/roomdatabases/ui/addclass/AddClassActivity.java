@@ -22,6 +22,7 @@ import leeshani.com.roomdatabases.data.db.StudentAndClassDatabase;
 import leeshani.com.roomdatabases.data.model.ClassStudent;
 
 public class AddClassActivity extends AppCompatActivity {
+    public static final String DATE_FORMAT = "dd/MM/yyy";
     private EditText etClassName;
     private EditText etDateCreate;
     private EditText etTeacher;
@@ -29,7 +30,6 @@ public class AddClassActivity extends AppCompatActivity {
     private Button btAddClass;
     private Calendar dateCreate;
     private Toolbar toolbar;
-    public static final String DATE_FORMAT = "dd/MM/yyy";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,7 +58,7 @@ public class AddClassActivity extends AppCompatActivity {
 
     private void setToolbar() {
         setSupportActionBar(toolbar);
-        if(getSupportActionBar() != null){
+        if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayShowTitleEnabled(false);
         }
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -124,7 +124,7 @@ public class AddClassActivity extends AppCompatActivity {
 
     public void onBack() {
         Intent intent = new Intent();
-        setResult(RESULT_CANCELED,intent);
+        setResult(RESULT_CANCELED, intent);
         finish();
     }
 

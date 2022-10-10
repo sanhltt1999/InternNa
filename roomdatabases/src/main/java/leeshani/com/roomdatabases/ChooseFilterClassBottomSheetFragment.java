@@ -46,20 +46,24 @@ public class ChooseFilterClassBottomSheetFragment extends BottomSheetDialogFragm
                 dismiss();
             }
         });
-        if(classStudents.length == 0){
+        if (classStudents.length == 0) {
+
             Toast.makeText(getActivity(), R.string.add_class_student_to_show, Toast.LENGTH_SHORT).show();
-        }else {
-        npClass.setMinValue(0);
-        npClass.setMaxValue(classStudents.length-1);
-        npClass.setDisplayedValues(classStudents);
 
-        btnApply.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                listener.ChooseClass(classStudents[npClass.getValue()]);
+        } else {
+            npClass.setMinValue(0);
+            npClass.setMaxValue(classStudents.length - 1);
+            npClass.setDisplayedValues(classStudents);
 
-            }
-        });}
+            btnApply.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (npClass.getValue() <= classStudents.length) {
+                        listener.ChooseClass(classStudents[npClass.getValue()]);
+                    }
+                }
+            });
+        }
         return rootView;
     }
 

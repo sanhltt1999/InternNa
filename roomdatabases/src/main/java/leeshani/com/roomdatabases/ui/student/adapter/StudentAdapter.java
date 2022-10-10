@@ -14,14 +14,8 @@ import leeshani.com.roomdatabases.R;
 import leeshani.com.roomdatabases.data.model.Student;
 
 public class StudentAdapter extends RecyclerView.Adapter<StudentAdapter.StudentViewHolder> {
-    private List<Student> students;
     private final IClickStudent iClickStudent;
-
-    public interface IClickStudent {
-        void editStudent(Student student);
-
-        void deleteStudent(Student student);
-    }
+    private List<Student> students;
 
     public StudentAdapter(IClickStudent iClickStudent) {
         this.iClickStudent = iClickStudent;
@@ -67,13 +61,19 @@ public class StudentAdapter extends RecyclerView.Adapter<StudentAdapter.StudentV
         return students.size();
     }
 
-    public class StudentViewHolder extends RecyclerView.ViewHolder {
+    public interface IClickStudent {
+        void editStudent(Student student);
 
-        private TextView tvStudentName;
-        private TextView tvDate;
-        private TextView tvClassName;
-        private TextView tvDelete;
-        private TextView tvEdit;
+        void deleteStudent(Student student);
+    }
+
+    public static class StudentViewHolder extends RecyclerView.ViewHolder {
+
+        private final TextView tvStudentName;
+        private final TextView tvDate;
+        private final TextView tvClassName;
+        private final TextView tvDelete;
+        private final TextView tvEdit;
 
         public StudentViewHolder(@NonNull View itemView) {
             super(itemView);

@@ -28,6 +28,9 @@ import leeshani.com.roomdatabases.data.model.ClassStudent;
 import leeshani.com.roomdatabases.data.model.Student;
 
 public class EditStudentActivity extends AppCompatActivity {
+    public static final String KEY_TO_PUT_STUDENT = "object_student";
+    public static final String DATE_FORMAT = "dd/MM/yyy";
+    public int change_date_to_second = 1000 * 60 * 60 * 24;
     private Toolbar toolbar;
     private EditText etName, etDate;
     private Button btEdit;
@@ -35,9 +38,6 @@ public class EditStudentActivity extends AppCompatActivity {
     private Calendar birthday;
     private Spinner spEditClass;
     private Student student;
-    public static final String KEY_TO_PUT_STUDENT = "object_student";
-
-    public static final String DATE_FORMAT = "dd/MM/yyy";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,7 +81,7 @@ public class EditStudentActivity extends AppCompatActivity {
 
     private void setToolbar() {
         setSupportActionBar(toolbar);
-        if(getSupportActionBar() != null){
+        if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayShowTitleEnabled(false);
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setDisplayShowHomeEnabled(true);
@@ -104,11 +104,12 @@ public class EditStudentActivity extends AppCompatActivity {
                     @Override
                     public void onDateSet(DatePicker datePicker, int i, int i1, int i2) {
                         birthday.set(i, i1, i2);
-                        int timeDistance = (int) ((birthday.getTimeInMillis() - Calendar.getInstance().getTimeInMillis())/(1000*60*60*24));
-                        if (timeDistance > 0){
+                        int timeDistance = (int) ((birthday.getTimeInMillis() - Calendar.getInstance().getTimeInMillis()) / change_date_to_second);
+                        if (timeDistance > 0) {
                             Toast.makeText(EditStudentActivity.this, R.string.choose_right_date, Toast.LENGTH_SHORT).show();
-                        }else{
-                            etDate.setText(simpleDateFormat.format(birthday.getTime()));}
+                        } else {
+                            etDate.setText(simpleDateFormat.format(birthday.getTime()));
+                        }
                     }
                 }, year, month, date);
                 datePickerDialog.show();
@@ -149,7 +150,8 @@ public class EditStudentActivity extends AppCompatActivity {
 
         Toast.makeText(this, R.string.update_success, Toast.LENGTH_SHORT).show();
     }
-    private void onBack(){
+
+    private void onBack() {
         Intent intentEditResult = new Intent();
         setResult(RESULT_CANCELED, intentEditResult);
         finish();
