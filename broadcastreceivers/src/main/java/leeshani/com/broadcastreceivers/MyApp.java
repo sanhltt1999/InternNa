@@ -13,6 +13,7 @@ public class MyApp extends Application {
         super.onCreate();
         createNotificationChannel();
     }
+
     private void createNotificationChannel() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             CharSequence name = getString(R.string.channel_name);

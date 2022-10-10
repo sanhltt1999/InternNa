@@ -52,16 +52,16 @@ public class MainActivity extends AppCompatActivity {
         });
         IntentFilter calculationFilter = new IntentFilter(ACTION);
 
-        registerReceiver(calculationReceiver,calculationFilter);
+        registerReceiver(calculationReceiver, calculationFilter);
 
     }
 
-    private final BroadcastReceiver networkReceivers =  new BroadcastReceiver() {
+    private final BroadcastReceiver networkReceivers = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
             Bundle extras = intent.getExtras();
             NetworkInfo networkInfo = extras.getParcelable(KEY_CHECK_WIFI);
-            if (networkInfo !=null){
+            if (networkInfo != null) {
                 NetworkInfo.State state = networkInfo.getState();
                 switchWifi.setChecked(state == NetworkInfo.State.CONNECTED);
             }
@@ -71,64 +71,66 @@ public class MainActivity extends AppCompatActivity {
     private final BroadcastReceiver calculationReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            if(ACTION.equals(intent.getAction())){
-                int phepTinh = intent.getIntExtra(KEY_INTENT_TO_BROADCAST, 0);
-                int a = Integer.parseInt(etNhap_a.getText().toString());
-                int b = Integer.parseInt(etNhap_b.getText().toString());
-                switch (phepTinh){
-                    case ACTION_CONG:
-                        showResult("+",a+b);
-                        break;
-                    case ACTION_TRU:
-                        showResult("-", a-b);
-                        break;
-                    case ACTION_NHAN:
-                        showResult("*", a*b);
-                        break;
-                    case ACTION_CHIA:
-                        if(b==0){
-                            Toast.makeText(context, R.string.enter_khac_0, Toast.LENGTH_SHORT).show();
-                        }
-                        else{
-                            showResult("/", a/b);
-                        }
-                        break;
+            if(intent.getIntExtra(KEY_INTENT_TO_BROADCAST,0) != 0){
+                if (ACTION.equals(intent.getAction())) {
+                    int phepTinh = intent.getIntExtra(KEY_INTENT_TO_BROADCAST, 0);
+                    int a = Integer.parseInt(etNhap_a.getText().toString());
+                    int b = Integer.parseInt(etNhap_b.getText().toString());
+                    switch (phepTinh) {
+                        case ACTION_CONG:
+                            showResult("+", a + b);
+                            break;
+                        case ACTION_TRU:
+                            showResult("-", a - b);
+                            break;
+                        case ACTION_NHAN:
+                            showResult("*", a * b);
+                            break;
+                        case ACTION_CHIA:
+                            if (b == 0) {
+                                Toast.makeText(context, R.string.enter_khac_0, Toast.LENGTH_SHORT).show();
+                            } else {
+                                showResult("/", a / b);
+                            }
+                            break;
+                    }
                 }
             }
+
         }
     };
 
     private void sendNotify() {
-        RemoteViews notificationView = new RemoteViews(getPackageName(),R.layout.custom_notification);
+        RemoteViews notificationView = new RemoteViews(getPackageName(), R.layout.custom_notification);
         setViewNotification(notificationView);
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this, MyApp.CHANNEL_ID)
                 .setSmallIcon(R.drawable.ic_bell)
                 .setCustomContentView(notificationView);
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
-        notificationManager.notify(ID_CHANNEL,builder.build());
+        notificationManager.notify(ID_CHANNEL, builder.build());
 
     }
 
-    private PendingIntent getPendingIntent(Context context, int action){
+    private PendingIntent getPendingIntent(Context context, int action) {
         Intent intent = new Intent(ACTION);
-        intent.putExtra(KEY_INTENT_TO_BROADCAST ,action);
-        return PendingIntent.getBroadcast(context.getApplicationContext(),action,intent,PendingIntent.FLAG_CANCEL_CURRENT);
+        intent.putExtra(KEY_INTENT_TO_BROADCAST, action);
+        return PendingIntent.getBroadcast(context.getApplicationContext(), action, intent, PendingIntent.FLAG_UPDATE_CURRENT);
     }
 
-    private void setViewNotification(RemoteViews notificationView){
+    private void setViewNotification(RemoteViews notificationView) {
         String message = "a = " + etNhap_a.getText().toString() + " ,b = " + etNhap_b.getText().toString();
-        String title  = getString(R.string.title_notify);
-        notificationView.setTextViewText(R.id.tvTitle,title);
-        notificationView.setTextViewText(R.id.tvMessage,message);
-        notificationView.setOnClickPendingIntent(R.id.btCong,getPendingIntent(this,ACTION_CONG));
+        String title = getString(R.string.title_notify);
+        notificationView.setTextViewText(R.id.tvTitle, title);
+        notificationView.setTextViewText(R.id.tvMessage, message);
+        notificationView.setOnClickPendingIntent(R.id.btCong, getPendingIntent(this, ACTION_CONG));
         notificationView.setOnClickPendingIntent(R.id.btTru, getPendingIntent(this, ACTION_TRU));
-        notificationView.setOnClickPendingIntent(R.id.btNhan, getPendingIntent(this,ACTION_NHAN));
-        notificationView.setOnClickPendingIntent(R.id.btChia, getPendingIntent(this,ACTION_CHIA));
+        notificationView.setOnClickPendingIntent(R.id.btNhan, getPendingIntent(this, ACTION_NHAN));
+        notificationView.setOnClickPendingIntent(R.id.btChia, getPendingIntent(this, ACTION_CHIA));
     }
 
-    private void showResult(String phepTinh, int result){
-      String resultShow = etNhap_a.getText().toString()+" " + phepTinh + " " + etNhap_b.getText().toString() +" = "+result;
-        tvShowResult.setText(resultShow );
+    private void showResult(String phepTinh, int result) {
+        String resultShow = etNhap_a.getText().toString() + " " + phepTinh + " " + etNhap_b.getText().toString() + " = " + result;
+        tvShowResult.setText(resultShow);
     }
 
     @Override
@@ -138,7 +140,7 @@ public class MainActivity extends AppCompatActivity {
         unregisterReceiver(calculationReceiver);
     }
 
-    private void InitUI(){
+    private void InitUI() {
         switchWifi = findViewById(R.id.sw);
         etNhap_a = findViewById(R.id.etNhap_a);
         etNhap_b = findViewById(R.id.etNhapb);
