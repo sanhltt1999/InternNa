@@ -1,7 +1,5 @@
 package leeshani.com.content_provider_sqllite.ui.addclass;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.app.DatePickerDialog;
 import android.content.ContentValues;
 import android.os.Bundle;
@@ -13,16 +11,19 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Locale;
 
 import leeshani.com.content_provider_sqllite.R;
 import leeshani.com.content_provider_sqllite.SchoolContentProvider;
 import leeshani.com.content_provider_sqllite.data.SchoolDatabase;
 
 public class AddClassActivity extends AppCompatActivity {
+    private static final String DATE_FORMAT = "dd/MM/yyyy";
     private EditText etClassName, etDateCreate, etTeacher;
     private ImageView ivCalendar;
     private Button btAddClass;
@@ -67,16 +68,18 @@ public class AddClassActivity extends AppCompatActivity {
 
     private void setToolbar() {
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayShowTitleEnabled(false);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayShowTitleEnabled(false);
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setDisplayShowHomeEnabled(true);
+        }
     }
 
     private void setDateCeate() {
         ivCalendar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
+                SimpleDateFormat simpleDateFormat = new SimpleDateFormat(DATE_FORMAT, Locale.getDefault());
                 dateCreate = Calendar.getInstance();
                 int date = dateCreate.get(Calendar.DATE);
                 int month = dateCreate.get(Calendar.MONTH);
@@ -100,7 +103,7 @@ public class AddClassActivity extends AppCompatActivity {
         String teacher = etTeacher.getText().toString().trim();
 
         if (TextUtils.isEmpty(nameClass) || TextUtils.isEmpty(dateCreate) || TextUtils.isEmpty(teacher)) {
-            Toast.makeText(this, "please enter entire information", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, R.string.enter_information, Toast.LENGTH_SHORT).show();
             return;
         }
         ContentValues values = new ContentValues();

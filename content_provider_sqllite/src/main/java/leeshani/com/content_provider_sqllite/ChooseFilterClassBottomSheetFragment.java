@@ -16,12 +16,11 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
 public class ChooseFilterClassBottomSheetFragment extends BottomSheetDialogFragment {
 
-    View rootView;
-    ImageView ivClose;
-    Button btnApply;
-    NumberPicker npClass;
-    String[] classStudents;
-    OnListener listener;
+    private ImageView ivClose;
+    private Button btnApply;
+    private NumberPicker npClass;
+    private final String[] classStudents;
+    private OnListener listener;
 
     public ChooseFilterClassBottomSheetFragment(String[] classStudents) {
         this.classStudents = classStudents;
@@ -34,7 +33,7 @@ public class ChooseFilterClassBottomSheetFragment extends BottomSheetDialogFragm
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        rootView = inflater.inflate(R.layout.bottom_sheet,null);
+        View rootView = inflater.inflate(R.layout.bottom_sheet, container, false);
 
         ivClose = rootView.findViewById(R.id.ivCloseBs);
         btnApply = rootView.findViewById(R.id.btnApplyClass);
@@ -46,9 +45,9 @@ public class ChooseFilterClassBottomSheetFragment extends BottomSheetDialogFragm
                 dismiss();
             }
         });
-        if(classStudents.length == 0){
-            Toast.makeText(getActivity(), "Add classes and students to show ", Toast.LENGTH_SHORT).show();
-        }else {
+        if (classStudents.length == 0) {
+            Toast.makeText(getActivity(), R.string.add_class_or_student, Toast.LENGTH_SHORT).show();
+        } else {
             npClass.setMinValue(0);
             npClass.setMaxValue(classStudents.length - 1);
             npClass.setDisplayedValues(classStudents);

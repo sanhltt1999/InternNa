@@ -20,4 +20,15 @@
     <string name="apply">Apply</string>
     <string name="choose_tha_date">Choose tha date</string>
     <string name="edit_student">Edit student</string>
+    <string name="delete_student">Delete student</string>
+    <string name="are_you_sure">Are you sure?</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="add_class_or_student">Add classes and students to show</string>
+    <string name="add_student_in_chosen">Please add student in chosen class</string>
+    <string name="pls_add_class">Please add new class</string>
+    <string name="choose_or_add_class">Please choose or add class</string>
+    <string name="enter_information">Please enter information</string>
+    <string name="pls_add_new_class">Please add new class</string>
+    <string name="edit_success">Edit successfully</string>
 </resources>

@@ -15,7 +15,7 @@ import leeshani.com.content_provider_sqllite.data.model.Student;
 
 public class StudentAdapter extends RecyclerView.Adapter<StudentAdapter.StudentViewHolder> {
     private List<Student> students;
-    private IClickStudent iClickStudent;
+    private final IClickStudent iClickStudent;
 
     public interface IClickStudent {
         void editStudent(Student student);
@@ -29,7 +29,7 @@ public class StudentAdapter extends RecyclerView.Adapter<StudentAdapter.StudentV
 
     public void setData(List<Student> students) {
         this.students = students;
-        notifyItemChanged(students.size() - 1);
+        notifyDataSetChanged();
     }
 
     @NonNull
@@ -67,13 +67,13 @@ public class StudentAdapter extends RecyclerView.Adapter<StudentAdapter.StudentV
         return students.size();
     }
 
-    public class StudentViewHolder extends RecyclerView.ViewHolder {
+    public static class StudentViewHolder extends RecyclerView.ViewHolder {
 
-        private TextView tvStudentName;
-        private TextView tvDate;
-        private TextView tvClassName;
-        private TextView tvDelete;
-        private TextView tvEdit;
+        private final TextView tvStudentName;
+        private final TextView tvDate;
+        private final TextView tvClassName;
+        private final TextView tvDelete;
+        private final TextView tvEdit;
 
         public StudentViewHolder(@NonNull View itemView) {
             super(itemView);

@@ -1,20 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="leeshani.com.content_provider_sqllite">
-<!--    <permission-->
-<!--        android:name="android.permission.permRead"-->
-<!--        android:protectionLevel="normal" />-->
-<!--    <permission-->
-<!--        android:name="android.permission.permWrite" />-->
-<!--    <permission-->
-<!--        android:name="android.permission.permWrite"-->
-<!--        android:label="Write Database"-->
-<!--        android:protectionLevel="normal" />-->
-
-<!--    <permission-->
-<!--        android:name="android.permission.permRead"-->
-<!--        android:label="Read Database"-->
-<!--        android:protectionLevel="normal" />-->
 
     <application
         android:allowBackup="true"
@@ -41,12 +27,13 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <provider
-            android:authorities="com.example.content_provider_sqllite.provider"
             android:name=".SchoolContentProvider"
+            android:authorities="com.example.content_provider_sqllite.provider"
             android:enabled="true"
             android:exported="true">
-            </provider>
+        </provider>
 
     </application>
 

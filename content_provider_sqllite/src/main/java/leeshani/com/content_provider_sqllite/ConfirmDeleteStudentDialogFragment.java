@@ -14,6 +14,7 @@ public class ConfirmDeleteStudentDialogFragment extends DialogFragment {
 
     public ConfirmDeleteStudentDialogFragment() {
     }
+
     public void setOnListener(OnListener listener) {
         this.listener = listener;
     }
@@ -22,15 +23,15 @@ public class ConfirmDeleteStudentDialogFragment extends DialogFragment {
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
         AlertDialog.Builder confirmDeleteStudent = new AlertDialog.Builder(getActivity());
-        confirmDeleteStudent.setTitle("Delete Student");
-        confirmDeleteStudent.setMessage("Are you sure");
-        confirmDeleteStudent.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+        confirmDeleteStudent.setTitle(R.string.delete_student);
+        confirmDeleteStudent.setMessage(R.string.are_you_sure);
+        confirmDeleteStudent.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 listener.ConfirmDelete();
             }
         });
-        confirmDeleteStudent.setNegativeButton("No", new DialogInterface.OnClickListener() {
+        confirmDeleteStudent.setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 dialogInterface.dismiss();
@@ -38,8 +39,10 @@ public class ConfirmDeleteStudentDialogFragment extends DialogFragment {
         });
         return confirmDeleteStudent.create();
     }
+
     public static String TAG = "ConfirmDelete";
-    public interface OnListener{
+
+    public interface OnListener {
         void ConfirmDelete();
     }
 }

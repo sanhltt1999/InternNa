@@ -1,10 +1,6 @@
 package leeshani.com.content_provider_sqllite.ui.addstudent;
 
-import androidx.activity.result.ActivityResult;
-import androidx.activity.result.ActivityResultCallback;
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
-import androidx.appcompat.app.AppCompatActivity;
+import static leeshani.com.content_provider_sqllite.data.SchoolDatabase.COLUMN_CLASS_STUDENT;
 
 import android.app.DatePickerDialog;
 import android.content.ContentValues;
@@ -22,11 +18,17 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Locale;
 
 import leeshani.com.content_provider_sqllite.R;
 import leeshani.com.content_provider_sqllite.SchoolContentProvider;
@@ -40,9 +42,9 @@ public class AddStudentActivity extends AppCompatActivity {
     private ImageView ivCalender;
     private Calendar birthday;
     private Spinner spClass;
-    private SchoolDatabase database;
-    ArrayAdapter arrayAdapter;
+    ArrayAdapter<String> arrayAdapter;
     String unknown = "Unknown";
+    private static final String DATE_FORMAT = "dd/MM/yyyy";
 
 
     private final ActivityResultLauncher<Intent> addClass = registerForActivityResult(
@@ -50,7 +52,7 @@ public class AddStudentActivity extends AppCompatActivity {
             new ActivityResultCallback<ActivityResult>() {
                 @Override
                 public void onActivityResult(ActivityResult result) {
-                    if (result.getResultCode() == RESULT_CANCELED){
+                    if (result.getResultCode() == RESULT_CANCELED) {
                         setSpinner();
                     }
                 }
@@ -60,8 +62,6 @@ public class AddStudentActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_student);
-
-        database = new SchoolDatabase(AddStudentActivity.this);
 
         InitUI();
 
@@ -108,16 +108,18 @@ public class AddStudentActivity extends AppCompatActivity {
 
     private void setToolbar() {
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayShowTitleEnabled(false);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayShowTitleEnabled(false);
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setDisplayShowHomeEnabled(true);
+        }
     }
 
     private void setBirthday() {
         ivCalender.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
+                SimpleDateFormat simpleDateFormat = new SimpleDateFormat(DATE_FORMAT, Locale.getDefault());
                 birthday = Calendar.getInstance();
                 int date = birthday.get(Calendar.DATE);
                 int month = birthday.get(Calendar.MONTH);
@@ -136,10 +138,10 @@ public class AddStudentActivity extends AppCompatActivity {
     }
 
     private void setSpinner() {
-        ArrayList<String> arClasses = new ArrayList<>();
+        ArrayList<String> arClasses;
         arClasses = getClassName();
         arClasses.add(unknown);
-        arrayAdapter = new ArrayAdapter(this, android.R.layout.simple_spinner_item, arClasses);
+        arrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, arClasses);
         arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spClass.setAdapter(arrayAdapter);
     }
@@ -149,14 +151,14 @@ public class AddStudentActivity extends AppCompatActivity {
         String strBirthday = etBirthday.getText().toString().trim();
         String strClass;
         if (spClass.getSelectedItem() == unknown) {
-            Toast.makeText(AddStudentActivity.this, "Please choose or add class", Toast.LENGTH_LONG).show();
+            Toast.makeText(AddStudentActivity.this, R.string.choose_or_add_class, Toast.LENGTH_LONG).show();
             return;
 
         } else {
             strClass = spClass.getSelectedItem().toString();
         }
         if (TextUtils.isEmpty(strStudentName) || TextUtils.isEmpty(strBirthday) || TextUtils.isEmpty(strClass)) {
-            Toast.makeText(AddStudentActivity.this, "Please enter information", Toast.LENGTH_LONG).show();
+            Toast.makeText(AddStudentActivity.this, R.string.enter_information, Toast.LENGTH_LONG).show();
         } else {
             ContentValues values = new ContentValues();
             values.put(SchoolDatabase.COLUMN_STUDENT_NAME, strStudentName);
@@ -170,22 +172,22 @@ public class AddStudentActivity extends AppCompatActivity {
         }
     }
 
-    private ArrayList<String> getClassName(){
-        ArrayList<String> getNameClass =  new ArrayList<>();
+    private ArrayList<String> getClassName() {
+        ArrayList<String> getNameClass = new ArrayList<>();
         Uri uri = SchoolContentProvider.CONTENT_URI_CLASS;
         Cursor c = getContentResolver().query(uri, null, null, null, null);
         if (c != null) {
             while (c.moveToNext()) {
-                getNameClass.add (c.getString(c.getColumnIndexOrThrow("class_name")));
+                getNameClass.add(c.getString(c.getColumnIndexOrThrow(COLUMN_CLASS_STUDENT)));
             }
             c.close();
-        }else{
-            Toast.makeText(this, "Please add new class", Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(this, R.string.pls_add_new_class, Toast.LENGTH_SHORT).show();
         }
         return getNameClass;
     }
 
-    private void onBack(){
+    private void onBack() {
         Intent intent = new Intent();
         setResult(RESULT_OK, intent);
         finish();

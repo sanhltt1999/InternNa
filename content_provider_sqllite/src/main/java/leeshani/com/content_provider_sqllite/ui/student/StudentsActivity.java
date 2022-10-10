@@ -1,5 +1,8 @@
 package leeshani.com.content_provider_sqllite.ui.student;
 
+import static leeshani.com.content_provider_sqllite.data.SchoolDatabase.COLUMN_CLASS_STUDENT;
+import static leeshani.com.content_provider_sqllite.data.SchoolDatabase.COLUMN_DATE_OF_BIRTH;
+
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
@@ -32,6 +35,8 @@ import leeshani.com.content_provider_sqllite.ui.editstudent.EditStudentActivity;
 import leeshani.com.content_provider_sqllite.ui.student.adapter.StudentAdapter;
 
 public class StudentsActivity extends AppCompatActivity {
+
+    private static final String KEY_TO_PUT_INTENT = "object_student";
     private Toolbar tbStudent;
     private ImageView imAddStudent;
     private RecyclerView rvStudent;
@@ -41,29 +46,29 @@ public class StudentsActivity extends AppCompatActivity {
     private StudentAdapter studentAdapter;
     private List<Student> students;
 
-    private ActivityResultLauncher<Intent> backActivity = registerForActivityResult(
+    private final ActivityResultLauncher<Intent> backActivity = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
             new ActivityResultCallback<ActivityResult>() {
                 @Override
                 public void onActivityResult(ActivityResult result) {
-                    if(result.getResultCode() == RESULT_OK){
+                    if (result.getResultCode() == RESULT_OK) {
                         students = getListStudent();
-                        tvStudentTotal.setText(""+students.size());
+                        tvStudentTotal.setText(String.valueOf(students.size()));
                         studentAdapter.setData(students);
                     }
 
                 }
             });
 
-    private ActivityResultLauncher<Intent> editStudent = registerForActivityResult(
+    private final ActivityResultLauncher<Intent> editStudent = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
             new ActivityResultCallback<ActivityResult>() {
                 @Override
                 public void onActivityResult(ActivityResult result) {
-                    if(result.getResultCode() == RESULT_CANCELED){
+                    if (result.getResultCode() == RESULT_CANCELED) {
                         students = getListStudent();
                         rvStudent.setAdapter(studentAdapter);
-                        tvStudentTotal.setText("" + students.size());
+                        tvStudentTotal.setText(String.valueOf(students.size()));
                         studentAdapter.setData(students);
                     }
                 }
@@ -91,7 +96,7 @@ public class StudentsActivity extends AppCompatActivity {
             }
         });
         students = getListStudent();
-        tvStudentTotal.setText("" +students.size());
+        tvStudentTotal.setText(String.valueOf(students.size()));
         studentAdapter.setData(students);
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
@@ -108,7 +113,7 @@ public class StudentsActivity extends AppCompatActivity {
         imAddStudent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                backActivity.launch(new Intent(StudentsActivity.this,AddStudentActivity.class));
+                backActivity.launch(new Intent(StudentsActivity.this, AddStudentActivity.class));
             }
         });
 
@@ -116,7 +121,9 @@ public class StudentsActivity extends AppCompatActivity {
 
     private void setToolbar() {
         setSupportActionBar(tbStudent);
-        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayShowTitleEnabled(false);
+        }
     }
 
     private void InitUI() {
@@ -129,7 +136,7 @@ public class StudentsActivity extends AppCompatActivity {
 
     private void openBottomSheetDialog() {
 
-        List<String> nameClasses ;
+        List<String> nameClasses;
 
         nameClasses = getClassName();
 
@@ -144,7 +151,7 @@ public class StudentsActivity extends AppCompatActivity {
                 students = getListStudent();
 
                 if (students.size() == 0) {
-                    Toast.makeText(StudentsActivity.this, "Please add student in chosen class", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(StudentsActivity.this, R.string.add_student_in_chosen, Toast.LENGTH_SHORT).show();
                     chooseFilterClassBottomSheetDialog.dismiss();
                     return;
                 }
@@ -155,12 +162,12 @@ public class StudentsActivity extends AppCompatActivity {
                     }
                 }
                 if (studentInClass.size() == 0) {
-                    Toast.makeText(StudentsActivity.this, "Please add student in chosen class", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(StudentsActivity.this, R.string.add_student_in_chosen, Toast.LENGTH_SHORT).show();
                     chooseFilterClassBottomSheetDialog.dismiss();
                     return;
                 }
                 tvChooseClass.setText(className);
-                tvStudentTotal.setText("" + studentInClass.size());
+                tvStudentTotal.setText(String.valueOf(studentInClass.size()));
                 studentAdapter.setData(studentInClass);
                 chooseFilterClassBottomSheetDialog.dismiss();
             }
@@ -170,10 +177,9 @@ public class StudentsActivity extends AppCompatActivity {
     }
 
     private void clickEditStudent(Student student) {
-        Uri uri1 = SchoolContentProvider.CONTENT_URI_STUDENT;
         Intent itEdit = new Intent(StudentsActivity.this, EditStudentActivity.class);
         Bundle bundleStudent = new Bundle();
-        bundleStudent.putSerializable("object_student", student);
+        bundleStudent.putSerializable(KEY_TO_PUT_INTENT, student);
         itEdit.putExtras(bundleStudent);
         editStudent.launch(itEdit);
 
@@ -185,36 +191,37 @@ public class StudentsActivity extends AppCompatActivity {
             @Override
             public void ConfirmDelete() {
                 Uri uri = Uri.parse(String.valueOf(SchoolContentProvider.CONTENT_URI_STUDENT));
-                getContentResolver().delete(uri,SchoolDatabase.COLUMN_DATE_OF_BIRTH + " =?", new String[]{student.getDate()});
+                getContentResolver().delete(uri, COLUMN_DATE_OF_BIRTH + " =?", new String[]{student.getDate()});
                 students = getListStudent();
-                if (students.size() == 0){
-                    Toast.makeText(StudentsActivity.this, "Add student", Toast.LENGTH_SHORT).show();
-                }else{
+                if (students.size() == 0) {
+                    Toast.makeText(StudentsActivity.this, R.string.add_student, Toast.LENGTH_SHORT).show();
+                } else {
                     rvStudent.setAdapter(studentAdapter);
-                    tvStudentTotal.setText("" + students.size());
+                    tvStudentTotal.setText(String.valueOf(students.size()));
                     studentAdapter.setData(students);
                     confirmDeleteDialog.dismiss();
                 }
             }
         });
-        confirmDeleteDialog.show(getSupportFragmentManager(),ConfirmDeleteStudentDialogFragment.TAG);
+        confirmDeleteDialog.show(getSupportFragmentManager(), ConfirmDeleteStudentDialogFragment.TAG);
     }
-    private ArrayList<String> getClassName(){
-        ArrayList<String> getNameClass =  new ArrayList<>();
+
+    private ArrayList<String> getClassName() {
+        ArrayList<String> getNameClass = new ArrayList<>();
         Uri uri = SchoolContentProvider.CONTENT_URI_CLASS;
         Cursor c = getContentResolver().query(uri, null, null, null, null);
         if (c != null) {
             while (c.moveToNext()) {
-                getNameClass.add (c.getString(c.getColumnIndexOrThrow("class_name")));
+                getNameClass.add(c.getString(c.getColumnIndexOrThrow(COLUMN_CLASS_STUDENT)));
             }
             c.close();
-        }else{
-            Toast.makeText(this, "Please add new class", Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(this, R.string.pls_add_class, Toast.LENGTH_SHORT).show();
         }
         return getNameClass;
     }
 
-    private List<Student> getListStudent(){
+    private List<Student> getListStudent() {
         List<Student> list = new ArrayList<>();
 
         Uri uri1 = SchoolContentProvider.CONTENT_URI_STUDENT;
@@ -222,8 +229,8 @@ public class StudentsActivity extends AppCompatActivity {
         if (c != null) {
             while (c.moveToNext()) {
                 Student student = new Student(c.getString(c.getColumnIndexOrThrow(SchoolDatabase.COLUMN_STUDENT_NAME)),
-                        c.getString(c.getColumnIndexOrThrow("date_of_birth")), c.getString(c.getColumnIndexOrThrow("class_name")));
-                list.add (student);
+                        c.getString(c.getColumnIndexOrThrow(COLUMN_DATE_OF_BIRTH)), c.getString(c.getColumnIndexOrThrow(COLUMN_CLASS_STUDENT)));
+                list.add(student);
             }
             c.close();
         }

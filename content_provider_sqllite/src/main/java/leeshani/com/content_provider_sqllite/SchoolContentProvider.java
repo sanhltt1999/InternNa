@@ -98,7 +98,7 @@ public class SchoolContentProvider extends ContentProvider {
     @Override
     public Uri insert(@NonNull Uri uri, @Nullable ContentValues contentValues) {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
-        Uri _uri = null;
+        Uri _uri;
         switch (uriMatcher.match(uri)) {
             case CONTENT_STUDENT:
                 long id1 = db.insert(SchoolDatabase.STUDENT_TABLE_NAME, null, contentValues);
@@ -122,7 +122,7 @@ public class SchoolContentProvider extends ContentProvider {
         int deleteCount = 0;
         switch (uriMatcher.match(uri)) {
             case CONTENT_STUDENT:
-                deleteCount = db.delete(SchoolDatabase.STUDENT_TABLE_NAME, selection,selectionArgs);
+                deleteCount = db.delete(SchoolDatabase.STUDENT_TABLE_NAME, selection, selectionArgs);
                 break;
             case CONTENT_ITEM_STUDENT:
                 String id1 = uri.getPathSegments().get(1);
@@ -154,7 +154,7 @@ public class SchoolContentProvider extends ContentProvider {
         int updateCount = 0;
         switch ((uriMatcher.match(uri))) {
             case CONTENT_STUDENT:
-                updateCount = db.update(SchoolDatabase.STUDENT_TABLE_NAME, contentValues, selection,selectionArgs);
+                updateCount = db.update(SchoolDatabase.STUDENT_TABLE_NAME, contentValues, selection, selectionArgs);
                 break;
             case CONTENT_ITEM_STUDENT:
                 String id1 = uri.getPathSegments().get(1);

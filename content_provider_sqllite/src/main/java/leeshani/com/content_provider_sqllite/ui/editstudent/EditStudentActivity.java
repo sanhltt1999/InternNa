@@ -1,6 +1,6 @@
 package leeshani.com.content_provider_sqllite.ui.editstudent;
 
-import androidx.appcompat.app.AppCompatActivity;
+import static leeshani.com.content_provider_sqllite.data.SchoolDatabase.COLUMN_CLASS_STUDENT;
 
 import android.app.DatePickerDialog;
 import android.content.ContentValues;
@@ -18,18 +18,22 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Locale;
 
+import leeshani.com.content_provider_sqllite.R;
 import leeshani.com.content_provider_sqllite.SchoolContentProvider;
 import leeshani.com.content_provider_sqllite.data.SchoolDatabase;
-import leeshani.com.content_provider_sqllite.R;
 import leeshani.com.content_provider_sqllite.data.model.Student;
 
 public class EditStudentActivity extends AppCompatActivity {
+    private static final String KEY_TO_GET_INTENT = "object_student";
+    private static final String DATE_FORMAT = "dd/MM/yyyy";
     private Toolbar toolbar;
     private EditText etName, etDate;
     private Button btEdit;
@@ -56,7 +60,7 @@ public class EditStudentActivity extends AppCompatActivity {
         setBirthday();
         setSpinnerClass();
 
-        student = (Student) getIntent().getExtras().get("object_student");
+        student = (Student) getIntent().getExtras().get(KEY_TO_GET_INTENT);
         if (student != null) {
             etName.setText(student.getStudentName());
             etDate.setText(student.getDate());
@@ -82,16 +86,18 @@ public class EditStudentActivity extends AppCompatActivity {
 
     private void setToolbar() {
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayShowTitleEnabled(false);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        if(getSupportActionBar()!=null){
+            getSupportActionBar().setDisplayShowTitleEnabled(false);
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setDisplayShowHomeEnabled(true);
+        }
     }
 
     private void setBirthday() {
         ivEditCalendar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
+                SimpleDateFormat simpleDateFormat = new SimpleDateFormat(DATE_FORMAT, Locale.getDefault());
                 birthday = Calendar.getInstance();
                 int date = birthday.get(Calendar.DATE);
                 int month = birthday.get(Calendar.MONTH);
@@ -111,7 +117,7 @@ public class EditStudentActivity extends AppCompatActivity {
 
     private void setSpinnerClass() {
         ArrayList<String> arClasses =getClassName();
-        ArrayAdapter arrayAdapter = new ArrayAdapter(this, android.R.layout.simple_spinner_item, arClasses);
+        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, arClasses);
         arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spEditClass.setAdapter(arrayAdapter);
     }
@@ -121,14 +127,14 @@ public class EditStudentActivity extends AppCompatActivity {
         String strBirthday = etDate.getText().toString().trim();
         String strClass;
         if (spEditClass.getSelectedItem() == null) {
-            Toast.makeText(EditStudentActivity.this, "Please choose or add class", Toast.LENGTH_LONG).show();
+            Toast.makeText(EditStudentActivity.this, R.string.choose_or_add_class, Toast.LENGTH_LONG).show();
             return;
         } else {
             strClass = spEditClass.getSelectedItem().toString();
         }
 
         if (TextUtils.isEmpty(strStudentName) || TextUtils.isEmpty(strBirthday) || TextUtils.isEmpty(strClass)) {
-            Toast.makeText(EditStudentActivity.this, "Please enter information", Toast.LENGTH_LONG).show();
+            Toast.makeText(EditStudentActivity.this,R.string.pls_add_class, Toast.LENGTH_LONG).show();
             return;
         }
 
@@ -139,7 +145,7 @@ public class EditStudentActivity extends AppCompatActivity {
 
         Uri uri = Uri.parse(String.valueOf(SchoolContentProvider.CONTENT_URI_STUDENT));
         getContentResolver().update(uri, values, SchoolDatabase.COLUMN_DATE_OF_BIRTH + " =?", new String[]{student.getDate()});
-        Toast.makeText(this, "Edit successfully", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this,R.string.edit_success, Toast.LENGTH_SHORT).show();
     }
 
     private ArrayList<String> getClassName(){
@@ -148,11 +154,11 @@ public class EditStudentActivity extends AppCompatActivity {
         Cursor c = getContentResolver().query(uri, null, null, null, null);
         if (c != null) {
             while (c.moveToNext()) {
-                getNameClass.add (c.getString(c.getColumnIndexOrThrow("class_name")));
+                getNameClass.add (c.getString(c.getColumnIndexOrThrow(COLUMN_CLASS_STUDENT)));
             }
             c.close();
         }else{
-            Toast.makeText(this, "Please add new class", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, R.string.pls_add_new_class, Toast.LENGTH_SHORT).show();
         }
         return getNameClass;
     }
