@@ -71,7 +71,7 @@ public class MainActivity extends AppCompatActivity {
     private final BroadcastReceiver calculationReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            if(intent.getIntExtra(KEY_INTENT_TO_BROADCAST,0) != 0){
+            if (intent.getIntExtra(KEY_INTENT_TO_BROADCAST, 0) != 0) {
                 if (ACTION.equals(intent.getAction())) {
                     int phepTinh = intent.getIntExtra(KEY_INTENT_TO_BROADCAST, 0);
                     int a = Integer.parseInt(etNhap_a.getText().toString());
@@ -92,6 +92,8 @@ public class MainActivity extends AppCompatActivity {
                             } else {
                                 showResult("/", a / b);
                             }
+                            break;
+                        default:
                             break;
                     }
                 }
