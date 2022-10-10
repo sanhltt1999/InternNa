@@ -1,0 +1,738 @@
+Index: roomdatabases/src/main/java/leeshani/com/roomdatabases/ui/TakePhotoBottomDialogFragment.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/roomdatabases/src/main/java/leeshani/com/roomdatabases/ui/TakePhotoBottomDialogFragment.java b/roomdatabases/src/main/java/leeshani/com/roomdatabases/ui/TakePhotoBottomDialogFragment.java
+--- a/roomdatabases/src/main/java/leeshani/com/roomdatabases/ui/TakePhotoBottomDialogFragment.java	(revision f35a063c3198af4da2e535bc180f1a66f346325d)
++++ b/roomdatabases/src/main/java/leeshani/com/roomdatabases/ui/TakePhotoBottomDialogFragment.java	(date 1664087842250)
+@@ -1,8 +1,7 @@
+ package leeshani.com.roomdatabases.ui;
+ 
+-import android.content.Intent;
++import android.app.Dialog;
+ import android.os.Bundle;
+-import android.provider.MediaStore;
+ import android.view.LayoutInflater;
+ import android.view.View;
+ import android.view.ViewGroup;
+@@ -33,9 +32,10 @@
+         View view;
+         view = inflater.inflate(R.layout.button_sheet_choose_photo_or_take_photo, container,false);
+ 
++        setStyle(BottomSheetDialogFragment.STYLE_NORMAL, R.style.CustomBottomSheetDialogTheme);
++
+         tvTakePhoto = view.findViewById(R.id.tvTakePhoto);
+         tvChooseFile = view.findViewById(R.id.tvChooseFile);
+-
+         tvTakePhoto.setOnClickListener(new View.OnClickListener() {
+             @Override
+             public void onClick(View view) {
+@@ -53,6 +53,7 @@
+         });
+         return view;
+     }
++
+     public interface OnListener {
+         void ChooseImage();
+         void TakePhoto();
+Index: roomdatabases/src/main/res/layout/activity_add_class.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/roomdatabases/src/main/res/layout/activity_add_class.xml b/roomdatabases/src/main/res/layout/activity_add_class.xml
+--- a/roomdatabases/src/main/res/layout/activity_add_class.xml	(revision f35a063c3198af4da2e535bc180f1a66f346325d)
++++ b/roomdatabases/src/main/res/layout/activity_add_class.xml	(date 1664082209042)
+@@ -17,6 +17,7 @@
+             android:textColor="@color/black"
+             android:textSize="25sp"
+             android:textStyle="bold" />
++
+     </androidx.appcompat.widget.Toolbar>
+ 
+     <TextView
+Index: roomdatabases/src/main/res/values/themes.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/roomdatabases/src/main/res/values/themes.xml b/roomdatabases/src/main/res/values/themes.xml
+--- a/roomdatabases/src/main/res/values/themes.xml	(revision f35a063c3198af4da2e535bc180f1a66f346325d)
++++ b/roomdatabases/src/main/res/values/themes.xml	(date 1664087526213)
+@@ -12,23 +12,26 @@
+         <!-- Status bar color. -->
+         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
+         <!-- Customize your theme here. -->
++        <item name="bottomSheetDialogTheme">@style/AppBottomDialogTheme</item>
+     </style>
+-
+-    <style name="circle">
+-        <item name="cornerSize">50%</item>
+-    </style>
+-    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+-        <item name="bottomSheetDialogTheme">@style/AppBottomSheetDialogTheme</item>
+-    </style>
+-
+-    <style name="AppBottomSheetDialogTheme"
++    <style name="AppBottomDialogTheme"
+         parent="Theme.Design.Light.BottomSheetDialog">
+-        <item name="bottomSheetStyle">@style/AppModalStyle</item>
++        <item name="bottomSheetStyle">@style/AppModelStyle</item>
+     </style>
+-
+-    <style name="AppModalStyle"
++    <style name="AppModelStyle"
+         parent="Widget.Design.BottomSheet.Modal">
+         <item name="android:background">@drawable/bottom_sheet_bg</item>
+     </style>
++    <style name="CustomBottomSheetDialogTheme" parent="Theme.Design.Light.BottomSheetDialog">
++        <item name="bottomSheetStyle">@style/CustomBottomSheetStyle</item>
++    </style>
++
++    <style name="CustomBottomSheetStyle" parent="Widget.Design.BottomSheet.Modal">
++        <item name="android:background">@android:color/transparent</item>
++    </style>
++    <style name="circle">
++        <item name="cornerSize">50%</item>
++    </style>
+ 
++
+ </resources>
+\ No newline at end of file
+Index: roomdatabases/src/main/res/layout/button_sheet_choose_photo_or_take_photo.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/roomdatabases/src/main/res/layout/button_sheet_choose_photo_or_take_photo.xml b/roomdatabases/src/main/res/layout/button_sheet_choose_photo_or_take_photo.xml
+--- a/roomdatabases/src/main/res/layout/button_sheet_choose_photo_or_take_photo.xml	(revision f35a063c3198af4da2e535bc180f1a66f346325d)
++++ b/roomdatabases/src/main/res/layout/button_sheet_choose_photo_or_take_photo.xml	(date 1664087688610)
+@@ -2,24 +2,33 @@
+ <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+     android:layout_width="match_parent"
+     android:layout_height="match_parent"
+-    android:padding="10dp">
+-    <TextView
+-        android:id="@+id/tvTakePhoto"
+-        android:layout_width="match_parent"
+-        android:layout_height="50dp"
+-        android:textColor="@color/black"
+-        android:textSize="18sp"
+-        android:text="@string/take_photo"
+-        android:gravity="center" />
++    android:orientation="vertical">
++    <RelativeLayout
++        android:layout_width="match_parent"
++        android:layout_height="wrap_content"
++        android:orientation="vertical">
++
++        <TextView
++            android:id="@+id/tvTakePhoto"
++            android:layout_width="match_parent"
++            android:layout_height="50dp"
++            android:textColor="@color/black"
++            android:layout_alignParentTop="true"
++            android:textSize="18sp"
++            android:text="@string/take_photo"
++            android:gravity="center"
++            android:layout_marginTop="7dp"/>
+ 
+-    <TextView
+-        android:id="@+id/tvChooseFile"
+-        android:layout_width="match_parent"
+-        android:layout_height="50dp"
+-        android:textColor="@color/black"
+-        android:textSize="18sp"
+-        android:text="@string/choose_file"
+-        android:layout_below="@+id/tvTakePhoto"
+-        android:gravity="center"/>
++        <TextView
++            android:id="@+id/tvChooseFile"
++            android:layout_width="match_parent"
++            android:layout_height="50dp"
++            android:layout_below="@+id/tvTakePhoto"
++            android:gravity="center"
++            android:text="@string/choose_file"
++            android:textColor="@color/black"
++            android:textSize="18sp" />
++    </RelativeLayout>
++
+ 
+ </RelativeLayout>
+\ No newline at end of file
+Index: roomdatabases/src/main/res/layout/activity_add_student.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/roomdatabases/src/main/res/layout/activity_add_student.xml b/roomdatabases/src/main/res/layout/activity_add_student.xml
+--- a/roomdatabases/src/main/res/layout/activity_add_student.xml	(revision f35a063c3198af4da2e535bc180f1a66f346325d)
++++ b/roomdatabases/src/main/res/layout/activity_add_student.xml	(date 1664078883123)
+@@ -89,10 +89,10 @@
+             android:layout_alignParentEnd="true"
+             android:background="@drawable/background_edittext"
+             android:focusable="false"
++            android:hint="@string/choose_the_date"
+             android:inputType="none"
+             android:padding="10dp"
+-            android:textSize="18sp"
+-            android:hint="@string/choose_the_date"/>
++            android:textSize="18sp" />
+ 
+         <ImageView
+             android:id="@+id/ivCalendar"
+Index: roomdatabases/src/main/res/layout/activity_edit_student.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/roomdatabases/src/main/res/layout/activity_edit_student.xml b/roomdatabases/src/main/res/layout/activity_edit_student.xml
+--- a/roomdatabases/src/main/res/layout/activity_edit_student.xml	(revision f35a063c3198af4da2e535bc180f1a66f346325d)
++++ b/roomdatabases/src/main/res/layout/activity_edit_student.xml	(date 1664078883132)
+@@ -88,7 +88,9 @@
+             android:layout_alignParentStart="true"
+             android:layout_alignParentEnd="true"
+             android:background="@drawable/background_edittext"
+-            android:inputType="date"
++            android:focusable="false"
++            android:hint="@string/choose_the_date"
++            android:inputType="none"
+             android:padding="10dp"
+             android:textSize="18sp" />
+ 
+Index: roomdatabases/src/main/java/leeshani/com/roomdatabases/ChooseFilterClassBottomSheetFragment.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/roomdatabases/src/main/java/leeshani/com/roomdatabases/ChooseFilterClassBottomSheetFragment.java b/roomdatabases/src/main/java/leeshani/com/roomdatabases/ChooseFilterClassBottomSheetFragment.java
+--- a/roomdatabases/src/main/java/leeshani/com/roomdatabases/ChooseFilterClassBottomSheetFragment.java	(revision f35a063c3198af4da2e535bc180f1a66f346325d)
++++ b/roomdatabases/src/main/java/leeshani/com/roomdatabases/ChooseFilterClassBottomSheetFragment.java	(date 1664082209074)
+@@ -1,6 +1,5 @@
+ package leeshani.com.roomdatabases;
+ 
+-import android.app.Notification;
+ import android.os.Bundle;
+ import android.view.LayoutInflater;
+ import android.view.View;
+Index: roomdatabases/src/main/java/leeshani/com/roomdatabases/ui/addstudent/AddStudentActivity.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/roomdatabases/src/main/java/leeshani/com/roomdatabases/ui/addstudent/AddStudentActivity.java b/roomdatabases/src/main/java/leeshani/com/roomdatabases/ui/addstudent/AddStudentActivity.java
+--- a/roomdatabases/src/main/java/leeshani/com/roomdatabases/ui/addstudent/AddStudentActivity.java	(revision f35a063c3198af4da2e535bc180f1a66f346325d)
++++ b/roomdatabases/src/main/java/leeshani/com/roomdatabases/ui/addstudent/AddStudentActivity.java	(date 1664082209049)
+@@ -4,29 +4,22 @@
+ import androidx.activity.result.ActivityResultCallback;
+ import androidx.activity.result.ActivityResultLauncher;
+ import androidx.activity.result.contract.ActivityResultContracts;
+-import androidx.annotation.Nullable;
+ import androidx.appcompat.app.AppCompatActivity;
+ 
+-import android.app.Activity;
+ import android.app.DatePickerDialog;
+ import android.content.Intent;
+ import android.graphics.Bitmap;
+-import android.graphics.Color;
+ import android.net.Uri;
+ import android.os.Bundle;
+ import android.provider.MediaStore;
+ import android.text.TextUtils;
+-import android.view.MotionEvent;
+ import android.view.View;
+-import android.view.ViewGroup;
+-import android.view.inputmethod.InputMethodManager;
+ import android.widget.ArrayAdapter;
+ import android.widget.Button;
+ import android.widget.DatePicker;
+ import android.widget.EditText;
+ import android.widget.ImageView;
+ import android.widget.Spinner;
+-import android.widget.TextView;
+ import android.widget.Toast;
+ import androidx.appcompat.widget.Toolbar;
+ 
+@@ -46,6 +39,7 @@
+ import leeshani.com.roomdatabases.ui.addclass.AddClassActivity;
+ 
+ public class AddStudentActivity extends AppCompatActivity {
++
+     private Toolbar toolbar;
+     private EditText etName, etBirthday;
+     private Button btnAddClass, btnAddStudent;
+@@ -54,23 +48,55 @@
+     private Calendar birthday;
+     private Spinner spClass;
+     private List<ClassStudent> classes;
+-    private static final int REQUEST_CODE_CAMERA = 10;
+-    private static final int PICK_IMAGE = 101;
+-    private static final int UPDATE_STUDENT_LIST = 111;
+-    private static final int UPDATE_SPINNER = 113;
++
+     String unKnow;
+     Uri ImageURI;
+     String path;
+     TakePhotoBottomDialogFragment takePhotoBottomDialogFragment;
+ 
+-    private ActivityResultLauncher<Intent> mActivityLauncher = registerForActivityResult(
++    ActivityResultLauncher<Intent> addClass = registerForActivityResult(
++            new ActivityResultContracts.StartActivityForResult(),
++            new ActivityResultCallback<ActivityResult>() {
++                @Override
++                public void onActivityResult(ActivityResult result) {
++                    if (result.getResultCode() == RESULT_CANCELED){
++                        setSpinner();
++                    }
++                }
++            });
++    ActivityResultLauncher<Intent> takePhoto = registerForActivityResult
++            (new ActivityResultContracts.StartActivityForResult(),
++                    new ActivityResultCallback<ActivityResult>() {
++        @Override
++        public void onActivityResult(ActivityResult result) {
++            if(result.getResultCode() == RESULT_OK){
++                Bundle bundle = result.getData().getExtras();
++                Bitmap bitmap = (Bitmap) bundle.get("data");
++                ByteArrayOutputStream bytes = new ByteArrayOutputStream();
++                bitmap.compress(Bitmap.CompressFormat.JPEG,100,bytes);
++                path = MediaStore.Images.Media.insertImage(getApplicationContext()
++                        .getContentResolver(),bitmap, "val", null);
++                ImageURI = Uri.parse(path);
++                Glide.with(AddStudentActivity.this)
++                        .load(ImageURI)
++                        .into(ivStudentImage);
++            }
++        }
++    });
++
++    ActivityResultLauncher<Intent> getImage = registerForActivityResult(
+             new ActivityResultContracts.StartActivityForResult(),
+             new ActivityResultCallback<ActivityResult>() {
+-                @Override
+-                public void onActivityResult(ActivityResult result) {
+-
+-                }
+-            });
++        @Override
++        public void onActivityResult(ActivityResult result) {
++            if (result.getResultCode() == RESULT_OK){
++                ImageURI = result.getData().getData();
++                Glide.with(AddStudentActivity.this)
++                        .load(ImageURI)
++                        .into(ivStudentImage);
++            }
++        }
++    });
+ 
+     @Override
+     protected void onCreate(Bundle savedInstanceState) {
+@@ -103,7 +129,7 @@
+             @Override
+             public void onClick(View view) {
+                 Intent itAddClass = new Intent(AddStudentActivity.this, AddClassActivity.class);
+-                startActivity(itAddClass);
++                addClass.launch(itAddClass);
+             }
+         });
+ 
+@@ -143,13 +169,17 @@
+                 int date = birthday.get(Calendar.DATE);
+                 int month = birthday.get(Calendar.MONTH);
+                 int year = birthday.get(Calendar.YEAR);
+-                DatePickerDialog datePickerDialog = new DatePickerDialog(AddStudentActivity.this, new DatePickerDialog.OnDateSetListener() {
++                DatePickerDialog datePickerDialog = new DatePickerDialog(
++                        AddStudentActivity.this,
++                        new DatePickerDialog.OnDateSetListener() {
+                     @Override
+                     public void onDateSet(DatePicker datePicker, int i, int i1, int i2) {
+                         birthday.set(i, i1, i2);
+-                         int distance = (int) ((birthday.getTimeInMillis() - Calendar.getInstance().getTimeInMillis())/(1000*60*60*24));
++                         int distance = (int) ((birthday.getTimeInMillis()
++                                 - Calendar.getInstance().getTimeInMillis())/(1000*60*60*24));
+                         if (distance > 0){
+-                            Toast.makeText(AddStudentActivity.this, "Please choose right the date", Toast.LENGTH_SHORT).show();
++                            Toast.makeText(AddStudentActivity.this, "Please choose right the date",
++                                    Toast.LENGTH_SHORT).show();
+                         }else{
+                         etBirthday.setText(simpleDateFormat.format(birthday.getTime()));}
+                     }
+@@ -206,11 +236,17 @@
+             StudentAndClassDatabase.getInstance(AddStudentActivity.this).studentDAO().insertUser(student);
+             etName.setText(null);
+             etBirthday.setText(null);
++            ImageURI = null;
++            Glide.with(AddStudentActivity.this)
++                    .load(ImageURI)
++                    .into(ivStudentImage);
+         }
+     }
+ 
+     private boolean checkExit(Student student) {
+-        List<Student> list = StudentAndClassDatabase.getInstance(this).studentDAO().checkStudent(student.getStudentName(), student.getDate());
++        List<Student> list = StudentAndClassDatabase.getInstance(this).
++                studentDAO().checkStudent(student.getStudentName(),
++                student.getDate());
+         return list != null && !list.isEmpty();
+     }
+     private void openButtonSheetTakeOrChoosePhoto(){
+@@ -221,48 +257,22 @@
+             @Override
+             public void ChooseImage() {
+                 Intent gallery = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI);
+-                startActivityIfNeeded(gallery, PICK_IMAGE);
++                getImage.launch(gallery);
+             }
+ 
+             @Override
+             public void TakePhoto() {
+                 Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+-                startActivityIfNeeded(takePictureIntent, REQUEST_CODE_CAMERA);
++                takePhoto.launch(takePictureIntent);
+             }
+         });
+         takePhotoBottomDialogFragment.show(getSupportFragmentManager(),"");
+     }
+ 
+-    @Override
+-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+-        if(requestCode == REQUEST_CODE_CAMERA && resultCode == RESULT_OK && data != null){
+-            Bitmap bitmap = (Bitmap) data.getExtras().get("data");
+-            ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+-            bitmap.compress(Bitmap.CompressFormat.JPEG,100,bytes);
+-            path = MediaStore.Images.Media.insertImage(getApplicationContext().getContentResolver(),bitmap, "val", null);
+-            ImageURI = Uri.parse(path);
+-            Glide.with(this)
+-                    .load(ImageURI)
+-                    .into(ivStudentImage);
+-        }
+-
+-        if(requestCode == PICK_IMAGE && resultCode == RESULT_OK && data != null){
+-            ImageURI = data.getData();
+-            Glide.with(this)
+-                    .load(ImageURI)
+-                    .into(ivStudentImage);
+-        }
+-
+-        if(requestCode == UPDATE_SPINNER && resultCode == RESULT_OK){
+-            setSpinner();
+-        }
+-
+-        super.onActivityResult(requestCode, resultCode, data);
+-    }
+-
+-    public void onBack() {
++    private void onBack(){
+         Intent intent = new Intent();
+-        startActivityIfNeeded(intent, UPDATE_STUDENT_LIST);
++        setResult(RESULT_OK, intent);
++        finish();
+     }
+ 
+ }
+\ No newline at end of file
+Index: roomdatabases/src/main/java/leeshani/com/roomdatabases/ui/addclass/AddClassActivity.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/roomdatabases/src/main/java/leeshani/com/roomdatabases/ui/addclass/AddClassActivity.java b/roomdatabases/src/main/java/leeshani/com/roomdatabases/ui/addclass/AddClassActivity.java
+--- a/roomdatabases/src/main/java/leeshani/com/roomdatabases/ui/addclass/AddClassActivity.java	(revision f35a063c3198af4da2e535bc180f1a66f346325d)
++++ b/roomdatabases/src/main/java/leeshani/com/roomdatabases/ui/addclass/AddClassActivity.java	(date 1664082209054)
+@@ -2,13 +2,11 @@
+ 
+ import androidx.appcompat.app.AppCompatActivity;
+ 
+-import android.app.Activity;
+ import android.app.DatePickerDialog;
+ import android.content.Intent;
+ import android.os.Bundle;
+ import android.text.TextUtils;
+ import android.view.View;
+-import android.view.inputmethod.InputMethodManager;
+ import android.widget.Button;
+ import android.widget.DatePicker;
+ import android.widget.EditText;
+@@ -23,7 +21,6 @@
+ import leeshani.com.roomdatabases.R;
+ import leeshani.com.roomdatabases.data.db.StudentAndClassDatabase;
+ import leeshani.com.roomdatabases.data.model.ClassStudent;
+-import leeshani.com.roomdatabases.ui.addstudent.AddStudentActivity;
+ 
+ public class AddClassActivity extends AppCompatActivity {
+     private EditText etClassName;
+@@ -33,7 +30,6 @@
+     private Button btAddClass;
+     private Calendar dateCreate;
+     private Toolbar toolbar;
+-    private static final int UPDATE_SPINNER = 113;
+ 
+     @Override
+     protected void onCreate(Bundle savedInstanceState) {
+@@ -59,7 +55,6 @@
+                 addClass();
+             }
+         });
+-        hideSoftKeyboard(this);
+     }
+ 
+     private void InitUI() {
+@@ -140,17 +135,8 @@
+ 
+     public void onBack() {
+         Intent intent = new Intent();
+-        startActivityIfNeeded(intent, UPDATE_SPINNER);
++        setResult(RESULT_CANCELED,intent);
++        finish();
+     }
+-    public static void hideSoftKeyboard(Activity activity) {
+-        InputMethodManager inputMethodManager =
+-                (InputMethodManager) activity.getSystemService(
+-                        Activity.INPUT_METHOD_SERVICE);
+-        if(inputMethodManager.isAcceptingText()){
+-            inputMethodManager.hideSoftInputFromWindow(
+-                    activity.getCurrentFocus().getWindowToken(),
+-                    0
+-            );
+-        }
+-    }
++
+ }
+\ No newline at end of file
+Index: .idea/misc.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/misc.xml b/.idea/misc.xml
+--- a/.idea/misc.xml	(revision f35a063c3198af4da2e535bc180f1a66f346325d)
++++ b/.idea/misc.xml	(date 1664078985836)
+@@ -14,6 +14,7 @@
+         <entry key="..\:/study android/InternNa/roomdatabases/src/main/res/drawable/ic_calendar.xml" value="0.1235" />
+         <entry key="..\:/study android/InternNa/roomdatabases/src/main/res/layout/activity_add_class.xml" value="0.25416666666666665" />
+         <entry key="..\:/study android/InternNa/roomdatabases/src/main/res/layout/activity_add_student.xml" value="0.19583333333333333" />
++        <entry key="..\:/study android/InternNa/roomdatabases/src/main/res/layout/activity_edit_student.xml" value="0.25416666666666665" />
+         <entry key="..\:/study android/InternNa/roomdatabases/src/main/res/layout/activity_students.xml" value="0.19427083333333334" />
+         <entry key="..\:/study android/InternNa/roomdatabases/src/main/res/layout/bottom_sheet.xml" value="0.25416666666666665" />
+         <entry key="..\:/study android/InternNa/roomdatabases/src/main/res/layout/button_sheet_choose_photo_or_take_photo.xml" value="0.253125" />
+Index: roomdatabases/src/main/java/leeshani/com/roomdatabases/ui/editstudent/EditStudentActivity.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/roomdatabases/src/main/java/leeshani/com/roomdatabases/ui/editstudent/EditStudentActivity.java b/roomdatabases/src/main/java/leeshani/com/roomdatabases/ui/editstudent/EditStudentActivity.java
+--- a/roomdatabases/src/main/java/leeshani/com/roomdatabases/ui/editstudent/EditStudentActivity.java	(revision f35a063c3198af4da2e535bc180f1a66f346325d)
++++ b/roomdatabases/src/main/java/leeshani/com/roomdatabases/ui/editstudent/EditStudentActivity.java	(date 1664082209060)
+@@ -2,7 +2,6 @@
+ 
+ import androidx.appcompat.app.AppCompatActivity;
+ 
+-import android.app.Activity;
+ import android.app.DatePickerDialog;
+ import android.content.Intent;
+ import android.os.Bundle;
+@@ -49,7 +48,7 @@
+         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+             @Override
+             public void onClick(View view) {
+-                onBackPressed();
++                onBack();
+             }
+         });
+ 
+@@ -94,12 +93,17 @@
+                 int date = birthday.get(Calendar.DATE);
+                 int month = birthday.get(Calendar.MONTH);
+                 int year = birthday.get(Calendar.YEAR);
++
+                 DatePickerDialog datePickerDialog = new DatePickerDialog(EditStudentActivity.this, new DatePickerDialog.OnDateSetListener() {
+ 
+                     @Override
+                     public void onDateSet(DatePicker datePicker, int i, int i1, int i2) {
+                         birthday.set(i, i1, i2);
+-                        etDate.setText(simpleDateFormat.format(birthday.getTime()));
++                        int distance = (int) ((birthday.getTimeInMillis() - Calendar.getInstance().getTimeInMillis())/(1000*60*60*24));
++                        if (distance > 0){
++                            Toast.makeText(EditStudentActivity.this, "Please choose right the date", Toast.LENGTH_SHORT).show();
++                        }else{
++                            etDate.setText(simpleDateFormat.format(birthday.getTime()));}
+                     }
+                 }, year, month, date);
+                 datePickerDialog.show();
+@@ -138,10 +142,12 @@
+ 
+         StudentAndClassDatabase.getInstance(EditStudentActivity.this).studentDAO().updateStudent(student);
+ 
++        Toast.makeText(this, "Update success", Toast.LENGTH_SHORT).show();
++    }
++    private void onBack(){
+         Intent intentEditResult = new Intent();
+-        setResult(Activity.RESULT_OK, intentEditResult);
++        setResult(RESULT_CANCELED, intentEditResult);
+         finish();
+     }
+ 
+-
+ }
+\ No newline at end of file
+Index: roomdatabases/src/main/java/leeshani/com/roomdatabases/ui/student/StudentsActivity.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/roomdatabases/src/main/java/leeshani/com/roomdatabases/ui/student/StudentsActivity.java b/roomdatabases/src/main/java/leeshani/com/roomdatabases/ui/student/StudentsActivity.java
+--- a/roomdatabases/src/main/java/leeshani/com/roomdatabases/ui/student/StudentsActivity.java	(revision f35a063c3198af4da2e535bc180f1a66f346325d)
++++ b/roomdatabases/src/main/java/leeshani/com/roomdatabases/ui/student/StudentsActivity.java	(date 1664082209082)
+@@ -1,6 +1,9 @@
+ package leeshani.com.roomdatabases.ui.student;
+ 
+-import androidx.annotation.Nullable;
++import androidx.activity.result.ActivityResult;
++import androidx.activity.result.ActivityResultCallback;
++import androidx.activity.result.ActivityResultLauncher;
++import androidx.activity.result.contract.ActivityResultContracts;
+ import androidx.appcompat.app.AppCompatActivity;
+ import androidx.appcompat.widget.Toolbar;
+ import androidx.recyclerview.widget.LinearLayoutManager;
+@@ -9,7 +12,6 @@
+ import android.content.Intent;
+ import android.os.Bundle;
+ import android.view.View;
+-import android.widget.Button;
+ import android.widget.ImageView;
+ import android.widget.TextView;
+ import android.widget.Toast;
+@@ -28,8 +30,7 @@
+ import leeshani.com.roomdatabases.ui.student.adapter.StudentAdapter;
+ 
+ public class StudentsActivity extends AppCompatActivity {
+-    private static final int REQUEST_CODE_STUDENT = 83;
+-    private static final int UPDATE_STUDENT_LIST = 111;
++
+     private Toolbar tbStudent;
+     private ImageView imAddStudent;
+     private RecyclerView rvStudent;
+@@ -39,6 +40,39 @@
+     private StudentAdapter studentAdapter;
+     private List<Student> students;
+     private List<ClassStudent> classStudents;
++    ConfirmDeleteStudentDialogFragment confirmDeleteDialog;
++
++    ActivityResultLauncher<Intent> backActivity = registerForActivityResult(
++            new ActivityResultContracts.StartActivityForResult(),
++            new ActivityResultCallback<ActivityResult>() {
++        @Override
++        public void onActivityResult(ActivityResult result) {
++            if(result.getResultCode() == RESULT_OK){
++
++                students = StudentAndClassDatabase.getInstance(StudentsActivity.this)
++                        .studentDAO().getListStudent();
++                tvStudentTotal.setText(""+students.size());
++                studentAdapter.setData(students);
++            }
++
++        }
++    });
++
++    ActivityResultLauncher<Intent> deleteStudent = registerForActivityResult(
++            new ActivityResultContracts.StartActivityForResult(),
++            new ActivityResultCallback<ActivityResult>() {
++        @Override
++        public void onActivityResult(ActivityResult result) {
++            if(result.getResultCode() == RESULT_CANCELED){
++                students = StudentAndClassDatabase.getInstance(StudentsActivity.this)
++                        .studentDAO().getListStudent();
++
++                rvStudent.setAdapter(studentAdapter);
++                tvStudentTotal.setText("" + students.size());
++                studentAdapter.setData(students);
++            }
++        }
++    });
+ 
+     @Override
+     protected void onCreate(Bundle savedInstanceState) {
+@@ -80,8 +114,7 @@
+         imAddStudent.setOnClickListener(new View.OnClickListener() {
+             @Override
+             public void onClick(View view) {
+-                Intent intent = new Intent(StudentsActivity.this, AddStudentActivity.class);
+-                startActivity(intent);
++                backActivity.launch(new Intent(StudentsActivity.this,AddStudentActivity.class));
+             }
+         });
+ 
+@@ -147,64 +180,31 @@
+         chooseFilterClassBottomSheetDialog.show(getSupportFragmentManager(), "");
+     }
+ 
+-
+     private void clickEditStudent(Student student) {
+         Intent itEdit = new Intent(StudentsActivity.this, EditStudentActivity.class);
+         Bundle bundleStudent = new Bundle();
+         bundleStudent.putSerializable("object_student", student);
+         itEdit.putExtras(bundleStudent);
+-        startActivityIfNeeded(itEdit, REQUEST_CODE_STUDENT);
+-    }
+-
+-    @Override
+-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+-        super.onActivityResult(requestCode, resultCode, data);
+-        if (requestCode == REQUEST_CODE_STUDENT && resultCode == RESULT_OK) {
+-            List<Student> studentInClass = new ArrayList<>();
+-            String currentClass = tvChooseClass.getText().toString();
+-            students = StudentAndClassDatabase.getInstance(StudentsActivity.this)
+-                    .studentDAO().getListStudent();
+-            for (int i = 0; i < students.size(); i++) {
+-                String nameClass = students.get(i).getClasses();
+-                if (nameClass.equals(currentClass)) {
+-                    studentInClass.add(students.get(i));
+-                }
+-            }
+-            rvStudent.setAdapter(studentAdapter);
+-            tvStudentTotal.setText("" + studentInClass.size());
+-            studentAdapter.setData(studentInClass);
+-        }
+-        if(requestCode == UPDATE_STUDENT_LIST && resultCode == RESULT_OK){
+-            students = StudentAndClassDatabase.getInstance(StudentsActivity.this)
+-                    .studentDAO().getListStudent();
+-
+-            studentAdapter.setData(students);
+-
+-        }
++        deleteStudent.launch(itEdit);
+     }
+ 
+     private void clickDeleteStudent(Student student) {
+-        ConfirmDeleteStudentDialogFragment confirmDeleteDialog = new ConfirmDeleteStudentDialogFragment();
++        confirmDeleteDialog = new ConfirmDeleteStudentDialogFragment();
+         confirmDeleteDialog.setOnListener(new ConfirmDeleteStudentDialogFragment.OnListener() {
+             @Override
+             public void confirmDelete() {
+                 StudentAndClassDatabase.getInstance(StudentsActivity.this).studentDAO().deleteStudent(student);
+-                List<Student> studentInClass = new ArrayList<>();
+-                String currentClass = tvChooseClass.getText().toString();
+                 students = StudentAndClassDatabase.getInstance(StudentsActivity.this)
+                         .studentDAO().getListStudent();
+-                for (int j = 0; j < students.size(); j++) {
+-                    String nameClass = students.get(j).getClasses();
+-                    if (nameClass.equals(currentClass)) {
+-                        studentInClass.add(students.get(j));
+-                    }
+-                }
++
+                 rvStudent.setAdapter(studentAdapter);
+-                tvStudentTotal.setText("" + studentInClass.size());
+-                studentAdapter.setData(studentInClass);
++                tvStudentTotal.setText("" + students.size());
++                studentAdapter.setData(students);
++                confirmDeleteDialog.dismiss();
+             }
+         });
+         confirmDeleteDialog.show(getSupportFragmentManager(),ConfirmDeleteStudentDialogFragment.TAG);
++
+     }
+ 
+ }
+\ No newline at end of file
