@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="wrap_content"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@drawable/bottom_sheet_bg">
 
     <TextView
@@ -9,8 +10,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/Class"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         android:layout_marginTop="10dp"
         android:layout_marginStart="15dp"
         android:textColor="@color/black"
@@ -20,8 +21,8 @@
         android:id="@+id/ivCloseBs"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentTop="true"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         android:layout_marginTop="10dp"
         android:layout_marginEnd="15dp"
         android:src="@drawable/ic_close_black"
@@ -31,17 +32,19 @@
         android:id="@+id/npClass"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/tvBsName"
-        android:layout_centerHorizontal="true"
+        app:layout_constraintTop_toBottomOf="@+id/tvBsName"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         android:layout_marginTop="40dp" />
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btnApplyClass"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/npClass"
+        app:layout_constraintTop_toBottomOf="@+id/npClass"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginTop="25dp"
-        android:layout_centerHorizontal="true"
         android:layout_marginBottom="20dp"
         android:background="@drawable/background_button"
         android:text="@string/apply"
@@ -49,4 +52,4 @@
         android:textColor="@color/black"
         android:textSize="20sp" />
 
-</RelativeLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -55,7 +55,9 @@ public class ChooseFilterClassBottomSheetFragment extends BottomSheetDialogFragm
             btnApply.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    listener.ChooseClass(classStudents[npClass.getValue()]);
+                    if (npClass.getValue() < classStudents.length) {
+                        listener.ChooseClass(classStudents[npClass.getValue()]);
+                    }
                 }
             });
         }

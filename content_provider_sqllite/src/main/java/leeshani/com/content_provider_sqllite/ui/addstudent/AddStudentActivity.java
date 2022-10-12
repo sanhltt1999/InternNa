@@ -64,7 +64,6 @@ public class AddStudentActivity extends AppCompatActivity {
         setContentView(R.layout.activity_add_student);
 
         InitUI();
-
         setToolbar();
 
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
@@ -75,8 +74,6 @@ public class AddStudentActivity extends AppCompatActivity {
         });
 
         setBirthday();
-
-
         setSpinner();
 
         btnAddClass.setOnClickListener(new View.OnClickListener() {

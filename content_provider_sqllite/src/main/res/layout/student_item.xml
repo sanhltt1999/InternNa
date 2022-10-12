@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_marginStart="10dp"
     android:layout_marginEnd="10dp"
-    android:layout_marginBottom="10dp"
+    android:layout_marginTop="10dp"
     android:background="@drawable/background_edittext"
     android:padding="10dp">
 
@@ -12,7 +13,8 @@
         android:id="@+id/tvStudentName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         android:textColor="@color/black"
         android:textSize="15sp" />
 
@@ -20,7 +22,8 @@
         android:id="@+id/tvBirthday"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/tvStudentName"
+        app:layout_constraintTop_toBottomOf="@+id/tvStudentName"
+        app:layout_constraintStart_toStartOf="parent"
         android:layout_marginTop="10dp"
         android:text="@string/birthday_student_item"
         android:textColor="#B6B3B3"
@@ -30,9 +33,9 @@
         android:id="@+id/tvDate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/tvStudentName"
+        app:layout_constraintStart_toEndOf="@+id/tvBirthday"
+        app:layout_constraintTop_toBottomOf="@+id/tvStudentName"
         android:layout_marginTop="10dp"
-        android:layout_toEndOf="@+id/tvBirthday"
         android:textColor="#B6B3B3"
         android:textSize="13sp" />
 
@@ -40,7 +43,8 @@
         android:id="@+id/tvClassName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/tvClassStudentItem"
         android:textColor="@color/black"
         android:textSize="13sp" />
 
@@ -48,7 +52,9 @@
         android:id="@+id/tvClassStudentItem"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_toStartOf="@+id/tvClassName"
+        app:layout_constraintStart_toStartOf="@+id/tvClassName"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         android:text="@string/class_name_student_item"
         android:textColor="@color/black"
         android:layout_marginEnd="2dp"
@@ -59,8 +65,8 @@
         android:padding="5dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/tvClassName"
-        android:layout_alignParentEnd="true"
+        app:layout_constraintTop_toBottomOf="@+id/tvClassName"
+        app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginTop="10dp"
         android:text="@string/delete"
         android:textAllCaps="false"
@@ -74,12 +80,13 @@
         android:layout_height="wrap_content"
         android:padding="5dp"
         android:layout_below="@+id/tvClassName"
+        app:layout_constraintTop_toBottomOf="@+id/tvClassName"
+        app:layout_constraintEnd_toStartOf="@+id/tvDelete"
         android:layout_marginTop="10dp"
         android:layout_marginEnd="10dp"
-        android:layout_toStartOf="@+id/tvDelete"
         android:text="@string/edit"
         android:textAllCaps="false"
         android:textColor="@color/black"
         android:textSize="11sp"
         android:background="@drawable/student_item_bg"/>
-</RelativeLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

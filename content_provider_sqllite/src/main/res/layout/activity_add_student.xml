@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -9,7 +9,9 @@
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/AddStudentToolbar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <TextView
             android:layout_width="wrap_content"
@@ -24,18 +26,20 @@
         android:id="@+id/imStudent"
         android:layout_width="120dp"
         android:layout_height="120dp"
-        android:layout_below="@+id/AddStudentToolbar"
-        android:layout_centerHorizontal="true"
+        app:layout_constraintTop_toBottomOf="@+id/AddStudentToolbar"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginTop="20dp"
         android:background="#E3DBDB"
         app:shapeAppearanceOverlay="@style/circle" />
 
     <TextView
-        android:id="@+id/name"
+        android:id="@+id/tvName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/imStudent"
-        android:layout_alignParentStart="true"
+        app:layout_constraintTop_toBottomOf="@+id/imStudent"
+        app:layout_constraintStart_toStartOf="parent"
         android:layout_marginStart="20dp"
         android:layout_marginTop="20dp"
         android:text="@string/name"
@@ -46,9 +50,9 @@
         android:id="@+id/edtNameStudent"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/name"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentEnd="true"
+        app:layout_constraintTop_toBottomOf="@+id/tvName"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginStart="20dp"
         android:layout_marginTop="10dp"
         android:layout_marginEnd="20dp"
@@ -59,11 +63,11 @@
         android:textSize="18sp" />
 
     <TextView
-        android:id="@+id/birthday"
+        android:id="@+id/tvBirthday"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/edtNameStudent"
-        android:layout_alignParentStart="true"
+        app:layout_constraintTop_toBottomOf="@+id/edtNameStudent"
+        app:layout_constraintStart_toStartOf="parent"
         android:layout_marginStart="20dp"
         android:layout_marginTop="15dp"
         android:text="@string/birthday"
@@ -74,9 +78,9 @@
         android:id="@+id/rlBirthday"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/birthday"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentEnd="true"
+        app:layout_constraintTop_toBottomOf="@+id/tvBirthday"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginStart="20dp"
         android:layout_marginTop="10dp"
         android:layout_marginEnd="20dp">
@@ -87,7 +91,10 @@
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
             android:layout_alignParentEnd="true"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
             android:background="@drawable/background_edittext"
+            android:hint="@string/choose_tha_date"
             android:inputType="date"
             android:padding="10dp"
             android:textSize="18sp" />
@@ -108,9 +115,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/rlBirthday"
+        app:layout_constraintTop_toBottomOf="@+id/rlBirthday"
+        app:layout_constraintStart_toStartOf="parent"
         android:layout_marginTop="15dp"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentEnd="true"
         android:layout_marginStart="20dp"
         android:layout_marginEnd="20dp"
         android:text="@string/Class"
@@ -121,9 +128,8 @@
         android:id="@+id/lnAddClass"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/tvClass"
+        app:layout_constraintTop_toBottomOf="@+id/tvClass"
         android:layout_marginTop="10dp"
-        android:orientation="horizontal"
         android:weightSum="10">
 
         <Spinner
@@ -152,9 +158,9 @@
         android:id="@+id/btnAddStudent"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/lnAddClass"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentEnd="true"
+        app:layout_constraintTop_toBottomOf="@+id/lnAddClass"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginStart="50dp"
         android:layout_marginTop="22dp"
         android:layout_marginEnd="50dp"
@@ -164,4 +170,4 @@
         android:textAllCaps="false"
         android:textColor="@color/black" />
 
-</RelativeLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -32,7 +32,6 @@ public class AddStudentActivity extends AppCompatActivity {
     private Calendar birthday;
     private Spinner spClass;
     private static final String DATE_FORMAT = "dd/MM/yyyy";
-
     String unknown = "Unknown";
 
     public static final String COLUMN_STUDENT_NAME = "student_name";
@@ -52,7 +51,6 @@ public class AddStudentActivity extends AppCompatActivity {
         setContentView(R.layout.activity_add_student_acticity);
 
         InitUI();
-
         setToolbar();
 
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
@@ -73,7 +71,7 @@ public class AddStudentActivity extends AppCompatActivity {
         });
     }
 
-    private void InitUI(){
+    private void InitUI() {
         toolbar = findViewById(R.id.AddStudentToolbar);
         etName = findViewById(R.id.edtNameStudent);
         etBirthday = findViewById(R.id.edtBirthday);
@@ -84,7 +82,7 @@ public class AddStudentActivity extends AppCompatActivity {
 
     private void setToolbar() {
         setSupportActionBar(toolbar);
-        if(getSupportActionBar() != null){
+        if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayShowTitleEnabled(false);
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setDisplayShowHomeEnabled(true);
@@ -115,25 +113,25 @@ public class AddStudentActivity extends AppCompatActivity {
 
     private void setSpinner() {
 
-        ArrayList<String> arClasses  = getClassName();
+        ArrayList<String> arClasses = getClassName();
         arClasses.add(unknown);
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, arClasses);
         arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spClass.setAdapter(arrayAdapter);
     }
 
-    private ArrayList<String> getClassName(){
-        ArrayList<String> getNameClass =  new ArrayList<>();
+    private ArrayList<String> getClassName() {
+        ArrayList<String> getNameClass = new ArrayList<>();
 
         Cursor c = getContentResolver().query(CONTENT_URI_CLASS, null, null, null, null);
         if (c != null) {
             while (c.moveToNext()) {
-                getNameClass.add (c.getString(c.getColumnIndexOrThrow(COLUMN_CLASSNAME)));
+                getNameClass.add(c.getString(c.getColumnIndexOrThrow(COLUMN_CLASSNAME)));
             }
             c.close();
-        }else{
+        } else {
 
-            Toast.makeText(this,R.string.pls_add_new_class, Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, R.string.pls_add_new_class, Toast.LENGTH_SHORT).show();
         }
         return getNameClass;
     }
@@ -152,7 +150,7 @@ public class AddStudentActivity extends AppCompatActivity {
         }
         if (TextUtils.isEmpty(strStudentName) || TextUtils.isEmpty(strBirthday) || TextUtils.isEmpty(strClass)) {
 
-            Toast.makeText(AddStudentActivity.this,R.string.enter_information, Toast.LENGTH_LONG).show();
+            Toast.makeText(AddStudentActivity.this, R.string.enter_information, Toast.LENGTH_LONG).show();
 
         } else {
             ContentValues values = new ContentValues();
@@ -165,5 +163,4 @@ public class AddStudentActivity extends AppCompatActivity {
             etBirthday.setText(null);
         }
     }
-
 }
