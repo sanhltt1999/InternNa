@@ -32,6 +32,12 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.annotations.NonNull;
+import io.reactivex.rxjava3.core.CompletableObserver;
+import io.reactivex.rxjava3.core.SingleObserver;
+import io.reactivex.rxjava3.disposables.Disposable;
+import io.reactivex.rxjava3.schedulers.Schedulers;
 import leeshani.com.roomdatabases.R;
 import leeshani.com.roomdatabases.data.db.StudentAndClassDatabase;
 import leeshani.com.roomdatabases.data.model.ClassStudent;
@@ -50,7 +56,8 @@ public class AddStudentActivity extends AppCompatActivity {
     private Spinner spClass;
     public static final String KEY_GET_DATA = "data";
     public static final String DATE_FORMAT = "dd/MM/yyy";
-    public int change_date_to_second = 1000*60*60*24;
+    public int change_date_to_second = 1000 * 60 * 60 * 24;
+    List<Student> mStudents;
 
     private String unKnow;
     private Uri imageURI;
@@ -61,7 +68,7 @@ public class AddStudentActivity extends AppCompatActivity {
             new ActivityResultCallback<ActivityResult>() {
                 @Override
                 public void onActivityResult(ActivityResult result) {
-                    if (result.getResultCode() == RESULT_CANCELED){
+                    if (result.getResultCode() == RESULT_CANCELED) {
                         setSpinner();
                     }
                 }
@@ -69,36 +76,36 @@ public class AddStudentActivity extends AppCompatActivity {
     private final ActivityResultLauncher<Intent> takePhoto = registerForActivityResult
             (new ActivityResultContracts.StartActivityForResult(),
                     new ActivityResultCallback<ActivityResult>() {
-        @Override
-        public void onActivityResult(ActivityResult result) {
-            if(result.getResultCode() == RESULT_OK){
-                if(result.getData() != null){
-                    Bundle bundle = result.getData().getExtras();
-                    if(bundle == null){
-                        return;
-                    }
-                    insertImageFromGallery(bundle);
-                }
-            }
-        }
-    });
+                        @Override
+                        public void onActivityResult(ActivityResult result) {
+                            if (result.getResultCode() == RESULT_OK) {
+                                if (result.getData() != null) {
+                                    Bundle bundle = result.getData().getExtras();
+                                    if (bundle == null) {
+                                        return;
+                                    }
+                                    insertImageFromGallery(bundle);
+                                }
+                            }
+                        }
+                    });
 
     private final ActivityResultLauncher<Intent> getImage = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
             new ActivityResultCallback<ActivityResult>() {
-        @Override
-        public void onActivityResult(ActivityResult result) {
-            if (result.getResultCode() == RESULT_OK){
-                if(result.getData() != null){
-                    imageURI = result.getData().getData();
-                    Glide.with(AddStudentActivity.this)
-                            .load(imageURI)
-                            .into(ivStudentImage);
-                }
+                @Override
+                public void onActivityResult(ActivityResult result) {
+                    if (result.getResultCode() == RESULT_OK) {
+                        if (result.getData() != null) {
+                            imageURI = result.getData().getData();
+                            Glide.with(AddStudentActivity.this)
+                                    .load(imageURI)
+                                    .into(ivStudentImage);
+                        }
 
-            }
-        }
-    });
+                    }
+                }
+            });
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -157,7 +164,7 @@ public class AddStudentActivity extends AppCompatActivity {
 
     private void setToolbar() {
         setSupportActionBar(toolbar);
-        if(getSupportActionBar() != null){
+        if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayShowTitleEnabled(false);
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setDisplayShowHomeEnabled(true);
@@ -177,18 +184,19 @@ public class AddStudentActivity extends AppCompatActivity {
                 DatePickerDialog datePickerDialog = new DatePickerDialog(
                         AddStudentActivity.this,
                         new DatePickerDialog.OnDateSetListener() {
-                    @Override
-                    public void onDateSet(DatePicker datePicker, int i, int i1, int i2) {
-                        birthday.set(i, i1, i2);
-                         int timeDistance = (int) ((birthday.getTimeInMillis()
-                                 - Calendar.getInstance().getTimeInMillis())/change_date_to_second);
-                        if (timeDistance > 0){
-                            Toast.makeText(AddStudentActivity.this, R.string.choose_right_date,
-                                    Toast.LENGTH_SHORT).show();
-                        }else{
-                        etBirthday.setText(simpleDateFormat.format(birthday.getTime()));}
-                    }
-                }, year, month, date);
+                            @Override
+                            public void onDateSet(DatePicker datePicker, int i, int i1, int i2) {
+                                birthday.set(i, i1, i2);
+                                int timeDistance = (int) ((birthday.getTimeInMillis()
+                                        - Calendar.getInstance().getTimeInMillis()) / change_date_to_second);
+                                if (timeDistance > 0) {
+                                    Toast.makeText(AddStudentActivity.this, R.string.choose_right_date,
+                                            Toast.LENGTH_SHORT).show();
+                                } else {
+                                    etBirthday.setText(simpleDateFormat.format(birthday.getTime()));
+                                }
+                            }
+                        }, year, month, date);
                 datePickerDialog.show();
             }
         });
@@ -200,13 +208,29 @@ public class AddStudentActivity extends AppCompatActivity {
 
         arClasses.add(unKnow);
 
-        List<ClassStudent> classes = StudentAndClassDatabase.getInstance(AddStudentActivity.this).classDAO().getListClass();
+        StudentAndClassDatabase.getInstance(AddStudentActivity.this).classDAO().getListClass()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new SingleObserver<List<ClassStudent>>() {
+                    @Override
+                    public void onSubscribe(@NonNull Disposable d) {
 
-        for (int i = 0; i < classes.size(); i++) {
-            arClasses.add(classes.get(i).getName());
-        }
+                    }
 
-        ArrayAdapter <String> arrayAdapter = new ArrayAdapter <>(this, android.R.layout.simple_spinner_item, arClasses) ;
+                    @Override
+                    public void onSuccess(@NonNull List<ClassStudent> classStudents) {
+                        for (int i = 0; i < classStudents.size(); i++) {
+                            arClasses.add(classStudents.get(i).getName());
+                        }
+                    }
+
+                    @Override
+                    public void onError(@NonNull Throwable e) {
+
+                    }
+                });
+
+        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, arClasses);
 
         arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spClass.setAdapter(arrayAdapter);
@@ -217,19 +241,19 @@ public class AddStudentActivity extends AppCompatActivity {
         String strBirthday = etBirthday.getText().toString().trim();
         String strClass;
         String imageUri;
-        if(  imageURI == null){
+        if (imageURI == null) {
             Toast.makeText(AddStudentActivity.this, R.string.add_photo, Toast.LENGTH_SHORT).show();
             return;
-        }else {
+        } else {
             imageUri = imageURI.toString().trim();
         }
         if (spClass.getSelectedItem().toString().equals(unKnow)) {
-            Toast.makeText(AddStudentActivity.this,R.string.choose_add_class, Toast.LENGTH_LONG).show();
+            Toast.makeText(AddStudentActivity.this, R.string.choose_add_class, Toast.LENGTH_LONG).show();
             return;
         } else {
             strClass = spClass.getSelectedItem().toString();
         }
-        if (TextUtils.isEmpty(strStudentName) || TextUtils.isEmpty(strBirthday)){
+        if (TextUtils.isEmpty(strStudentName) || TextUtils.isEmpty(strBirthday)) {
             Toast.makeText(AddStudentActivity.this, R.string.add_information, Toast.LENGTH_LONG).show();
         } else {
 
@@ -238,7 +262,24 @@ public class AddStudentActivity extends AppCompatActivity {
                 Toast.makeText(this, R.string.student_exit, Toast.LENGTH_LONG).show();
                 return;
             }
-            StudentAndClassDatabase.getInstance(AddStudentActivity.this).studentDAO().insertUser(student);
+            StudentAndClassDatabase.getInstance(AddStudentActivity.this).studentDAO().insertUser(student)
+                    .subscribeOn(Schedulers.io())
+                    .subscribe(new CompletableObserver() {
+                        @Override
+                        public void onSubscribe(Disposable d) {
+
+                        }
+
+                        @Override
+                        public void onComplete() {
+
+                        }
+
+                        @Override
+                        public void onError(Throwable e) {
+
+                        }
+                    });
             etName.setText(null);
             etBirthday.setText(null);
             imageURI = null;
@@ -249,16 +290,33 @@ public class AddStudentActivity extends AppCompatActivity {
     }
 
     private boolean checkExit(Student student) {
-        List<Student> list = StudentAndClassDatabase.getInstance(this).
-                studentDAO().checkStudent(student.getStudentName(),
-                student.getDate());
-        return list != null && !list.isEmpty();
+        StudentAndClassDatabase.getInstance(this).studentDAO().checkStudent(student.getStudentName(), student.getDate())
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new SingleObserver<List<Student>>() {
+                    @Override
+                    public void onSubscribe(@NonNull Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onSuccess(@NonNull List<Student> students) {
+                        mStudents = students;
+                    }
+
+                    @Override
+                    public void onError(@NonNull Throwable e) {
+
+                    }
+                });
+
+        return mStudents != null && !mStudents.isEmpty();
     }
 
-    private void insertImageFromGallery(Bundle bundle){
+    private void insertImageFromGallery(Bundle bundle) {
         Bitmap bitmap = (Bitmap) bundle.get(KEY_GET_DATA);
         ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.JPEG,100,bytes);
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
         String path = MediaStore.Images.Media.insertImage(getApplicationContext()
                 .getContentResolver(), bitmap, getString(R.string.val), null);
         imageURI = Uri.parse(path);
@@ -267,7 +325,7 @@ public class AddStudentActivity extends AppCompatActivity {
                 .into(ivStudentImage);
     }
 
-    private void openButtonSheetTakeOrChoosePhoto(){
+    private void openButtonSheetTakeOrChoosePhoto() {
 
         takePhotoBottomDialogFragment = new TakePhotoBottomDialogFragment();
 
@@ -284,10 +342,10 @@ public class AddStudentActivity extends AppCompatActivity {
                 takePhoto.launch(takePictureIntent);
             }
         });
-        takePhotoBottomDialogFragment.show(getSupportFragmentManager(),null);
+        takePhotoBottomDialogFragment.show(getSupportFragmentManager(), null);
     }
 
-    private void onBack(){
+    private void onBack() {
         Intent intent = new Intent();
         setResult(RESULT_OK, intent);
         finish();

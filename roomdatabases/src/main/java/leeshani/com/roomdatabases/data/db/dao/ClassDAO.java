@@ -6,18 +6,20 @@ import androidx.room.Query;
 
 import java.util.List;
 
+import io.reactivex.rxjava3.core.Completable;
+import io.reactivex.rxjava3.core.Single;
 import leeshani.com.roomdatabases.data.model.ClassStudent;
 
 @Dao
 public interface ClassDAO {
 
     @Insert
-    void insertUser(ClassStudent classes);
+    Completable insertUser(ClassStudent classes);
 
     @Query("SELECT * FROM class")
-    List<ClassStudent> getListClass();
+    Single<List<ClassStudent>> getListClass();
 
     @Query("SELECT * FROM class where name = :classname")
-    List<ClassStudent> checkClass(String classname);
+    Single<List<ClassStudent>> checkClass(String classname);
 
 }

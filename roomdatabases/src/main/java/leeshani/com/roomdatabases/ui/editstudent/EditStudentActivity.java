@@ -22,6 +22,12 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.annotations.NonNull;
+import io.reactivex.rxjava3.core.CompletableObserver;
+import io.reactivex.rxjava3.core.SingleObserver;
+import io.reactivex.rxjava3.disposables.Disposable;
+import io.reactivex.rxjava3.schedulers.Schedulers;
 import leeshani.com.roomdatabases.R;
 import leeshani.com.roomdatabases.data.db.StudentAndClassDatabase;
 import leeshani.com.roomdatabases.data.model.ClassStudent;
@@ -36,7 +42,7 @@ public class EditStudentActivity extends AppCompatActivity {
     private Spinner spEditClass;
     private Student student;
     public static final String KEY_TO_PUT_STUDENT = "object_student";
-
+    public int change_date_to_second = 1000 * 60 * 60 * 24;
     public static final String DATE_FORMAT = "dd/MM/yyy";
 
     @Override
@@ -81,7 +87,7 @@ public class EditStudentActivity extends AppCompatActivity {
 
     private void setToolbar() {
         setSupportActionBar(toolbar);
-        if(getSupportActionBar() != null){
+        if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayShowTitleEnabled(false);
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setDisplayShowHomeEnabled(true);
@@ -104,11 +110,12 @@ public class EditStudentActivity extends AppCompatActivity {
                     @Override
                     public void onDateSet(DatePicker datePicker, int i, int i1, int i2) {
                         birthday.set(i, i1, i2);
-                        int timeDistance = (int) ((birthday.getTimeInMillis() - Calendar.getInstance().getTimeInMillis())/(1000*60*60*24));
-                        if (timeDistance > 0){
+                        int timeDistance = (int) ((birthday.getTimeInMillis() - Calendar.getInstance().getTimeInMillis()) / change_date_to_second);
+                        if (timeDistance > 0) {
                             Toast.makeText(EditStudentActivity.this, R.string.choose_right_date, Toast.LENGTH_SHORT).show();
-                        }else{
-                            etDate.setText(simpleDateFormat.format(birthday.getTime()));}
+                        } else {
+                            etDate.setText(simpleDateFormat.format(birthday.getTime()));
+                        }
                     }
                 }, year, month, date);
                 datePickerDialog.show();
@@ -118,13 +125,32 @@ public class EditStudentActivity extends AppCompatActivity {
 
     private void setSpinnerClass() {
         ArrayList<String> arClasses = new ArrayList<>();
-        List<ClassStudent> classes = StudentAndClassDatabase.getInstance(EditStudentActivity.this).classDAO().getListClass();
-        for (int i = 0; i < classes.size(); i++) {
-            arClasses.add(classes.get(i).getName());
-        }
-        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, arClasses);
-        arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spEditClass.setAdapter(arrayAdapter);
+        StudentAndClassDatabase.getInstance(EditStudentActivity.this).classDAO().getListClass()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new SingleObserver<List<ClassStudent>>() {
+                    @Override
+                    public void onSubscribe(@NonNull Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onSuccess(@NonNull List<ClassStudent> classStudents) {
+                        for (int i = 0; i < classStudents.size(); i++) {
+                            arClasses.add(classStudents.get(i).getName());
+                        }
+                        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(EditStudentActivity.this, android.R.layout.simple_spinner_item, arClasses);
+                        arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                        spEditClass.setAdapter(arrayAdapter);
+                    }
+
+                    @Override
+                    public void onError(@NonNull Throwable e) {
+
+                    }
+                });
+
+
     }
 
     private void updateStudent() {
@@ -145,11 +171,29 @@ public class EditStudentActivity extends AppCompatActivity {
         student.setDate(strBirthday);
         student.setClasses(strClass);
 
-        StudentAndClassDatabase.getInstance(EditStudentActivity.this).studentDAO().updateStudent(student);
+        StudentAndClassDatabase.getInstance(EditStudentActivity.this).studentDAO().updateStudent(student)
+                .subscribeOn(Schedulers.io())
+                .subscribe(new CompletableObserver() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
 
-        Toast.makeText(this, R.string.update_success, Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        Toast.makeText(EditStudentActivity.this, R.string.update_success, Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+                });
+
+
     }
-    private void onBack(){
+
+    private void onBack() {
         Intent intentEditResult = new Intent();
         setResult(RESULT_CANCELED, intentEditResult);
         finish();

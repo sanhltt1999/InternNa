@@ -8,24 +8,29 @@ import androidx.room.Update;
 
 import java.util.List;
 
+import io.reactivex.rxjava3.core.Completable;
+import io.reactivex.rxjava3.core.Single;
 import leeshani.com.roomdatabases.data.model.Student;
 
 @Dao
 public interface StudentDAO {
 
     @Insert
-    void insertUser(Student students);
+    Completable insertUser(Student students);
 
     @Query("SELECT * FROM student")
-    List<Student> getListStudent();
+    Single<List<Student>> getListStudent();
 
     @Query("SELECT *FROM student where studentName = :studentName and date = :dateOfBirth")
-    List<Student> checkStudent(String studentName, String dateOfBirth);
+    Single<List<Student>> checkStudent(String studentName, String dateOfBirth);
 
     @Update
-    void updateStudent(Student student);
+    Completable updateStudent(Student student);
 
     @Delete
-    void deleteStudent(Student student);
+    Completable deleteStudent(Student student);
+
+    @Query("SELECT * FROM student")
+    List<Student> getListStudents();
 
 }

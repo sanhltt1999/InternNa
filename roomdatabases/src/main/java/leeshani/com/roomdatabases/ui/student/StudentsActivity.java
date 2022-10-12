@@ -19,6 +19,12 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.annotations.NonNull;
+import io.reactivex.rxjava3.core.SingleObserver;
+import io.reactivex.rxjava3.disposables.CompositeDisposable;
+import io.reactivex.rxjava3.disposables.Disposable;
+import io.reactivex.rxjava3.schedulers.Schedulers;
 import leeshani.com.roomdatabases.ChooseFilterClassBottomSheetFragment;
 import leeshani.com.roomdatabases.ConfirmDeleteStudentDialogFragment;
 import leeshani.com.roomdatabases.R;
@@ -38,41 +44,54 @@ public class StudentsActivity extends AppCompatActivity {
     private TextView tvStudentTotal;
 
     private StudentAdapter studentAdapter;
-    private List<Student> students;
+    private List<Student> mStudents;
     public static final String KEY_TO_PUT_STUDENT = "object_student";
     ConfirmDeleteStudentDialogFragment confirmDeleteDialog;
+    private final CompositeDisposable mDisposable = new CompositeDisposable();
 
     private final ActivityResultLauncher<Intent> backActivity = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
             new ActivityResultCallback<ActivityResult>() {
-        @Override
-        public void onActivityResult(ActivityResult result) {
-            if(result.getResultCode() == RESULT_OK){
+                @Override
+                public void onActivityResult(ActivityResult result) {
+                    if (result.getResultCode() == RESULT_OK) {
 
-                students = StudentAndClassDatabase.getInstance(StudentsActivity.this)
-                        .studentDAO().getListStudent();
-                tvStudentTotal.setText(String.valueOf(students.size()));
-                studentAdapter.setData(students);
-            }
+                        StudentAndClassDatabase.getInstance(StudentsActivity.this).studentDAO().getListStudent()
+                                .subscribeOn(Schedulers.io())
+                                .observeOn(AndroidSchedulers.mainThread())
+                                .subscribe(new SingleObserver<List<Student>>() {
+                                    @Override
+                                    public void onSubscribe(@NonNull Disposable d) {
 
-        }
-    });
+                                    }
+
+                                    @Override
+                                    public void onSuccess(@NonNull List<Student> students) {
+                                        mStudents = students;
+                                        tvStudentTotal.setText(String.valueOf(mStudents.size()));
+                                        studentAdapter.setData(mStudents);
+                                    }
+
+                                    @Override
+                                    public void onError(@NonNull Throwable e) {
+
+                                    }
+                                });
+                    }
+
+                }
+            });
 
     private final ActivityResultLauncher<Intent> deleteStudent = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
             new ActivityResultCallback<ActivityResult>() {
-        @Override
-        public void onActivityResult(ActivityResult result) {
-            if(result.getResultCode() == RESULT_CANCELED){
-                students = StudentAndClassDatabase.getInstance(StudentsActivity.this)
-                        .studentDAO().getListStudent();
-
-                rvStudent.setAdapter(studentAdapter);
-                tvStudentTotal.setText(String.valueOf(students.size()));
-                studentAdapter.setData(students);
-            }
-        }
-    });
+                @Override
+                public void onActivityResult(ActivityResult result) {
+                    if (result.getResultCode() == RESULT_CANCELED) {
+                        showListStudents();
+                    }
+                }
+            });
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -95,10 +114,7 @@ public class StudentsActivity extends AppCompatActivity {
             }
         });
 
-        students = StudentAndClassDatabase.getInstance(StudentsActivity.this)
-                .studentDAO().getListStudent();
-        tvStudentTotal.setText(String.valueOf(students.size()));
-        studentAdapter.setData(students);
+        showListStudents();
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         rvStudent.setLayoutManager(linearLayoutManager);
@@ -114,7 +130,7 @@ public class StudentsActivity extends AppCompatActivity {
         imAddStudent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                backActivity.launch(new Intent(StudentsActivity.this,AddStudentActivity.class));
+                backActivity.launch(new Intent(StudentsActivity.this, AddStudentActivity.class));
             }
         });
 
@@ -122,7 +138,7 @@ public class StudentsActivity extends AppCompatActivity {
 
     private void setToolbar() {
         setSupportActionBar(tbStudent);
-        if(getSupportActionBar() != null){
+        if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayShowTitleEnabled(false);
         }
 
@@ -140,51 +156,67 @@ public class StudentsActivity extends AppCompatActivity {
 
         List<String> nameClasses = new ArrayList<>();
 
-        List<ClassStudent> classStudents;
-        classStudents = StudentAndClassDatabase.getInstance(StudentsActivity.this).classDAO().getListClass();
+        StudentAndClassDatabase.getInstance(StudentsActivity.this).classDAO().getListClass()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new SingleObserver<List<ClassStudent>>() {
+                    @Override
+                    public void onSubscribe(@NonNull Disposable d) {
 
-        for (int i = 0; i < classStudents.size(); i++) {
-            nameClasses.add(classStudents.get(i).getName());
-        }
-
-        String[] classes = new String[nameClasses.size()];
-        nameClasses.toArray(classes);
-
-        ChooseFilterClassBottomSheetFragment chooseFilterClassBottomSheetDialog;
-        chooseFilterClassBottomSheetDialog = new ChooseFilterClassBottomSheetFragment(classes);
-        chooseFilterClassBottomSheetDialog.setOnListener(new ChooseFilterClassBottomSheetFragment.OnListener() {
-            @Override
-            public void ChooseClass(String className) {
-                List<Student> studentInClass = new ArrayList<>();
-                students = StudentAndClassDatabase.getInstance(StudentsActivity.this)
-                        .studentDAO().getListStudent();
-
-                if (students.size() == 0) {
-                    Toast.makeText(StudentsActivity.this, R.string.add_student_in_class,
-                            Toast.LENGTH_SHORT).show();
-                    chooseFilterClassBottomSheetDialog.dismiss();
-                    return;
-                }
-                for (int i = 0; i < students.size(); i++) {
-                    String nameClass = students.get(i).getClasses();
-                    if (nameClass.equals(className)) {
-                        studentInClass.add(students.get(i));
                     }
-                }
-                if (studentInClass.size() == 0) {
-                    Toast.makeText(StudentsActivity.this, R.string.add_student_in_class,
-                            Toast.LENGTH_SHORT).show();
-                    chooseFilterClassBottomSheetDialog.dismiss();
-                    return;
-                }
-                tvChooseClass.setText(className);
-                tvStudentTotal.setText(String.valueOf(studentInClass.size()));
-                studentAdapter.setData(studentInClass);
-                chooseFilterClassBottomSheetDialog.dismiss();
-            }
 
-        });
-        chooseFilterClassBottomSheetDialog.show(getSupportFragmentManager(), null);
+                    @Override
+                    public void onSuccess(@NonNull List<ClassStudent> classStudents) {
+
+                        for (int i = 0; i < classStudents.size(); i++) {
+                            nameClasses.add(classStudents.get(i).getName());
+                        }
+
+                        String[] classes = new String[nameClasses.size()];
+                        nameClasses.toArray(classes);
+                        ChooseFilterClassBottomSheetFragment chooseFilterClassBottomSheetDialog;
+                        chooseFilterClassBottomSheetDialog = new ChooseFilterClassBottomSheetFragment(classes);
+                        chooseFilterClassBottomSheetDialog.setOnListener(new ChooseFilterClassBottomSheetFragment.OnListener() {
+                            @Override
+                            public void ChooseClass(String className) {
+                                List<Student> studentInClass = new ArrayList<>();
+                                mStudents = StudentAndClassDatabase.getInstance(StudentsActivity.this).studentDAO().getListStudents();
+
+                                if (mStudents.size() == 0) {
+                                    Toast.makeText(StudentsActivity.this, R.string.add_student_in_class,
+                                            Toast.LENGTH_SHORT).show();
+                                    chooseFilterClassBottomSheetDialog.dismiss();
+                                    return;
+                                }
+                                for (int i = 0; i < mStudents.size(); i++) {
+                                    String nameClass = mStudents.get(i).getClasses();
+                                    if (nameClass.equals(className)) {
+                                        studentInClass.add(mStudents.get(i));
+                                    }
+                                }
+                                if (studentInClass.size() == 0) {
+                                    Toast.makeText(StudentsActivity.this, R.string.add_student_in_class,
+                                            Toast.LENGTH_SHORT).show();
+                                    chooseFilterClassBottomSheetDialog.dismiss();
+                                    return;
+                                }
+                                tvChooseClass.setText(className);
+                                tvStudentTotal.setText(String.valueOf(studentInClass.size()));
+                                studentAdapter.setData(studentInClass);
+                                chooseFilterClassBottomSheetDialog.dismiss();
+                            }
+
+                        });
+                        chooseFilterClassBottomSheetDialog.show(getSupportFragmentManager(), null);
+
+                    }
+
+                    @Override
+                    public void onError(@NonNull Throwable e) {
+
+                    }
+                });
+
     }
 
     private void clickEditStudent(Student student) {
@@ -201,17 +233,36 @@ public class StudentsActivity extends AppCompatActivity {
             @Override
             public void confirmDelete() {
                 StudentAndClassDatabase.getInstance(StudentsActivity.this).studentDAO().deleteStudent(student);
-                students = StudentAndClassDatabase.getInstance(StudentsActivity.this)
-                        .studentDAO().getListStudent();
-
-                rvStudent.setAdapter(studentAdapter);
-                tvStudentTotal.setText(String.valueOf(students.size()));
-                studentAdapter.setData(students);
+                showListStudents();
                 confirmDeleteDialog.dismiss();
             }
         });
-        confirmDeleteDialog.show(getSupportFragmentManager(),ConfirmDeleteStudentDialogFragment.TAG);
+        confirmDeleteDialog.show(getSupportFragmentManager(), ConfirmDeleteStudentDialogFragment.TAG);
 
+    }
+
+    private void showListStudents() {
+        StudentAndClassDatabase.getInstance(StudentsActivity.this).studentDAO().getListStudent()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new SingleObserver<List<Student>>() {
+                    @Override
+                    public void onSubscribe(@NonNull Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onSuccess(@NonNull List<Student> students) {
+                        rvStudent.setAdapter(studentAdapter);
+                        tvStudentTotal.setText(String.valueOf(students.size()));
+                        studentAdapter.setData(students);
+                    }
+
+                    @Override
+                    public void onError(@NonNull Throwable e) {
+
+                    }
+                });
     }
 
 }

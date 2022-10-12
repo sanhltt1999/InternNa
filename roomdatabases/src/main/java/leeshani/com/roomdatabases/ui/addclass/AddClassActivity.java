@@ -17,6 +17,12 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.annotations.NonNull;
+import io.reactivex.rxjava3.core.CompletableObserver;
+import io.reactivex.rxjava3.core.SingleObserver;
+import io.reactivex.rxjava3.disposables.Disposable;
+import io.reactivex.rxjava3.schedulers.Schedulers;
 import leeshani.com.roomdatabases.R;
 import leeshani.com.roomdatabases.data.db.StudentAndClassDatabase;
 import leeshani.com.roomdatabases.data.model.ClassStudent;
@@ -30,6 +36,7 @@ public class AddClassActivity extends AppCompatActivity {
     private Calendar dateCreate;
     private Toolbar toolbar;
     public static final String DATE_FORMAT = "dd/MM/yyy";
+    List<ClassStudent> mClasses;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,7 +65,7 @@ public class AddClassActivity extends AppCompatActivity {
 
     private void setToolbar() {
         setSupportActionBar(toolbar);
-        if(getSupportActionBar() != null){
+        if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayShowTitleEnabled(false);
         }
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -106,25 +113,57 @@ public class AddClassActivity extends AppCompatActivity {
 
     private boolean checkExit(ClassStudent classStudent) {
 
-        List<ClassStudent> list = StudentAndClassDatabase
-                .getInstance(AddClassActivity.this).classDAO().checkClass(classStudent.getName());
+        StudentAndClassDatabase
+                .getInstance(AddClassActivity.this).classDAO().checkClass(classStudent.getName())
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new SingleObserver<List<ClassStudent>>() {
+                    @Override
+                    public void onSubscribe(@NonNull Disposable d) {
 
-        return list != null && !list.isEmpty();
+                    }
+
+                    @Override
+                    public void onSuccess(@NonNull List<ClassStudent> classStudents) {
+                        mClasses = classStudents;
+                    }
+
+                    @Override
+                    public void onError(@NonNull Throwable e) {
+
+                    }
+                });
+
+        return mClasses != null && !mClasses.isEmpty();
     }
 
     private void insertClass(ClassStudent insertClass) {
-        Thread thread = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                StudentAndClassDatabase.getInstance(AddClassActivity.this).classDAO().insertUser(insertClass);
-            }
-        });
-        thread.start();
+
+        StudentAndClassDatabase.getInstance(AddClassActivity.this).classDAO().insertUser(insertClass)
+                .subscribeOn(Schedulers.io())
+                .subscribe(new CompletableObserver() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+                });
+
+
     }
 
     public void onBack() {
         Intent intent = new Intent();
-        setResult(RESULT_CANCELED,intent);
+        setResult(RESULT_CANCELED, intent);
         finish();
     }
 

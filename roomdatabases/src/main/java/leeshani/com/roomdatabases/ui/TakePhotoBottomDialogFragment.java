@@ -19,7 +19,7 @@ public class TakePhotoBottomDialogFragment extends BottomSheetDialogFragment {
     public TakePhotoBottomDialogFragment() {
     }
 
-    public void setImage (OnListener onListener) {
+    public void setImage(OnListener onListener) {
         this.onListener = onListener;
     }
 
@@ -27,7 +27,7 @@ public class TakePhotoBottomDialogFragment extends BottomSheetDialogFragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view;
-        view = inflater.inflate(R.layout.button_sheet_choose_photo_or_take_photo, container,false);
+        view = inflater.inflate(R.layout.button_sheet_choose_photo_or_take_photo, container, false);
 
         TextView tvTakePhoto = view.findViewById(R.id.tvTakePhoto);
         TextView tvChooseFile = view.findViewById(R.id.tvChooseFile);
@@ -51,6 +51,7 @@ public class TakePhotoBottomDialogFragment extends BottomSheetDialogFragment {
 
     public interface OnListener {
         void ChooseImage();
+
         void TakePhoto();
     }
 }
