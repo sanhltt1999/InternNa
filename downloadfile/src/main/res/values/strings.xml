@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">Download File</string>
+    <string name="start_download">Start Download</string>
+    <string name="download_success"> Download Success!"</string>
+    <string name="download_file">Download file</string>
+    <string name="denie_permission">Permission Denied</string>
+    <string name="success">Success</string>
+    <string name="failed">Failed</string>
+</resources>
