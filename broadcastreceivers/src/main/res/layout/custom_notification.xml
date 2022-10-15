@@ -49,7 +49,7 @@
         android:paddingTop="5dp"
         android:paddingEnd="20dp"
         android:paddingBottom="5dp"
-        android:text="@string/cong" />
+        android:text="@string/add" />
 
     <TextView
         android:id="@+id/btTru"
@@ -64,7 +64,7 @@
         android:paddingTop="5dp"
         android:paddingEnd="20dp"
         android:paddingBottom="5dp"
-        android:text="@string/tru" />
+        android:text="@string/subtract" />
 
     <TextView
         android:id="@+id/btNhan"
@@ -79,7 +79,7 @@
         android:paddingTop="5dp"
         android:paddingEnd="20dp"
         android:paddingBottom="5dp"
-        android:text="@string/nhan" />
+        android:text="@string/multiple" />
 
     <TextView
         android:id="@+id/btChia"
@@ -94,6 +94,6 @@
         android:paddingTop="5dp"
         android:paddingEnd="20dp"
         android:paddingBottom="5dp"
-        android:text="@string/chia" />
+        android:text="@string/divide" />
 
 </RelativeLayout>

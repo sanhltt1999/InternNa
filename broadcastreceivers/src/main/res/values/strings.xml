@@ -7,10 +7,11 @@
     <string name="put_data">Put Data</string>
     <string name="channel_name">Channel 1</string>
     <string name="channel_description">This is channel 1</string>
-    <string name="cong">+</string>
-    <string name="tru">-</string>
-    <string name="nhan">*</string>
-    <string name="chia">/</string>
+    <string name="add">+</string>
+    <string name="subtract">-</string>
+    <string name="multiple">*</string>
+    <string name="divide">/</string>
     <string name="enter_khac_0">Please enter b different 0</string>
     <string name="title_notify">Broadcast Receiver</string>
+    <string name="error">Error</string>
 </resources>
