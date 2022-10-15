@@ -3,10 +3,8 @@ package leeshani.com.broadcastreceivers;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.view.View;
 
 public class MyBroadCast extends BroadcastReceiver {
-    View view;
     OnListener listener;
     public MyBroadCast() {
     }
