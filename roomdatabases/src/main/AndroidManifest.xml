@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.internna">
+    package="leeshani.com.roomdatabases">
 
     <application
         android:allowBackup="true"
@@ -10,7 +10,16 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.InternNa">
         <activity
-            android:name=".MainActivity"
+            android:name=".ui.editstudent.EditStudentActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.addstudent.AddStudentActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.addclass.AddClassActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.student.StudentsActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -18,7 +27,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
     </application>
 
 </manifest>
