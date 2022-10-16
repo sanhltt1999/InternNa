@@ -1,11 +1,13 @@
 package leeshani.com.broadcastreceivers;
 
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -30,9 +32,11 @@ public class MainActivity extends AppCompatActivity {
     private static final int ACTION_MULTIPLE = 7;
     private static final int ACTION_DIVIDE = 9;
     private static final String KEY_INTENT_TO_BROADCAST = "action_calculation";
-    private static final String KEY_CHECK_WIFI = "networkInfo";
     private static final String ACTION = "calculation";
     private static final int ID_CHANNEL = 1;
+    public static final String CHANNEL_ID = "CHANNEL_1";
+    private int numberA;
+    private int numberB;
     MyBroadCast myBroadCast;
 
     @Override
@@ -41,45 +45,40 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         InitUI();
+        createNotificationChannel();
 
         myBroadCast = new MyBroadCast();
-
         myBroadCast.setOnListener(new MyBroadCast.OnListener() {
             @Override
-            public void receiver(Intent intent) {
-                switch (intent.getAction()) {
-                    case ConnectivityManager.CONNECTIVITY_ACTION:
-                        Bundle extras = intent.getExtras();
-                        NetworkInfo networkInfo = extras.getParcelable(KEY_CHECK_WIFI);
-                        if (networkInfo != null) {
-                            NetworkInfo.State state = networkInfo.getState();
-                            switchWifi.setChecked(state == NetworkInfo.State.CONNECTED);
-                        }
-                        break;
-                    case ACTION:
-                        int calculate = intent.getIntExtra(KEY_INTENT_TO_BROADCAST, 0);
-                        int a = Integer.parseInt(etNumberA.getText().toString());
-                        int b = Integer.parseInt(etNumberB.getText().toString());
-                        switch (calculate) {
-                            case ACTION_ADD:
-                                showResult(getString(R.string.add), a + b);
-                                break;
-                            case ACTION_SUBTRACT:
-                                showResult(getString(R.string.subtract), a - b);
-                                break;
-                            case ACTION_MULTIPLE:
-                                showResult(getString(R.string.multiple), a * b);
-                                break;
-                            case ACTION_DIVIDE:
-                                if (b == 0) {
-                                    Toast.makeText(MainActivity.this, R.string.enter_khac_0, Toast.LENGTH_SHORT).show();
-                                } else {
-                                    showResult(getString(R.string.divide), a / b);
-                                }
-                                break;
-                            default:
-                                break;
-                        }
+            public void changedStatus(boolean status) {
+                switchWifi.setChecked(status);
+            }
+
+            @Override
+            public void add() {
+                getNumber();
+                showResult(getString(R.string.add), numberA + numberB);
+            }
+
+            @Override
+            public void subtract() {
+                getNumber();
+                showResult(getString(R.string.subtract), numberA - numberB);
+            }
+
+            @Override
+            public void multiple() {
+                getNumber();
+                showResult(getString(R.string.multiple), numberA * numberB);
+            }
+
+            @Override
+            public void divide() {
+                getNumber();
+                if (numberB == 0) {
+                    Toast.makeText(MainActivity.this, R.string.enter_khac_0, Toast.LENGTH_SHORT).show();
+                } else {
+                    showResult(getString(R.string.divide), numberA / numberB);
                 }
             }
         });
@@ -96,7 +95,7 @@ public class MainActivity extends AppCompatActivity {
     private void sendNotify() {
         RemoteViews notificationView = new RemoteViews(getPackageName(), R.layout.custom_notification);
         setViewNotification(notificationView);
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(this, MyApp.CHANNEL_ID)
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(this, CHANNEL_ID)
                 .setSmallIcon(R.drawable.ic_bell)
                 .setCustomContentView(notificationView);
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
@@ -144,5 +143,22 @@ public class MainActivity extends AppCompatActivity {
         registerReceiver(myBroadCast, networkFilter);
         IntentFilter calculationFilter = new IntentFilter(ACTION);
         registerReceiver(myBroadCast, calculationFilter);
+    }
+
+    private void createNotificationChannel() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            CharSequence name = getString(R.string.channel_name);
+            String description = getString(R.string.channel_description);
+            int importance = NotificationManager.IMPORTANCE_DEFAULT;
+            NotificationChannel channel = new NotificationChannel(CHANNEL_ID, name, importance);
+            channel.setDescription(description);
+            NotificationManager notificationManager = getSystemService(NotificationManager.class);
+            notificationManager.createNotificationChannel(channel);
+        }
+    }
+
+    private void getNumber() {
+        numberA = Integer.parseInt(etNumberA.getText().toString());
+        numberB = Integer.parseInt(etNumberB.getText().toString());
     }
 }
