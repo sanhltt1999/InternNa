@@ -17,10 +17,7 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
-import io.reactivex.rxjava3.annotations.NonNull;
 import io.reactivex.rxjava3.core.CompletableObserver;
-import io.reactivex.rxjava3.core.SingleObserver;
 import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 import leeshani.com.roomdatabases.R;
@@ -36,7 +33,6 @@ public class AddClassActivity extends AppCompatActivity {
     private Calendar dateCreate;
     private Toolbar toolbar;
     public static final String DATE_FORMAT = "dd/MM/yyy";
-    List<ClassStudent> mClasses;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -105,36 +101,16 @@ public class AddClassActivity extends AppCompatActivity {
                 return;
             }
             insertClass(classStudent);
-            etTeacher.setText(null);
-            etDateCreate.setText(null);
-            etClassName.setText(null);
+
         }
     }
 
     private boolean checkExit(ClassStudent classStudent) {
 
-        StudentAndClassDatabase
-                .getInstance(AddClassActivity.this).classDAO().checkClass(classStudent.getName())
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new SingleObserver<List<ClassStudent>>() {
-                    @Override
-                    public void onSubscribe(@NonNull Disposable d) {
+        List<ClassStudent> list = StudentAndClassDatabase
+                .getInstance(AddClassActivity.this).classDAO().checkClass(classStudent.getName());
 
-                    }
-
-                    @Override
-                    public void onSuccess(@NonNull List<ClassStudent> classStudents) {
-                        mClasses = classStudents;
-                    }
-
-                    @Override
-                    public void onError(@NonNull Throwable e) {
-
-                    }
-                });
-
-        return mClasses != null && !mClasses.isEmpty();
+        return list != null && !list.isEmpty();
     }
 
     private void insertClass(ClassStudent insertClass) {
@@ -149,7 +125,9 @@ public class AddClassActivity extends AppCompatActivity {
 
                     @Override
                     public void onComplete() {
-
+                        etTeacher.setText(null);
+                        etDateCreate.setText(null);
+                        etClassName.setText(null);
                     }
 
                     @Override
@@ -157,8 +135,6 @@ public class AddClassActivity extends AppCompatActivity {
 
                     }
                 });
-
-
     }
 
     public void onBack() {
@@ -166,5 +142,4 @@ public class AddClassActivity extends AppCompatActivity {
         setResult(RESULT_CANCELED, intent);
         finish();
     }
-
 }

@@ -22,13 +22,13 @@ public interface StudentDAO {
     Single<List<Student>> getListStudent();
 
     @Query("SELECT *FROM student where studentName = :studentName and date = :dateOfBirth")
-    Single<List<Student>> checkStudent(String studentName, String dateOfBirth);
+    List<Student> checkStudent(String studentName, String dateOfBirth);
 
     @Update
     Completable updateStudent(Student student);
 
     @Delete
-    Completable deleteStudent(Student student);
+    void deleteStudent(Student student);
 
     @Query("SELECT * FROM student")
     List<Student> getListStudents();

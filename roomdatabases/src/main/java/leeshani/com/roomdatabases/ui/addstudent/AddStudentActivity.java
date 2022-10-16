@@ -169,7 +169,6 @@ public class AddStudentActivity extends AppCompatActivity {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setDisplayShowHomeEnabled(true);
         }
-
     }
 
     private void setBirthday() {
@@ -222,6 +221,9 @@ public class AddStudentActivity extends AppCompatActivity {
                         for (int i = 0; i < classStudents.size(); i++) {
                             arClasses.add(classStudents.get(i).getName());
                         }
+                        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(AddStudentActivity.this, android.R.layout.simple_spinner_item, arClasses);
+                        arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                        spClass.setAdapter(arrayAdapter);
                     }
 
                     @Override
@@ -229,11 +231,6 @@ public class AddStudentActivity extends AppCompatActivity {
 
                     }
                 });
-
-        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, arClasses);
-
-        arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spClass.setAdapter(arrayAdapter);
     }
 
     private void addStudent() {
@@ -272,7 +269,9 @@ public class AddStudentActivity extends AppCompatActivity {
 
                         @Override
                         public void onComplete() {
-
+                            etName.setText(null);
+                            etBirthday.setText(null);
+                            ivStudentImage.setImageResource(0);
                         }
 
                         @Override
@@ -280,37 +279,14 @@ public class AddStudentActivity extends AppCompatActivity {
 
                         }
                     });
-            etName.setText(null);
-            etBirthday.setText(null);
-            imageURI = null;
-            Glide.with(AddStudentActivity.this)
-                    .load(imageURI)
-                    .into(ivStudentImage);
         }
     }
 
     private boolean checkExit(Student student) {
-        StudentAndClassDatabase.getInstance(this).studentDAO().checkStudent(student.getStudentName(), student.getDate())
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new SingleObserver<List<Student>>() {
-                    @Override
-                    public void onSubscribe(@NonNull Disposable d) {
-
-                    }
-
-                    @Override
-                    public void onSuccess(@NonNull List<Student> students) {
-                        mStudents = students;
-                    }
-
-                    @Override
-                    public void onError(@NonNull Throwable e) {
-
-                    }
-                });
-
-        return mStudents != null && !mStudents.isEmpty();
+        List<Student> list = StudentAndClassDatabase.getInstance(this).
+                studentDAO().checkStudent(student.getStudentName(),
+                        student.getDate());
+        return list != null && !list.isEmpty();
     }
 
     private void insertImageFromGallery(Bundle bundle) {
@@ -350,5 +326,4 @@ public class AddStudentActivity extends AppCompatActivity {
         setResult(RESULT_OK, intent);
         finish();
     }
-
 }

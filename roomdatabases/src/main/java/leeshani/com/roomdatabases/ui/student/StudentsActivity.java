@@ -22,7 +22,6 @@ import java.util.List;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.annotations.NonNull;
 import io.reactivex.rxjava3.core.SingleObserver;
-import io.reactivex.rxjava3.disposables.CompositeDisposable;
 import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 import leeshani.com.roomdatabases.ChooseFilterClassBottomSheetFragment;
@@ -42,12 +41,12 @@ public class StudentsActivity extends AppCompatActivity {
     private RecyclerView rvStudent;
     private TextView tvChooseClass;
     private TextView tvStudentTotal;
+    private List<Student> students;
 
     private StudentAdapter studentAdapter;
     private List<Student> mStudents;
     public static final String KEY_TO_PUT_STUDENT = "object_student";
     ConfirmDeleteStudentDialogFragment confirmDeleteDialog;
-    private final CompositeDisposable mDisposable = new CompositeDisposable();
 
     private final ActivityResultLauncher<Intent> backActivity = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
@@ -78,7 +77,6 @@ public class StudentsActivity extends AppCompatActivity {
                                     }
                                 });
                     }
-
                 }
             });
 
@@ -141,7 +139,6 @@ public class StudentsActivity extends AppCompatActivity {
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayShowTitleEnabled(false);
         }
-
     }
 
     private void InitUI() {
@@ -216,7 +213,6 @@ public class StudentsActivity extends AppCompatActivity {
 
                     }
                 });
-
     }
 
     private void clickEditStudent(Student student) {
@@ -233,12 +229,14 @@ public class StudentsActivity extends AppCompatActivity {
             @Override
             public void confirmDelete() {
                 StudentAndClassDatabase.getInstance(StudentsActivity.this).studentDAO().deleteStudent(student);
-                showListStudents();
+                students = StudentAndClassDatabase.getInstance(StudentsActivity.this).studentDAO().getListStudents();
+                rvStudent.setAdapter(studentAdapter);
+                tvStudentTotal.setText(String.valueOf(students.size()));
+                studentAdapter.setData(students);
                 confirmDeleteDialog.dismiss();
             }
         });
         confirmDeleteDialog.show(getSupportFragmentManager(), ConfirmDeleteStudentDialogFragment.TAG);
-
     }
 
     private void showListStudents() {
@@ -264,5 +262,4 @@ public class StudentsActivity extends AppCompatActivity {
                     }
                 });
     }
-
 }

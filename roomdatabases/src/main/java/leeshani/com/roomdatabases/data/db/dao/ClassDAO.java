@@ -20,6 +20,7 @@ public interface ClassDAO {
     Single<List<ClassStudent>> getListClass();
 
     @Query("SELECT * FROM class where name = :classname")
-    Single<List<ClassStudent>> checkClass(String classname);
+    List<ClassStudent> checkClass(String classname);
+
 
 }

@@ -92,7 +92,6 @@ public class EditStudentActivity extends AppCompatActivity {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setDisplayShowHomeEnabled(true);
         }
-
     }
 
     private void setBirthday() {
@@ -149,8 +148,6 @@ public class EditStudentActivity extends AppCompatActivity {
 
                     }
                 });
-
-
     }
 
     private void updateStudent() {
@@ -189,8 +186,6 @@ public class EditStudentActivity extends AppCompatActivity {
 
                     }
                 });
-
-
     }
 
     private void onBack() {
