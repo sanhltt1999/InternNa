@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <ImageView
+        android:id="@+id/imBell"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:contentDescription="@null"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="5dp"
+        android:src="@drawable/ic_bell" />
+
+    <LinearLayout
+        android:id="@+id/llTv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_toEndOf="@+id/imBell"
+        android:layout_centerVertical="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="10dp">
+
+        <TextView
+            android:id="@+id/tvTitle"
+            style="@style/TextAppearance.Compat.Notification.Title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black" />
+
+        <TextView
+            android:id="@+id/tvMessage"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"/>
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/btCong"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/llTv"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="15dp"
+        android:background="@drawable/bt_bg"
+        android:paddingStart="20dp"
+        android:paddingTop="5dp"
+        android:paddingEnd="20dp"
+        android:paddingBottom="5dp"
+        android:text="@string/add" />
+
+    <TextView
+        android:id="@+id/btTru"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/llTv"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="15dp"
+        android:layout_toEndOf="@+id/btCong"
+        android:background="@drawable/bt_bg"
+        android:paddingStart="20dp"
+        android:paddingTop="5dp"
+        android:paddingEnd="20dp"
+        android:paddingBottom="5dp"
+        android:text="@string/subtract" />
+
+    <TextView
+        android:id="@+id/btNhan"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/llTv"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="15dp"
+        android:layout_toEndOf="@id/btTru"
+        android:background="@drawable/bt_bg"
+        android:paddingStart="20dp"
+        android:paddingTop="5dp"
+        android:paddingEnd="20dp"
+        android:paddingBottom="5dp"
+        android:text="@string/multiple" />
+
+    <TextView
+        android:id="@+id/btChia"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/llTv"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="15dp"
+        android:layout_toEndOf="@id/btNhan"
+        android:background="@drawable/bt_bg"
+        android:paddingStart="20dp"
+        android:paddingTop="5dp"
+        android:paddingEnd="20dp"
+        android:paddingBottom="5dp"
+        android:text="@string/divide" />
+
+</RelativeLayout>
