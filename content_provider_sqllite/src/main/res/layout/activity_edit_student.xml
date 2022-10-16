@@ -73,12 +73,11 @@
         android:textColor="@color/black"
         android:textSize="15sp" />
 
-    <RelativeLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/rlBirthday"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentEnd="true"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tvBirthday"
         app:layout_constraintStart_toStartOf="parent"
         android:layout_marginStart="20dp"
@@ -89,8 +88,8 @@
             android:id="@+id/edtEditBirthday"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentEnd="true"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
             android:background="@drawable/background_edittext"
             android:inputType="date"
             android:padding="10dp"
@@ -100,12 +99,13 @@
             android:id="@+id/ivCalendarEdit"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignEnd="@+id/edtEditBirthday"
-            android:layout_centerVertical="true"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
             android:layout_marginEnd="10dp"
             android:contentDescription="@null"
             android:src="@drawable/ic_calendar" />
-    </RelativeLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <TextView
         android:id="@+id/tvClass"
