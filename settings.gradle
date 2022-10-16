@@ -14,3 +14,5 @@ dependencyResolutionManagement {
 }
 rootProject.name = "InternNa"
 include ':app'
+include ':content_provider_sqllite'
+include ':contentprovider'
