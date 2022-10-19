@@ -47,7 +47,7 @@ public class MainActivity extends AppCompatActivity {
         mGetPermission = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
             @Override
             public void onActivityResult(ActivityResult result) {
-                Log.d("done", "done");
+                Log.d(null, getString(R.string.success));
             }
         });
 
