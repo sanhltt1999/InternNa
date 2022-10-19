@@ -1,5 +1,7 @@
 package leeshani.com.downloadfile;
 
+import static leeshani.com.downloadfile.MainActivity.CHANNEL_ID;
+
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.content.Context;
@@ -8,6 +10,7 @@ import android.content.res.AssetManager;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.IBinder;
+import android.util.Log;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
@@ -24,6 +27,7 @@ public class DownloadService extends android.app.Service {
     private static final String KEY_INTENT = "process";
     private static final String ACTION = "send_download";
     private static final String FILE_COPY = "eng_dictionary.db";
+    private static final String FOLDER = "copyFile";
 
     @Nullable
     @Override
@@ -39,13 +43,14 @@ public class DownloadService extends android.app.Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        copyAsset(FILE_COPY);
+        copyAsset();
         return START_NOT_STICKY;
     }
 
-    private void copyAsset(String filename) {
+    private void copyAsset() {
 
-        String dstPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS) + "/copyFile";
+        String dstPath = Environment.getExternalStorageDirectory() +
+                File.separator + FOLDER;
         File dst = new File(dstPath);
 
         if (!dst.exists()) {
@@ -58,16 +63,16 @@ public class DownloadService extends android.app.Service {
         InputStream in = null;
         OutputStream out = null;
         try {
-            in = assetManager.open(filename);
-            long size = assetManager.open(filename).available();
-            File outFile = new File(dstPath, filename);
+            in = assetManager.open(FILE_COPY);
+            long size = assetManager.open(FILE_COPY).available();
+            File outFile = new File(dstPath,FILE_COPY);
             out = new FileOutputStream(outFile);
             copyFile(in, out, size);
             sendNotification();
             Toast.makeText(this, R.string.success, Toast.LENGTH_SHORT).show();
         } catch (IOException e) {
             e.printStackTrace();
-            Toast.makeText(getBaseContext(), R.string.failed, Toast.LENGTH_SHORT).show();
+            Log.d(getString(R.string.error),e.toString());
         } finally {
             if (in != null) {
                 try {
@@ -100,7 +105,7 @@ public class DownloadService extends android.app.Service {
     }
 
     private void sendNotification() {
-        Notification notification = new NotificationCompat.Builder(this, MyApplication.CHANNEL_ID)
+        Notification notification = new NotificationCompat.Builder(this, CHANNEL_ID)
                 .setContentTitle(getString(R.string.download_file))
                 .setSmallIcon(R.drawable.ic_bell)
                 .setContentText(getString(R.string.download_success))

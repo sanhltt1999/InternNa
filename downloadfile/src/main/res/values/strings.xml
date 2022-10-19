@@ -6,4 +6,8 @@
     <string name="denie_permission">Permission Denied</string>
     <string name="success">Success</string>
     <string name="failed">Failed</string>
+    <string name="service_example">Service Example</string>
+    <string name="error">Error</string>
+    <string name="permission_success">Permission success</string>
+    <string name="must_allow_permission">Allow permission for storage access!</string>
 </resources>
