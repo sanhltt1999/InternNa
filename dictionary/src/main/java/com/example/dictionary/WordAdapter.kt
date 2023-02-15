@@ -3,12 +3,18 @@ package com.example.dictionary
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 
-class WordAdapter (private val words : ArrayList<Word>) : RecyclerView.Adapter<WordAdapter.WordViewHolder>(){
+class WordAdapter (var words : ArrayList<Word>) : RecyclerView.Adapter<WordAdapter.WordViewHolder>(){
 
     var onWordClick : ((Word) -> Unit)? = null
+
+    fun setFilteredList(words: ArrayList<Word>){
+        this.words = words
+        notifyDataSetChanged()
+    }
 
     class WordViewHolder (itemView : View) : RecyclerView.ViewHolder(itemView){
         val tvWord : TextView = itemView.findViewById(R.id.tvWord)
@@ -34,3 +40,5 @@ class WordAdapter (private val words : ArrayList<Word>) : RecyclerView.Adapter<W
     }
 
 }
+
+

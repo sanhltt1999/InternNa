@@ -15,9 +15,9 @@ import com.google.android.material.navigation.NavigationView
 
 class MainActivity : AppCompatActivity() {
 
-    lateinit var toggle : ActionBarDrawerToggle
-    lateinit var drawerLayout : DrawerLayout
-    val PERMISSION_REQUEST_CODE = 111
+    private lateinit var toggle : ActionBarDrawerToggle
+    private lateinit var drawerLayout : DrawerLayout
+    private val PERMISSION_REQUEST_CODE = 111
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,17 +40,16 @@ class MainActivity : AppCompatActivity() {
             true
         }
 
-        navView.getMenu().getItem(0).setChecked(true)
-        val title = navView.getMenu().getItem(0).title.toString()
+        navView.menu.getItem(0).isChecked = true
+        val title = navView.menu.getItem(0).title.toString()
         replaceFragment(HomeFragment(), title)
     }
 
-    fun setNotIsChecked(view : NavigationView){
+    private fun setNotIsChecked(view : NavigationView){
         for (i in 0 until view.menu.size()){
 
             view.menu.getItem(i).isChecked = false
         }
-
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -90,6 +89,7 @@ class MainActivity : AppCompatActivity() {
             }
         }
     }
+
     override fun onRequestPermissionsResult(requestCode: Int,
                                             permissions: Array<String>, grantResults: IntArray) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
