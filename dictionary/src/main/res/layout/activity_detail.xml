@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".DetailActivity">
+
+    <LinearLayout
+        android:id="@+id/ll_word"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_margin="10dp"
+        android:weightSum="10"
+        >
+
+        <TextView
+            android:id="@+id/tvEnWOrd"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            android:paddingStart="5dp"
+            android:paddingEnd="5dp"
+            android:textSize="40sp"
+            android:layout_weight="10"/>
+
+        <ImageButton
+            android:id="@+id/ibFavorite"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:contentDescription="@null"
+            android:layout_gravity="center_vertical"
+            android:layout_marginEnd="10dp"
+            android:src="@drawable/ic_heart"
+            android:background="#fff"
+            />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_loud"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:orientation="horizontal"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/ll_word">
+
+
+        <ImageButton
+            android:id="@+id/iv_loud_uk"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginStart="20dp"
+            android:src="@drawable/ic_volume"
+            android:layout_gravity="center_vertical"
+            app:layout_constraintStart_toStartOf="parent"
+            android:background="#fff"
+            app:layout_constraintTop_toBottomOf="@id/ll_word"
+            android:contentDescription="@null" />
+
+        <TextView
+            android:id="@+id/tv_uk"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="10dp"
+            android:text="@string/UK"
+            android:textColor="#B3B0B0"
+            android:textSize="18sp"
+            app:layout_constraintStart_toEndOf="@id/iv_loud_uk"
+            app:layout_constraintTop_toBottomOf="@+id/ll_word" />
+
+        <ImageButton
+            android:id="@+id/iv_loud_us"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginStart="50dp"
+            android:src="@drawable/ic_volume"
+            android:layout_gravity="center_vertical"
+            app:layout_constraintStart_toEndOf="@id/tv_uk"
+            app:layout_constraintTop_toBottomOf="@id/ll_word"
+            android:background="#fff"
+            android:contentDescription="@null" />
+
+        <TextView
+            android:id="@+id/tv_us"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="15dp"
+            android:text="@string/UK"
+            android:layout_gravity="center_vertical"
+            android:textColor="#B3B0B0"
+            android:textSize="18sp"
+            app:layout_constraintStart_toEndOf="@id/iv_loud_us"
+            app:layout_constraintTop_toBottomOf="@+id/ll_word" />
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/tv_meaning"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ll_loud"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="15dp"
+        android:text="@string/Meaning"
+        android:textColor="@color/black"
+        android:textSize="18sp"
+        />
+
+    <ImageView
+        android:id="@+id/iv_icon_mean"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="15dp"
+        android:src="@drawable/ic_right_arrow"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_meaning"
+        android:contentDescription="@null" />
+
+
+    <TextView
+        android:id="@+id/tv_content_meaning"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="10dp"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0"
+        app:layout_constraintStart_toEndOf="@id/iv_icon_mean"
+        android:textColor="#2196F3"
+        app:layout_constraintTop_toBottomOf="@id/tv_meaning" />
+
+    <TextView
+        android:id="@+id/tv_synonymous"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_content_meaning"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="15dp"
+        android:text="@string/Synonyms"
+        android:textColor="@color/black"
+        android:textSize="18sp"
+        />
+
+    <TextView
+        android:id="@+id/tv_content_syn"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="10dp"
+        android:textSize="18sp"
+        android:textColor="#2196F3"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_synonymous" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
